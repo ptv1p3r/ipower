@@ -5,6 +5,8 @@ import pt.ismat.ipower.utils.Buildings;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 /**
@@ -34,16 +36,9 @@ public class buildForm {
         for (int i = 0; i < arrBuildingsList.size(); i++) {
             String strBuilding = (String) arrBuildingsList.get(i);
             String[] arrBuilding = strBuilding.split("#");
-            lstBuildingsModel.addElement(arrBuilding[1]);
+            lstBuildingsModel.addElement(arrBuilding[0] + "-" + arrBuilding[1]);
         }
 
-
-
-
-        //Buildings Edificio2 = new Buildings("teste2","lagos");
-        //Buildings Edificio3 = new Buildings("teste3","lagos");
-        //lstBuildingsModel.addElement(Edificio1.getName() + " - " + Edificio1.getBuildingId());
-        //lstBuildingsModel.addElement(Edificio2.getName() + " - " + Edificio2.getBuildingId());
         lstBuildings.setModel(lstBuildingsModel);
 
         //lstBuildings = new JList(lstBuildingsModel);
@@ -53,6 +48,10 @@ public class buildForm {
         //JScrollPane lstBuildingsScrollPane = new JScrollPane(lstBuildings);
 
         //leftFrame.add(lstBuildingsScrollPane, BorderLayout.CENTER);
+
+        /**
+         * Action Listener do botao de adicionar edificio
+         */
         btnAdicionar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -64,5 +63,34 @@ public class buildForm {
 
             }
         });
+
+        /**
+         * Action Listener do botao remover edificio
+         */
+        btnRemover.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedBuilding = lstBuildings.getSelectedValue().toString();
+                System.out.println("on: " + selectedBuilding);
+            }
+        });
+
+        /**
+         * Mouse Listener para o evento click na lista de edificios
+         */
+        lstBuildings.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                // vamos buscar o index pelo ponto gerado pelo mouse click
+                int index = lstBuildings.locationToIndex(e.getPoint());
+                // vamos buscar o elemento pelo seu index
+                Object o = lstBuildings.getModel().getElementAt(index);
+
+                System.out.println("Double-clicked on: " + o.toString());
+            }
+        });
+
     }
 }

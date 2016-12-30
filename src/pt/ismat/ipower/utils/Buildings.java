@@ -60,6 +60,10 @@ public class Buildings {
         return intBuildingId;
     }
 
+    /**
+     * Metodo que gera um novo id disponivel
+     * @return Integer Novo id gerado
+     */
     private Integer getNewBuildingId(){
         Integer id=1000;
 
@@ -99,6 +103,10 @@ public class Buildings {
             //TODO : validação de erros
             ex.printStackTrace();
         }
+    }
+
+    public static void removeBuilding(Integer id){
+
     }
 
     public static ArrayList getBuildingsList(){
