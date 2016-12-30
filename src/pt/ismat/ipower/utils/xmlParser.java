@@ -20,6 +20,11 @@ import java.util.ArrayList;
  */
 public class xmlParser {
 
+    /**
+     * Metodo que le ficheiro xml de edificios e adiciona entradas a uma Building List
+     * @param buildingXmlFile Ficheiro xml de edificios
+     * @param arrBuildingsList Lista de edificios
+     */
     public static void readBuildingXml(String buildingXmlFile,ArrayList arrBuildingsList){
 
         try {
@@ -52,6 +57,10 @@ public class xmlParser {
         }
     }
 
+    /**
+     * Metodo que cria o ficheiro xml de edificios base
+     * @param buildingXmlFile Ficheiro xml de edificios
+     */
     public static void createBuildingXml(String buildingXmlFile){
 
         try {
@@ -61,8 +70,8 @@ public class xmlParser {
 
             // root elements
             Document doc = docBuilder.newDocument();
-            Element rootElement = doc.createElement("buildings");
-            doc.appendChild(rootElement);
+            Element root = doc.createElement("buildings");
+            doc.appendChild(root);
 
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -80,6 +89,11 @@ public class xmlParser {
 
     }
 
+    /**
+     * Metodo que actualiza o ficheiro de edificios xml
+     * @param buildingXmlFile Ficheiro xml de edificios
+     * @param Building Edificio a ser adicionado
+     */
     public static void updateBuildingXml(String buildingXmlFile,Buildings Building){
 
         try {
@@ -89,12 +103,12 @@ public class xmlParser {
 
             Document document = docBuilder.parse(buildingXmlFile);
 
-            // root elements
+            // root
             Element root = document.getDocumentElement();
 
             Element newBuilding = document.createElement("building");
 
-            // setting attribute to element
+            // atributo id
             Attr attr = document.createAttribute("id");
             attr.setValue(Building.getBuildingId().toString());
             newBuilding.setAttributeNode(attr);

@@ -2,6 +2,7 @@ package pt.ismat.ipower.utils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * @author Pedro Roldan on 30-12-2016.
@@ -70,18 +71,8 @@ public class Buildings {
             } else {
                 File buildingsFolder = new File(strBuildingsPath);
                 File[] arrBuildings = buildingsFolder.listFiles();
-
-                long lastMod = Long.MIN_VALUE;
-                File selectedBuilding = null;
-
-                // retorna a ultima pasta pela data de modificacao
-                for (File newBuilding : arrBuildings) { // percorre as pastas e compara as datas de modificacao
-                    if (newBuilding.lastModified() > lastMod) {
-                        selectedBuilding = newBuilding;
-                        lastMod = newBuilding.lastModified();
-                    }
-                }
-                id = Integer.valueOf(selectedBuilding.getName())+1; // cria novo id para edificio
+                Arrays.sort(arrBuildings);
+                id = Integer.valueOf(arrBuildings.length -1)+id; // cria novo id para edificio
             }
 
         } catch (Exception ex) {
@@ -92,13 +83,16 @@ public class Buildings {
         return id;
     }
 
+    /**
+     * Metodo que efetua a gravacao do novo edificio criando a pasta respectiva assim como a entrada no ficheiro de edificios xml
+     * @param Building Edificio a ser gravado
+     */
     public static void saveBuilding(Buildings Building){
         try {
             File newBuilding = new File(Building.strPath);
 
             if (!newBuilding.exists()){ // valida se o edificio existe
                 newBuilding.mkdir();
-
             }
             xmlParser.updateBuildingXml(strBuildingsXml,Building);
         } catch (Exception ex) {
@@ -126,7 +120,7 @@ public class Buildings {
             }
 
             File buildingsFile = new File(strBuildingsXml);
-            if (!buildingsFile.exists()){ // valida se a pasta buildings existe e cria
+            if (!buildingsFile.exists()){ // valida se buildingsfile existe e cria
                 xmlParser.createBuildingXml(strBuildingsXml);
             }
 
