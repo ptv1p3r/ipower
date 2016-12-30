@@ -1,7 +1,6 @@
 package pt.ismat.ipower.utils;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
 
 /**
@@ -25,8 +24,7 @@ public class Buildings {
         this.strName = Name;
         this.strLocation = Location;
         this.intBuildingId = getNewBuildingId();
-        this.strPath = setNewBuildingPath(this.intBuildingId);
-
+        this.strPath = strBuildingsPath + "/" + this.intBuildingId;
     }
 
     /**
@@ -94,36 +92,26 @@ public class Buildings {
         return id;
     }
 
-    private String setNewBuildingPath(Integer id){
-        String newPath = strBuildingsPath + "/" + id;
-
+    public static void saveBuilding(Buildings Building){
         try {
-            File newBuilding = new File(newPath);
+            File newBuilding = new File(Building.strPath);
 
             if (!newBuilding.exists()){ // valida se o edificio existe
                 newBuilding.mkdir();
 
             }
-
+            xmlParser.updateBuildingXml(strBuildingsXml,Building);
         } catch (Exception ex) {
             //TODO : validação de erros
             ex.printStackTrace();
         }
-
-        return newPath;
     }
 
     public static ArrayList getBuildingsList(){
         ArrayList arrBuildingsList = new ArrayList();
 
         validateBuildingsFolder();
-
-        arrBuildingsList.add(strBuildingsPath);
-        arrBuildingsList.add("A");
-        arrBuildingsList.add("E");
-        arrBuildingsList.add("B");
-        arrBuildingsList.add("D");
-        arrBuildingsList.add("F");
+        xmlParser.readBuildingXml(strBuildingsXml,arrBuildingsList);
 
         return arrBuildingsList;
     }
@@ -137,8 +125,14 @@ public class Buildings {
                 buildingsFolder.mkdir();
             }
 
-        } catch (Exception ex) {
+            File buildingsFile = new File(strBuildingsXml);
+            if (!buildingsFile.exists()){ // valida se a pasta buildings existe e cria
+                xmlParser.createBuildingXml(strBuildingsXml);
+            }
 
+        } catch (Exception ex) {
+            // TODO: 30-12-2016 tratar das excepcoes
+            ex.printStackTrace();
         }
 
     }

@@ -3,6 +3,8 @@ package pt.ismat.ipower.forms;
 import javax.swing.*;
 import pt.ismat.ipower.utils.Buildings;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
@@ -15,6 +17,14 @@ public class buildForm {
     private JPanel leftFrame;
     private JPanel rightFrame;
     private JButton btnRemover;
+    private JPanel buildingInfoFrame;
+    private JTextField txtName;
+    private JLabel lblId;
+    private JLabel lblIdData;
+    private JLabel lblName;
+    private JTextField textField1;
+    private JLabel lblLocation;
+    private JButton button1;
 
     public buildForm() {
         DefaultListModel lstBuildingsModel = new DefaultListModel();
@@ -22,15 +32,16 @@ public class buildForm {
         ArrayList arrBuildingsList = Buildings.getBuildingsList();
 
         for (int i = 0; i < arrBuildingsList.size(); i++) {
-            String s = (String) arrBuildingsList.get(i);
-            lstBuildingsModel.addElement(s);
+            String strBuilding = (String) arrBuildingsList.get(i);
+            String[] arrBuilding = strBuilding.split("#");
+            lstBuildingsModel.addElement(arrBuilding[1]);
         }
 
 
 
-        Buildings Edificio1 = new Buildings("teste","portimao");
-        Buildings Edificio2 = new Buildings("teste2","lagos");
-        Buildings Edificio3 = new Buildings("teste3","lagos");
+
+        //Buildings Edificio2 = new Buildings("teste2","lagos");
+        //Buildings Edificio3 = new Buildings("teste3","lagos");
         //lstBuildingsModel.addElement(Edificio1.getName() + " - " + Edificio1.getBuildingId());
         //lstBuildingsModel.addElement(Edificio2.getName() + " - " + Edificio2.getBuildingId());
         lstBuildings.setModel(lstBuildingsModel);
@@ -42,5 +53,16 @@ public class buildForm {
         //JScrollPane lstBuildingsScrollPane = new JScrollPane(lstBuildings);
 
         //leftFrame.add(lstBuildingsScrollPane, BorderLayout.CENTER);
+        btnAdicionar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Buildings Edificio = new Buildings("teste","portimao");
+
+                lstBuildingsModel.addElement(Edificio.getName() + " - " + Edificio.getBuildingId());
+                Buildings.saveBuilding(Edificio);
+                lstBuildings.setModel(lstBuildingsModel);
+
+            }
+        });
     }
 }
