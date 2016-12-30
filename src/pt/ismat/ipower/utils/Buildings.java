@@ -73,6 +73,7 @@ public class Buildings {
             if (!building.exists()){ // valida se o edificio existe
                 building.mkdir();
             } else {
+                // TODO : alterar o algoritmo para gerar correctamente o novo id baseado nos existentes
                 File buildingsFolder = new File(strBuildingsPath);
                 File[] arrBuildings = buildingsFolder.listFiles();
                 Arrays.sort(arrBuildings);
@@ -80,7 +81,7 @@ public class Buildings {
             }
 
         } catch (Exception ex) {
-            //TODO : validação de erros
+            // TODO : validação de erros
             ex.printStackTrace();
         }
 
@@ -105,10 +106,29 @@ public class Buildings {
         }
     }
 
+    /**
+     * Metodo que efetua a remoção do edificio do ficheiro buildings xml assim como a sua pasta associada
+     * @param id Identificador de edificio
+     */
     public static void removeBuilding(Integer id){
 
+        try {
+            File building = new File(strBuildingsPath + "/" + id);
+
+            if (building.exists()){ // valida se o edificio existe
+                building.delete();
+            }
+            xmlParser.removeBuildingXml(strBuildingsXml,id);
+        } catch (Exception ex) {
+            //TODO : validação de erros
+            ex.printStackTrace();
+        }
     }
 
+    /**
+     * Metodo que retorna uma lista de edificios existentes
+     * @return Buildings List
+     */
     public static ArrayList getBuildingsList(){
         ArrayList arrBuildingsList = new ArrayList();
 

@@ -57,7 +57,7 @@ public class buildForm {
             public void actionPerformed(ActionEvent e) {
                 Buildings Edificio = new Buildings("teste","portimao");
 
-                lstBuildingsModel.addElement(Edificio.getName() + " - " + Edificio.getBuildingId());
+                lstBuildingsModel.addElement(Edificio.getBuildingId() + " - " + Edificio.getName());
                 Buildings.saveBuilding(Edificio);
                 lstBuildings.setModel(lstBuildingsModel);
 
@@ -71,7 +71,21 @@ public class buildForm {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedBuilding = lstBuildings.getSelectedValue().toString();
-                System.out.println("on: " + selectedBuilding);
+
+                int resultado = JOptionPane.showConfirmDialog(
+                        mainFrame,
+                        "Deseja mesmo remover este edificio assim como todos os seus dados?",
+                        "iPower - Remoção de Edificio",
+                        JOptionPane.YES_NO_OPTION);
+
+                if (resultado==0){
+                    String[] arrBuilding = selectedBuilding.split("-");
+
+                    Buildings.removeBuilding(Integer.valueOf(arrBuilding[0].trim())); // remove pasta e entrada do xml buildings
+                    lstBuildingsModel.remove(lstBuildings.getSelectedIndex()); // remove do model da jlist
+                    lstBuildings.setModel(lstBuildingsModel); // actualiza jlist com model
+                }
+
             }
         });
 

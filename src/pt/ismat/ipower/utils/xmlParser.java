@@ -68,12 +68,12 @@ public class xmlParser {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-            // root elements
+            // root elemento
             Document doc = docBuilder.newDocument();
             Element root = doc.createElement("buildings");
             doc.appendChild(root);
 
-            // write the content into xml file
+            // escreve ficheiro xml
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
@@ -119,6 +119,8 @@ public class xmlParser {
 
             root.appendChild(newBuilding);
 
+
+            // escreve ficheiro xml
             DOMSource source = new DOMSource(document);
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -137,6 +139,56 @@ public class xmlParser {
             sax.printStackTrace();
         }
 
+    }
+
+    /**
+     * Metodo que remove o edificio do ficheiro buildings.xml atraves do seu id
+     * @param buildingXmlFile Ficheiro xml de edificios
+     * @param id Identificador de edificio
+     */
+    public static void removeBuildingXml(String buildingXmlFile,Integer id){
+        try {
+
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+            Document document = docBuilder.parse(buildingXmlFile);
+
+            NodeList nlBuildingList = document.getElementsByTagName("building");
+            if (nlBuildingList != null && nlBuildingList.getLength() > 0) {
+
+                for (int i = 0; i < nlBuildingList.getLength(); i++) {
+
+                    Node nBuilding= nlBuildingList.item(i);
+                    Element eBuilding = (Element) nBuilding;
+
+                    if (eBuilding.hasAttribute("id") && eBuilding.getAttribute("id").equals(String.valueOf(id))) {
+                        nBuilding.getParentNode().removeChild(nBuilding);
+                    }
+
+                }
+
+            }
+
+
+            // escreve ficheiro xml
+            DOMSource source = new DOMSource(document);
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            StreamResult result = new StreamResult(buildingXmlFile);
+
+            transformer.transform(source, result);
+
+        } catch (ParserConfigurationException pce) {
+            pce.printStackTrace();
+        } catch (TransformerException tfe) {
+            tfe.printStackTrace();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }catch (SAXException sax) {
+            sax.printStackTrace();
+        }
     }
 
 }
