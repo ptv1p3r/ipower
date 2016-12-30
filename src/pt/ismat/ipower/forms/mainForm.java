@@ -84,20 +84,16 @@ public class mainForm {
         tabelas.setMnemonic(KeyEvent.VK_T);
 
         // Tabelas->Perfis
-        JMenuItem perfisItem = new JMenuItem("Perfis...", icon);
-        tabelas.add(perfisItem);
+        JMenuItem edificiosItem = new JMenuItem("Edificios...", icon);
+        tabelas.add(edificiosItem);
 
         // Tabelas->Utilizadores
-        JMenuItem utilizadoresItem = new JMenuItem("Utilizadores...", icon);
-        tabelas.add(utilizadoresItem);
-
-        // Mapas
-        JMenu mapas = new JMenu("Mapas");
-        mapas.setMnemonic(KeyEvent.VK_M);
+        JMenuItem apartamentosItem = new JMenuItem("Apartamentos...", icon);
+        tabelas.add(apartamentosItem);
 
         // Mapas->Gerar
-        JMenuItem gerarItem = new JMenuItem("Gerar...", icon);
-        mapas.add(gerarItem);
+        JMenuItem equipamentosItem = new JMenuItem("Equipamentos...", icon);
+        tabelas.add(equipamentosItem);
 
         // Preferencias
         JMenu preferencias = new JMenu("Preferencias");
@@ -141,7 +137,6 @@ public class mainForm {
         // adiciona os menus a menubar
         menubar.add(file);
         menubar.add(tabelas);
-        menubar.add(mapas);
         menubar.add(preferencias);
         //menubar.add(Box.createHorizontalGlue()); // horizontal glue
         menubar.add(ajuda);
@@ -167,4 +162,5 @@ public class mainForm {
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
     }
+
 }
