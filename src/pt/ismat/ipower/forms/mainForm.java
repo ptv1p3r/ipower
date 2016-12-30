@@ -16,9 +16,11 @@ public class mainForm {
 
     private JPanel mainFrame;
 
+
+
     /**
      * Cria a barra de menu com todos os items e eventos associados
-     * @param frame ** Frame a ser passada onde e construido o menu **
+     * @param frame Frame a ser passada para construcao do menu
      */
     private static void createMenuBar(final JFrame frame) {
 
@@ -34,7 +36,6 @@ public class mainForm {
         importarItem.setMnemonic(KeyEvent.VK_I);
         // adiciona o listener para captar evento
         importarItem.addActionListener(new ActionListener() {
-
             public void actionPerformed(ActionEvent e) {
 
                 // Filtros de ficheiros
@@ -85,13 +86,14 @@ public class mainForm {
 
         // Tabelas->Edificios
         JMenuItem edificiosItem = new JMenuItem("Edificios...", icon);
+
         // adiciona o listener para captar evento
         edificiosItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JFrame buildFrame = new JFrame("iMaps - Edificios");
-                buildFrame.setContentPane(new confForm().mainFrame); // carrega o main panel feito no gui
-                buildFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
+                JDialog buildFrame = new JDialog(frame,"iMaps - Edificios",Dialog.ModalityType.APPLICATION_MODAL); // cria frame em MODAL
+                buildFrame.setContentPane(new buildForm().mainFrame); // carrega o main panel feito no gui
+                buildFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
                 buildFrame.setResizable(false);
                 buildFrame.setPreferredSize(new Dimension(400, 400));
@@ -100,7 +102,6 @@ public class mainForm {
                 buildFrame.setLocationRelativeTo(null);
 
                 buildFrame.setVisible(true);
-
             }
         });
         tabelas.add(edificiosItem);
@@ -122,10 +123,10 @@ public class mainForm {
         // adiciona o listener para captar evento
         configuracaoItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JFrame configFrame = new JFrame("iMaps - Configuração");
+
+                JDialog configFrame = new JDialog(frame,"iPower - Configuração",Dialog.ModalityType.APPLICATION_MODAL); // cria frame em MODAL
                 configFrame.setContentPane(new confForm().mainFrame); // carrega o main panel feito no gui
                 configFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-
 
                 configFrame.setResizable(false);
                 configFrame.setPreferredSize(new Dimension(400, 400));
