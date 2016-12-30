@@ -18,7 +18,7 @@ public class mainForm {
 
     /**
      * Cria a barra de menu com todos os items e eventos associados
-     * @param frame
+     * @param frame ** Frame a ser passada onde e construido o menu **
      */
     private static void createMenuBar(final JFrame frame) {
 
@@ -83,15 +83,33 @@ public class mainForm {
         JMenu tabelas = new JMenu("Tabelas");
         tabelas.setMnemonic(KeyEvent.VK_T);
 
-        // Tabelas->Perfis
+        // Tabelas->Edificios
         JMenuItem edificiosItem = new JMenuItem("Edificios...", icon);
+        // adiciona o listener para captar evento
+        edificiosItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JFrame buildFrame = new JFrame("iMaps - Edificios");
+                buildFrame.setContentPane(new confForm().mainFrame); // carrega o main panel feito no gui
+                buildFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+
+
+                buildFrame.setResizable(false);
+                buildFrame.setPreferredSize(new Dimension(400, 400));
+
+                buildFrame.pack();
+                buildFrame.setLocationRelativeTo(null);
+
+                buildFrame.setVisible(true);
+
+            }
+        });
         tabelas.add(edificiosItem);
 
-        // Tabelas->Utilizadores
+        // Tabelas->Apartamentos
         JMenuItem apartamentosItem = new JMenuItem("Apartamentos...", icon);
         tabelas.add(apartamentosItem);
 
-        // Mapas->Gerar
+        // Mapas->Equipamentos
         JMenuItem equipamentosItem = new JMenuItem("Equipamentos...", icon);
         tabelas.add(equipamentosItem);
 
@@ -143,7 +161,6 @@ public class mainForm {
 
         frame.setJMenuBar(menubar);
     }
-
 
     /**
      * Inicializa o gui
