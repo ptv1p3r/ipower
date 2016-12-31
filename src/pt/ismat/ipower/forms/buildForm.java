@@ -24,7 +24,7 @@ public class buildForm {
     private JLabel lblId;
     private JLabel lblIdData;
     private JLabel lblName;
-    private JTextField textField1;
+    private JTextField txtLocation;
     private JLabel lblLocation;
     private JButton button1;
 
@@ -41,26 +41,30 @@ public class buildForm {
 
         lstBuildings.setModel(lstBuildingsModel);
 
-        //lstBuildings = new JList(lstBuildingsModel);
-        //lstBuildings.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        //lstBuildings.getSelectedIndex(-1);
-        //lstBuildings.setVisibleRowCount(5);
-        //JScrollPane lstBuildingsScrollPane = new JScrollPane(lstBuildings);
-
-        //leftFrame.add(lstBuildingsScrollPane, BorderLayout.CENTER);
-
         /**
          * Action Listener do botao de adicionar edificio
          */
         btnAdicionar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Buildings Edificio = new Buildings("teste","portimao");
 
-                lstBuildingsModel.addElement(Edificio.getBuildingId() + " - " + Edificio.getName());
-                Buildings.saveBuilding(Edificio);
-                lstBuildings.setModel(lstBuildingsModel);
+                if(txtName.getText().length()!=0 && txtLocation.getText().length()!=0){
+                    Buildings Edificio = new Buildings(txtName.getText().trim(),txtLocation.getText().trim());
 
+                    lstBuildingsModel.addElement(Edificio.getBuildingId() + " - " + Edificio.getName());
+                    Buildings.saveBuilding(Edificio);
+                    lstBuildings.setModel(lstBuildingsModel);
+
+                    lblIdData.setText("- nenhum -");
+                    txtName.setText("");
+                    txtLocation.setText("");
+
+                } else {
+                    JOptionPane.showMessageDialog(mainFrame,
+                            "Os campos [Nome] [Localização] não podem ser vazios.",
+                            "iPower - Criação de Edificio",
+                            JOptionPane.WARNING_MESSAGE);
+                }
             }
         });
 
@@ -70,20 +74,32 @@ public class buildForm {
         btnRemover.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String selectedBuilding = lstBuildings.getSelectedValue().toString();
 
-                int resultado = JOptionPane.showConfirmDialog(
-                        mainFrame,
-                        "Deseja mesmo remover este edificio assim como todos os seus dados?",
-                        "iPower - Remoção de Edificio",
-                        JOptionPane.YES_NO_OPTION);
+                if (!lstBuildings.isSelectionEmpty()){
+                    String selectedBuilding = lstBuildings.getSelectedValue().toString();
 
-                if (resultado==0){
-                    String[] arrBuilding = selectedBuilding.split("-");
+                    int resultado = JOptionPane.showConfirmDialog(
+                            mainFrame,
+                            "Deseja mesmo remover este edificio assim como todos os seus dados?",
+                            "iPower - Remoção de Edificio",
+                            JOptionPane.YES_NO_OPTION);
 
-                    Buildings.removeBuilding(Integer.valueOf(arrBuilding[0].trim())); // remove pasta e entrada do xml buildings
-                    lstBuildingsModel.remove(lstBuildings.getSelectedIndex()); // remove do model da jlist
-                    lstBuildings.setModel(lstBuildingsModel); // actualiza jlist com model
+                    if (resultado==0){
+                        String[] arrBuilding = selectedBuilding.split("-");
+
+                        Buildings.removeBuilding(Integer.valueOf(arrBuilding[0].trim())); // remove pasta e entrada do xml buildings
+                        lstBuildingsModel.remove(lstBuildings.getSelectedIndex()); // remove do model da jlist
+                        lstBuildings.setModel(lstBuildingsModel); // actualiza jlist com model
+
+                        lblIdData.setText("- nenhum -");
+                        txtName.setText("");
+                        txtLocation.setText("");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(mainFrame,
+                            "Nenhum edificio seleccionado.",
+                            "iPower - Remoção de Edificio",
+                            JOptionPane.WARNING_MESSAGE);
                 }
 
             }
@@ -97,14 +113,25 @@ public class buildForm {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
 
-                // vamos buscar o index pelo ponto gerado pelo mouse click
-                int index = lstBuildings.locationToIndex(e.getPoint());
-                // vamos buscar o elemento pelo seu index
-                Object o = lstBuildings.getModel().getElementAt(index);
+                if (!lstBuildings.isSelectionEmpty()){
+                    // vamos buscar o index pelo ponto gerado pelo mouse click
+                    int index = lstBuildings.locationToIndex(e.getPoint());
 
-                System.out.println("Double-clicked on: " + o.toString());
+                    // vamos buscar o elemento pelo seu index
+                    Object selectedBuilding = lstBuildings.getModel().getElementAt(index);
+                    String[] arrBuilding = selectedBuilding.toString().split("-");
+
+                    Buildings Edificio = Buildings.loadBuilding(Integer.valueOf(arrBuilding[0].trim()));
+
+                    lblIdData.setText(Edificio.getBuildingId().toString());
+                    txtName.setText(Edificio.getName());
+                    txtLocation.setText(Edificio.getLocation());
+                } else {
+                    lblIdData.setText("- nenhum -");
+                    txtName.setText("");
+                    txtLocation.setText("");
+                }
             }
         });
-
     }
 }

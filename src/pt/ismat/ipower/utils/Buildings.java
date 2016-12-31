@@ -29,6 +29,19 @@ public class Buildings {
     }
 
     /**
+     * Construtor de edificios
+     * @param Name Nome do edificio
+     * @param Location Localização do edificio
+     * @param id Identificador do edificio
+     */
+    public Buildings(String Name, String Location, Integer id) {
+        this.strName = Name;
+        this.strLocation = Location;
+        this.intBuildingId = id;
+        this.strPath = strBuildingsPath + "/" + this.intBuildingId;
+    }
+
+    /**
      * Retorna o nome do edificio
      * @return String
      */
@@ -123,6 +136,16 @@ public class Buildings {
             //TODO : validação de erros
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * Metodo que retorna um edificio carregado com os seus dados
+     * @param id Identificador de edificio
+     * @return Edificio
+     */
+    public static Buildings loadBuilding(Integer id){
+
+        return xmlParser.loadBuildingXml(strBuildingsXml,id);
     }
 
     /**

@@ -113,9 +113,15 @@ public class xmlParser {
             attr.setValue(Building.getBuildingId().toString());
             newBuilding.setAttributeNode(attr);
 
-            Element name = document.createElement("name");
-            name.appendChild(document.createTextNode(Building.getName()));
-            newBuilding.appendChild(name);
+            // nome
+            Element buildingName = document.createElement("name");
+            buildingName.appendChild(document.createTextNode(Building.getName()));
+            newBuilding.appendChild(buildingName);
+
+            // localizacao
+            Element buildingLocation = document.createElement("location");
+            buildingLocation.appendChild(document.createTextNode(Building.getLocation()));
+            newBuilding.appendChild(buildingLocation);
 
             root.appendChild(newBuilding);
 
@@ -189,6 +195,52 @@ public class xmlParser {
         }catch (SAXException sax) {
             sax.printStackTrace();
         }
+    }
+
+    /**
+     * Metodo que carrega um edificio baseado nos seu dados do ficheiro xml
+     * @param buildingXmlFile Ficheiro xml de edificios
+     * @param id Identificador de edificio
+     * @return Edificio
+     */
+    public static Buildings loadBuildingXml(String buildingXmlFile,Integer id){
+
+        Buildings building = null;
+
+        try {
+
+            File fXmlFile = new File(buildingXmlFile);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(fXmlFile);
+
+            //http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+            doc.getDocumentElement().normalize();
+
+            NodeList nlBuildingList = doc.getElementsByTagName("building");
+
+            if (nlBuildingList != null && nlBuildingList.getLength() > 0) {
+
+                for (int i = 0; i < nlBuildingList.getLength(); i++) {
+
+                    Node nBuilding= nlBuildingList.item(i);
+                    Element eBuilding = (Element) nBuilding;
+
+                    if (eBuilding.hasAttribute("id") && eBuilding.getAttribute("id").equals(String.valueOf(id))) {
+                        String tt = eBuilding.getElementsByTagName("location").item(0).getTextContent();
+                        building = new Buildings( eBuilding.getElementsByTagName("name").item(0).getTextContent(), eBuilding.getElementsByTagName("location").item(0).getTextContent(),Integer.valueOf(eBuilding.getAttribute("id")));
+                    }
+
+                }
+
+            }
+
+        } catch (Exception e) {
+            // TODO: 30-12-2016 tratar das excepcoes
+            e.printStackTrace();
+        }
+
+        return building;
     }
 
 }
