@@ -41,6 +41,8 @@ public class buildForm {
 
         lstBuildings.setModel(lstBuildingsModel);
 
+
+
         /**
          * Action Listener do botao de adicionar edificio
          */
@@ -94,6 +96,8 @@ public class buildForm {
                         lblIdData.setText("- nenhum -");
                         txtName.setText("");
                         txtLocation.setText("");
+
+
                     }
                 } else {
                     JOptionPane.showMessageDialog(mainFrame,

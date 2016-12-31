@@ -1,13 +1,18 @@
 package pt.ismat.ipower.forms;
 
+import pt.ismat.ipower.utils.Buildings;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.File;
+import java.util.ArrayList;
+
+import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
 /**
  * Created by v1p3r on 29-12-2016.
@@ -15,8 +20,13 @@ import java.io.File;
 public class mainForm {
 
     private JPanel mainFrame;
+    public JTree treeBuildings;
+    private JPanel leftFrame;
+    private JPanel rightFrame;
 
-
+    public mainForm() {
+        createTree();
+    }
 
     /**
      * Cria a barra de menu com todos os items e eventos associados
@@ -92,7 +102,7 @@ public class mainForm {
 
                 JDialog buildFrame = new JDialog(frame,"iPower - Edificios",Dialog.ModalityType.APPLICATION_MODAL); // cria frame em MODAL
                 buildFrame.setContentPane(new buildForm().mainFrame); // carrega o main panel feito no gui
-                buildFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                buildFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
                 buildFrame.setResizable(false);
                 buildFrame.setPreferredSize(new Dimension(400, 400));
@@ -101,8 +111,18 @@ public class mainForm {
                 buildFrame.setLocationRelativeTo(null);
 
                 buildFrame.setVisible(true);
+
+                buildFrame.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        //((DefaultTreeModel)new mainForm().treeBuildings.getModel()).reload();
+
+                    }
+                });
+
             }
         });
+
         tabelas.add(edificiosItem);
 
         // Tabelas->Apartamentos
@@ -194,6 +214,25 @@ public class mainForm {
         menubar.add(ajuda);
 
         frame.setJMenuBar(menubar);
+    }
+
+    public void createTree(){
+
+        ArrayList arrBuildingsList = Buildings.getBuildingsList();
+
+        //root
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Edificios");
+
+        for (int i = 0; i < arrBuildingsList.size(); i++) {
+            String strBuilding = (String) arrBuildingsList.get(i);
+            String[] arrBuilding = strBuilding.split("#");
+
+            DefaultMutableTreeNode buildingNode = new DefaultMutableTreeNode(arrBuilding[0] + "-" + arrBuilding[1]);
+            buildingNode.add(new DefaultMutableTreeNode("Apartamento x"));
+            root.add(buildingNode);
+        }
+
+        treeBuildings.setModel(new DefaultTreeModel(root));
     }
 
     /**
