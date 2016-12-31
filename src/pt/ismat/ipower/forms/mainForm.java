@@ -86,12 +86,11 @@ public class mainForm {
 
         // Tabelas->Edificios
         JMenuItem edificiosItem = new JMenuItem("Edificios...", icon);
-
         // adiciona o listener para captar evento
         edificiosItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                JDialog buildFrame = new JDialog(frame,"iMaps - Edificios",Dialog.ModalityType.APPLICATION_MODAL); // cria frame em MODAL
+                JDialog buildFrame = new JDialog(frame,"iPower - Edificios",Dialog.ModalityType.APPLICATION_MODAL); // cria frame em MODAL
                 buildFrame.setContentPane(new buildForm().mainFrame); // carrega o main panel feito no gui
                 buildFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
@@ -108,10 +107,44 @@ public class mainForm {
 
         // Tabelas->Apartamentos
         JMenuItem apartamentosItem = new JMenuItem("Apartamentos...", icon);
+        // adiciona o listener para captar evento
+        apartamentosItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                JDialog apartFrame = new JDialog(frame,"iPower - Apartamentos",Dialog.ModalityType.APPLICATION_MODAL); // cria frame em MODAL
+                apartFrame.setContentPane(new apartForm().mainFrame); // carrega o main panel feito no gui
+                apartFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+
+                apartFrame.setResizable(false);
+                apartFrame.setPreferredSize(new Dimension(400, 400));
+
+                apartFrame.pack();
+                apartFrame.setLocationRelativeTo(null);
+
+                apartFrame.setVisible(true);
+            }
+        });
         tabelas.add(apartamentosItem);
 
         // Mapas->Equipamentos
         JMenuItem equipamentosItem = new JMenuItem("Equipamentos...", icon);
+        // adiciona o listener para captar evento
+        equipamentosItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                JDialog equipFrame = new JDialog(frame,"iPower - Equipamentos",Dialog.ModalityType.APPLICATION_MODAL); // cria frame em MODAL
+                equipFrame.setContentPane(new equipForm().mainFrame); // carrega o main panel feito no gui
+                equipFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+
+                equipFrame.setResizable(false);
+                equipFrame.setPreferredSize(new Dimension(400, 400));
+
+                equipFrame.pack();
+                equipFrame.setLocationRelativeTo(null);
+
+                equipFrame.setVisible(true);
+            }
+        });
         tabelas.add(equipamentosItem);
 
         // Preferencias
