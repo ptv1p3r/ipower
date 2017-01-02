@@ -9,6 +9,12 @@ import java.util.ArrayList;
  */
 public class Apartments {
 
+    private Integer intApartmentId;
+
+
+
+
+
     /**
      * Metodo que retorna uma lista de apartamentos existentes de um edificio pelo seu id
      * @return Apartments List

@@ -4,6 +4,8 @@ import pt.ismat.ipower.utils.Apartments;
 import pt.ismat.ipower.utils.Buildings;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
@@ -42,6 +44,17 @@ public class apartForm {
             public void itemStateChanged(ItemEvent e) {
                 apt = cbBuildings.getSelectedItem().toString().split("-");
                 setApartmentList(Integer.valueOf(apt[0]));
+            }
+        });
+
+        btnAdicionar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(txtName.getText().length()!=0){
+
+                }
+
             }
         });
     }
