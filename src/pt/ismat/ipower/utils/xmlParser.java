@@ -152,7 +152,7 @@ public class xmlParser {
                             if ("devices".equals(childNode.getNodeName())) {
                                 Element eDevice = (Element) childNode;
                                 arrDevicesList.add(eDevice.getAttribute("id") + "#" + eDevice.getAttribute("category"));
-                                //System.out.println(eDevice.getAttribute("id"));
+
                             }
 
                         }

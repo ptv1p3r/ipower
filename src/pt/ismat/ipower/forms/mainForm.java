@@ -26,6 +26,9 @@ public class mainForm {
     private JPanel leftFrame;
     private JPanel rightFrame;
     private JPanel bottomFrame;
+    private JButton btnLigar;
+    private JButton btnDesligar;
+    private JProgressBar progressBar1;
 
     public mainForm() {
         createTree();
@@ -222,9 +225,8 @@ public class mainForm {
 
     public void createTree(){
 
+        // Cria cada edificio
         ArrayList arrBuildingsList = Buildings.getBuildingsList();
-
-        //root
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Edificios");
 
         for (int i = 0; i < arrBuildingsList.size(); i++) {
@@ -233,6 +235,7 @@ public class mainForm {
 
             DefaultMutableTreeNode buildingNode = new DefaultMutableTreeNode(arrBuilding[0] + "-" + arrBuilding[1]);
 
+            // Cria cada apartamento
             ArrayList arrApartmentsList = Apartments.getApartmentList(Integer.valueOf(arrBuilding[0]));
 
             for (int b = 0; b < arrApartmentsList.size(); b++) {
@@ -242,6 +245,7 @@ public class mainForm {
                 DefaultMutableTreeNode apartmentNode = new DefaultMutableTreeNode(arrApartment[0] + "-" + arrApartment[1]);
                 buildingNode.add(apartmentNode);
 
+                // Cria os equipamentos de cada apartamento
                 ArrayList arrDevicesList = Devices.getDevicesList(arrApartment[0]);
 
                 for (int d = 0; d < arrDevicesList.size(); d++) {
