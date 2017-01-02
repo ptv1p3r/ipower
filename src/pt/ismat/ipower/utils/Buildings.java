@@ -87,26 +87,26 @@ public class Buildings {
             if (!building.exists()){ // valida se o edificio existe
                 building.mkdir();
             } else {
-                // TODO : alterar o algoritmo para gerar correctamente o novo id baseado nos existentes
+
                 File buildingsFolder = new File(strBuildingsPath);
                 File[] arrBuildings = buildingsFolder.listFiles();
                 Arrays.sort(arrBuildings);
 
-                //Passa o nome dos folders para um array de strings
+                //Cria um array de strings com tamanho do arrBuildings
                 String[] idList = new String[arrBuildings.length];
 
-
+                //Transforma o conteudo do arrBuildings em Strings
                 for (i = 0 ; i < arrBuildings.length ; i++) {
                     idList[i]=arrBuildings[i].getName();
                 }
 
-                try {
+                try {   //enquanto que o valor do id for igual ao elemento correspondente na string, incrementa ambos
                     for (i=0 ; i<arrBuildings.length ; i++) {
                         if (id == Integer.parseInt(idList[i])) {
                             id++;
                         }
                     }
-                } catch (ArrayIndexOutOfBoundsException e) {
+                } catch (ArrayIndexOutOfBoundsException e) { //caso nao exista o valor do id na idList, este obtem o ultimo valor da lista+1
                     id=Integer.parseInt(idList[i])+1;
                 }
             }
