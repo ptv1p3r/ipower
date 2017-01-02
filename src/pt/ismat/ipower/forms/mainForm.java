@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
@@ -36,6 +37,7 @@ public class mainForm {
     private JProgressBar progressBar2;
     private JProgressBar pbSimulatorStatus;
     private ThreadPoolExecutor executor;
+    private Counter cApartamentsCounter;
 
     public mainForm() {
         createTree();
@@ -44,38 +46,32 @@ public class mainForm {
         btnLigar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
- //               for (int i = 0; i <= 5; i++)
- //               {
-                    Counter task = new Counter("Simulador on " );
-                    System.out.println("A new task has been added : " + task.getName());
-                    btnLigar.setEnabled(false);
 
-                    btnDesligar.setEnabled(true);
-                    pbSimulatorStatus.setEnabled(true);
-                    pbSimulatorStatus.setVisible(true);
-                    executor.execute(task);
-//                }
+                if (!cApartamentsCounter.isSuspended()){
+                    cApartamentsCounter = new Counter( "Apartamentos");
+                    cApartamentsCounter.start();
+                } else {
+                    cApartamentsCounter.resume();
+                }
 
-                executor.shutdown();
-                //btnLigar.setEnabled(true);
-                //btnDesligar.setEnabled(false);
-               // while (!executor.isTerminated()) {   }
 
-                System.out.println("Finished all by normal means threads");
-
+                btnLigar.setEnabled(false);
+                btnDesligar.setEnabled(true);
+                pbSimulatorStatus.setVisible(true);
+                pbSimulatorStatus.setIndeterminate(true);
             }
         });
 
         btnDesligar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                executor.shutdownNow();
+                cApartamentsCounter.suspend();
+
                 btnLigar.setEnabled(true);
                 btnDesligar.setEnabled(false);
                 pbSimulatorStatus.setEnabled(false);
                 pbSimulatorStatus.setVisible(false);
-                System.out.println("Finished all no wait");
+                System.out.println("Contador suspenso");
             }
         });
     }
