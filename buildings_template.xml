@@ -7,10 +7,12 @@
 			<apt>2B</apt>
 			<ec>15</ec>
 			<devices id="d1001" category="Automático">
+				<enable>true</enable>
 				<auto>0</auto>
 				<euc>10</euc>
 			</devices>
 			<devices id="d1002" category="Remoto">
+				<enable>false</enable>
 				<auto>0</auto>
 				<euc>5</euc>
 			</devices>
@@ -22,7 +24,8 @@
 		<apartments id="a1003">
 			<apt>4B</apt>
 			<ec>2</ec>
-				<devices id="d1021" category="Automático">
+			<devices id="d1021" category="Automático">
+				<enable>true</enable>
 				<auto>0</auto>
 				<euc>2</euc>
 			</devices>

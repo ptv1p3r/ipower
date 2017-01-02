@@ -2,6 +2,7 @@ package pt.ismat.ipower.forms;
 
 import pt.ismat.ipower.utils.Apartments;
 import pt.ismat.ipower.utils.Buildings;
+import pt.ismat.ipower.utils.Counter;
 import pt.ismat.ipower.utils.Devices;
 
 import javax.swing.*;
@@ -13,6 +14,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
@@ -29,9 +33,51 @@ public class mainForm {
     private JButton btnLigar;
     private JButton btnDesligar;
     private JProgressBar progressBar1;
+    private JProgressBar progressBar2;
+    private JProgressBar pbSimulatorStatus;
+    private ThreadPoolExecutor executor;
 
     public mainForm() {
         createTree();
+
+
+        btnLigar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+ //               for (int i = 0; i <= 5; i++)
+ //               {
+                    Counter task = new Counter("Simulador on " );
+                    System.out.println("A new task has been added : " + task.getName());
+                    btnLigar.setEnabled(false);
+
+                    btnDesligar.setEnabled(true);
+                    pbSimulatorStatus.setEnabled(true);
+                    pbSimulatorStatus.setVisible(true);
+                    executor.execute(task);
+//                }
+
+                executor.shutdown();
+                //btnLigar.setEnabled(true);
+                //btnDesligar.setEnabled(false);
+               // while (!executor.isTerminated()) {   }
+
+                System.out.println("Finished all by normal means threads");
+
+            }
+        });
+
+        btnDesligar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                executor.shutdownNow();
+                btnLigar.setEnabled(true);
+                btnDesligar.setEnabled(false);
+                pbSimulatorStatus.setEnabled(false);
+                pbSimulatorStatus.setVisible(false);
+                System.out.println("Finished all no wait");
+            }
+        });
     }
 
     /**
