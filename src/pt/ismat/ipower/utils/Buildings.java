@@ -41,6 +41,11 @@ public class Buildings {
         this.strPath = strBuildingsPath + "/" + this.intBuildingId;
     }
 
+    //Test para os apartamentos
+    public Buildings(Integer id) {
+        this.intBuildingId = id;
+    }
+
     /**
      * Retorna o nome do edificio
      * @return String
