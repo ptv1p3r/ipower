@@ -90,7 +90,7 @@ public class Buildings {
                 File buildingsFolder = new File(strBuildingsPath);
                 File[] arrBuildings = buildingsFolder.listFiles();
                 Arrays.sort(arrBuildings);
-                id = Integer.valueOf(arrBuildings.length -2)+id; // cria novo id para edificio
+                id = Integer.valueOf(arrBuildings.length -1)+id; // cria novo id para edificio
             }
 
         } catch (Exception ex) {
