@@ -21,10 +21,18 @@ public class Counter implements Runnable {
         System.out.println("Creating " +  threadName );
     }
 
+    /**
+     * Metodo que retorna o nome da thread
+     * @return String O nome da thread
+     */
     public String getName() {
         return threadName;
     }
 
+    /**
+     * Metodo que retorna o estado da thread, se esta supensa ou nao
+     * @return Estado da thread (suspensa)
+     */
     public static Boolean isSuspended() {
         return suspended;
     }
@@ -66,6 +74,9 @@ public class Counter implements Runnable {
         }
     }
 
+    /**
+     * Metodo que inicia a thread
+     */
     public void start () {
         System.out.println("Starting " +  threadName );
         if (t == null) {
@@ -74,10 +85,16 @@ public class Counter implements Runnable {
         }
     }
 
+    /**
+     * Metodo que coloca a thread em suspenso
+     */
     public void suspend() {
         suspended = true;
     }
 
+    /**
+     * Metodo que retorna a thread e a tira de modo suspenso
+     */
     public synchronized void resume() {
         suspended = false;
         notify();

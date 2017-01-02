@@ -36,7 +36,6 @@ public class mainForm {
     private JProgressBar progressBar1;
     private JProgressBar progressBar2;
     private JProgressBar pbSimulatorStatus;
-    private ThreadPoolExecutor executor;
     private Counter cApartamentsCounter;
 
     public mainForm() {
@@ -47,11 +46,12 @@ public class mainForm {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                // valida estado da thread
                 if (!cApartamentsCounter.isSuspended()){
                     cApartamentsCounter = new Counter( "Apartamentos");
-                    cApartamentsCounter.start();
+                    cApartamentsCounter.start(); // inicia uma nova
                 } else {
-                    cApartamentsCounter.resume();
+                    cApartamentsCounter.resume(); // faz o resume da thread
                 }
 
 
@@ -65,7 +65,7 @@ public class mainForm {
         btnDesligar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cApartamentsCounter.suspend();
+                cApartamentsCounter.suspend(); // suspende a thread
 
                 btnLigar.setEnabled(true);
                 btnDesligar.setEnabled(false);
