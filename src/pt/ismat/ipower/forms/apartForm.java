@@ -30,6 +30,7 @@ public class apartForm {
     private JLabel lblBuilding;
     private JPanel leftFrame;
     private JPanel topFrame;
+    private JButton btnEditar;
     private String[] apt;
 
     public apartForm() {

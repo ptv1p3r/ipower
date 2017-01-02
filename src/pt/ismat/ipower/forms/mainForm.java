@@ -240,8 +240,8 @@ public class mainForm {
                 String[] arrApartment = strApartment.split("#");
 
                 DefaultMutableTreeNode apartmentNode = new DefaultMutableTreeNode(arrApartment[0] + "-" + arrApartment[1]);
-
                 buildingNode.add(apartmentNode);
+
                 ArrayList arrDevicesList = Devices.getDevicesList(arrApartment[0]);
 
                 for (int d = 0; d < arrDevicesList.size(); d++) {

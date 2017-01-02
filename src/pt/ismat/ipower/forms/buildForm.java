@@ -27,6 +27,7 @@ public class buildForm {
     private JTextField txtLocation;
     private JLabel lblLocation;
     private JButton button1;
+    private JButton btnEditar;
 
     public buildForm() {
         DefaultListModel lstBuildingsModel = new DefaultListModel();
