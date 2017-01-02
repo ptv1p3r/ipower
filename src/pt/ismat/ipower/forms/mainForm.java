@@ -2,6 +2,7 @@ package pt.ismat.ipower.forms;
 
 import pt.ismat.ipower.utils.Apartments;
 import pt.ismat.ipower.utils.Buildings;
+import pt.ismat.ipower.utils.Devices;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -238,10 +239,23 @@ public class mainForm {
                 String strApartment = (String) arrApartmentsList.get(b);
                 String[] arrApartment = strApartment.split("#");
 
-                buildingNode.add(new DefaultMutableTreeNode(arrApartment[0] + "-" + arrApartment[1]));
+                DefaultMutableTreeNode apartmentNode = new DefaultMutableTreeNode(arrApartment[0] + "-" + arrApartment[1]);
+
+                buildingNode.add(apartmentNode);
+                ArrayList arrDevicesList = Devices.getDevicesList(arrApartment[0]);
+
+                for (int d = 0; d < arrDevicesList.size(); d++) {
+                    String strDevice = (String) arrDevicesList.get(d);
+                    String[] arrDevice = strDevice.split("#");
+
+                    apartmentNode.add(new DefaultMutableTreeNode(arrDevice[0] + "-" + arrDevice[1]));
+                }
             }
 
+
+
             root.add(buildingNode);
+
         }
 
         treeBuildings.setModel(new DefaultTreeModel(root));

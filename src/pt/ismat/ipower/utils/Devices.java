@@ -10,20 +10,25 @@ import static pt.ismat.ipower.utils.Buildings.strBuildingsXml;
  */
 public class Devices {
 
-    private String strDeviceId;
+    private String strDeviceId, strDeviceType;
     private Integer intConsumo;
 
     /**
      * Construtor para equipamentos
      * @param strDeviceId Identificador de equipamento
      */
-    public Devices(String strDeviceId,Integer intConsumo) {
+    public Devices(String strDeviceId,Integer intConsumo,String strDeviceType) {
         this.strDeviceId = strDeviceId;
         this.intConsumo = intConsumo;
+        this.strDeviceType = strDeviceType;
     }
 
     public String getDeviceId() {
         return strDeviceId;
+    }
+
+    public String getDeviceType() {
+        return strDeviceType;
     }
 
     public Integer getConsumo() {
@@ -44,11 +49,11 @@ public class Devices {
      * Metodo que retorna uma lista de apartamentos existentes de um edificio pelo seu id
      * @return Apartments List
      */
-    public static ArrayList getDevicesList(String apartmentId){
+    public static ArrayList getDevicesList(String deviceId){
         ArrayList arrDevicesList = new ArrayList();
 
         //validateBuildingsFolder();
-        xmlParser.readDevicesXml(strBuildingsXml,arrDevicesList,apartmentId);
+        xmlParser.readDevicesXml(strBuildingsXml,arrDevicesList,deviceId);
 
         return arrDevicesList;
     }

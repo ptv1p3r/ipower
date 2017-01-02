@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<device id="d1001">
+	<reading>
+		<start_date_time>01/12/2016 12:10:25</start_date_time>
+		<end_date_time>01/12/2016 12:14:30</end_date_time>
+		<energy>15</energy>
+	</reading>
+	<reading>
+		<start_date_time>02/12/2016 12:10:25</start_date_time>
+		<end_date_time>02/12/2016 12:14:30</end_date_time>
+		<energy>2</energy>
+	</reading>
+	<reading>
+		<start_date_time>03/12/2016 12:10:25</start_date_time>
+		<end_date_time>03/12/2016 12:14:30</end_date_time>
+		<energy>25</energy>
+	</reading>
+</device>
+

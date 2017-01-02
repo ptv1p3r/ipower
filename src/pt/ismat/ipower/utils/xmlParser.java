@@ -57,6 +57,12 @@ public class xmlParser {
         }
     }
 
+    /**
+     * Metodo que le os apatamentos de um determinado edificio e adiciona entradas a uma apartments list
+     * @param buildingXmlFile Ficheiro xml de edificios
+     * @param arrApartmentsList Lista de apartamentos
+     * @param buildingId Identificador de edificio
+     */
     public static void readApartmentsXml(String buildingXmlFile,ArrayList arrApartmentsList,Integer buildingId){
 
         try {
@@ -112,6 +118,12 @@ public class xmlParser {
         }
     }
 
+    /**
+     * Metodo que carrega os equipamentos de um apatamento e adiciona a uma device list
+     * @param buildingXmlFile Ficheiro xml de edificios
+     * @param arrDevicesList Lista de equipamentos
+     * @param ApartmentId Identificador de apartamento
+     */
     public static void readDevicesXml(String buildingXmlFile,ArrayList arrDevicesList,String ApartmentId){
 
         try {
@@ -341,10 +353,10 @@ public class xmlParser {
     }
 
     /**
-     * Metodo que carrega um edificio baseado nos seu dados do ficheiro xml
+     * Metodo que carrega um eqipamento baseado nos seu dados do ficheiro xml
      * @param buildingXmlFile Ficheiro xml de edificios
-     * @param id Identificador de edificio
-     * @return Edificio
+     * @param id Identificador de equipamento
+     * @return Equipamento
      */
     public static Devices loadDeviceXml(String buildingXmlFile,String id){
 
@@ -370,7 +382,7 @@ public class xmlParser {
                     Element eDevice = (Element) nDevice;
 
                     if (eDevice.hasAttribute("id") && eDevice.getAttribute("id").equals(id)) {
-                        device = new Devices( eDevice.getAttribute("id"),Integer.valueOf(eDevice.getElementsByTagName("euc").item(0).getTextContent()));
+                        device = new Devices( eDevice.getAttribute("id"),Integer.valueOf(eDevice.getElementsByTagName("euc").item(0).getTextContent()),eDevice.getAttribute("category"));
                     }
 
                 }

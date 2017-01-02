@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<buildings>
+	<building id="1000">
+		<name>Pedreira</name>
+		<location>Portimao</location>
+		<apartments id="a1001">
+			<apt>2B</apt>
+			<ec>15</ec>
+			<devices id="d1001" category="Automático">
+				<auto>0</auto>
+				<euc>10</euc>
+			</devices>
+			<devices id="d1002" category="Remoto">
+				<auto>0</auto>
+				<euc>5</euc>
+			</devices>
+		</apartments>
+		<apartments id="a1002">
+			<apt>3B</apt>
+			<ec>0</ec>
+		</apartments>
+		<apartments id="a1003">
+			<apt>4B</apt>
+			<ec>2</ec>
+				<devices id="d1021" category="Automático">
+				<auto>0</auto>
+				<euc>2</euc>
+			</devices>
+		</apartments>
+	</building>
+	<building id="1001">
+		<name>Rosa-Mar</name>
+		<location>Lagos</location>
+		<apartments id="b1001">
+			<apt>2B</apt>
+			<ec>0</ec>
+		</apartments>
+	</building>
+	<building id="1002">
+		<name>gg</name>
+		<location>gg</location>
+	</building>
+</buildings>

@@ -39,33 +39,32 @@ public class equipForm {
     private JList lstLeituras;
     private JButton btnEditar;
     private String[] apt;
+    private DefaultListModel lstDevicesModel = new DefaultListModel();
 
     public equipForm() {
-        DefaultListModel lstDevicesModel = new DefaultListModel();
-        ArrayList arrDevicesList = Devices.getDevicesList("a1001");
-        for (int i = 0; i < arrDevicesList.size(); i++) {
-            String strBuilding = (String) arrDevicesList.get(i);
-            String[] arrBuilding = strBuilding.split("#");
-            lstDevicesModel.addElement(arrBuilding[0] + "-" + arrBuilding[1]);
-        }
-
-        lsDevices.setModel(lstDevicesModel);
-
-
-
         setBuildingsList();
         apt = cbBuildings.getSelectedItem().toString().split("-");
         setApartmentsList(Integer.valueOf(apt[0]));
+        String[] selectedItem = cbApartments.getSelectedItem().toString().split("-");
+        setDeviceList(selectedItem[0]);
+
+
+
 
         /**
-         * Metodo que adiciona item listener a comnbo de escolha de edificios para filtro
+         * Metodo que adiciona item listener a combo de escolha de edificios para filtro
          * Item listener porque e a unica forma de captar o click do rato atraves do value change da combo
          */
         cbBuildings.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
+
                 apt = cbBuildings.getSelectedItem().toString().split("-");
+
+                lstDevicesModel.clear();
+                lsDevices.setModel(lstDevicesModel);
                 setApartmentsList(Integer.valueOf(apt[0]));
+
             }
         });
 
@@ -75,7 +74,9 @@ public class equipForm {
         cbApartments.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
+
                 DefaultListModel lstDevicesModel = new DefaultListModel();
+
                 String[] selectedItem = cbApartments.getSelectedItem().toString().split("-");
 
                 ArrayList arrDevicesList = Devices.getDevicesList(selectedItem[0]);
@@ -87,6 +88,10 @@ public class equipForm {
                 }
 
                 lsDevices.setModel(lstDevicesModel);
+
+                lblIdData.setText("- nenhum -");
+                txtConsumo.setText("0");
+                cbTipo.setSelectedItem("- nenhum -");
 
             }
         });
@@ -113,9 +118,12 @@ public class equipForm {
                     lblIdData.setText(Device.getDeviceId().toString());
                     txtConsumo.setText(String.valueOf(Device.getConsumo()));
 
+                    cbTipo.setSelectedItem(Device.getDeviceType());
+
                 } else {
                     lblIdData.setText("- nenhum -");
-                    txtConsumo.setText("");
+                    txtConsumo.setText("0");
+                    cbTipo.setSelectedItem("- nenhum -");
                 }
 
             }
@@ -134,7 +142,6 @@ public class equipForm {
         }
 
         cbBuildings.setModel(cbBuildingsModel);
-        cbBuildings.setSelectedIndex(0);
     }
 
     // TODO alterar e talvez combinar as funcoes com codigo identico
@@ -147,12 +154,20 @@ public class equipForm {
             String[] arrApartment= strApartment.split("#");
             cbApartmentModel.addElement(arrApartment[0] + "-" + arrApartment[1]);
         }
-
         cbApartments.setModel(cbApartmentModel);
-        cbApartments.setSelectedIndex(0);
+
     }
 
-    private void setDeviceList(){
+    private void setDeviceList(String apartmentId){
+        ArrayList arrDevicesList = Devices.getDevicesList(apartmentId);
+
+        for (int i = 0; i < arrDevicesList.size(); i++) {
+            String strBuilding = (String) arrDevicesList.get(i);
+            String[] arrBuilding = strBuilding.split("#");
+            lstDevicesModel.addElement(arrBuilding[0] + "-" + arrBuilding[1]);
+        }
+
+        lsDevices.setModel(lstDevicesModel);
 
     }
 
