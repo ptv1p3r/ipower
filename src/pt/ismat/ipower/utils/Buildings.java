@@ -79,6 +79,7 @@ public class Buildings {
      */
     private Integer getNewBuildingId(){
         Integer id=1000;
+        int i=0;
 
         try {
             File building = new File(strBuildingsPath + "/" + id);
@@ -90,7 +91,24 @@ public class Buildings {
                 File buildingsFolder = new File(strBuildingsPath);
                 File[] arrBuildings = buildingsFolder.listFiles();
                 Arrays.sort(arrBuildings);
-                id = Integer.valueOf(arrBuildings.length -1)+id; // cria novo id para edificio
+
+                //Passa o nome dos folders para um array de strings
+                String[] idList = new String[arrBuildings.length];
+
+
+                for (i = 0 ; i < arrBuildings.length ; i++) {
+                    idList[i]=arrBuildings[i].getName();
+                }
+
+                try {
+                    for (i=0 ; i<arrBuildings.length ; i++) {
+                        if (id == Integer.parseInt(idList[i])) {
+                            id++;
+                        }
+                    }
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    id=Integer.parseInt(idList[i])+1;
+                }
             }
 
         } catch (Exception ex) {
