@@ -57,6 +57,61 @@ public class xmlParser {
         }
     }
 
+    public static void readApartmentsXml(String buildingXmlFile,ArrayList arrApartmentsList,Integer buildingId){
+
+        try {
+            File fXmlFile = new File(buildingXmlFile);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(fXmlFile);
+
+            //http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+            doc.getDocumentElement().normalize();
+
+            NodeList nlBuildings = doc.getElementsByTagName("building");
+
+            for (int i = 0; i < nlBuildings.getLength(); i++) {
+                Node nBuilding = nlBuildings.item(i);
+
+                if (nBuilding.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eBuilding = (Element) nBuilding;
+
+                    if (eBuilding.hasAttribute("id") && eBuilding.getAttribute("id").equals(String.valueOf(buildingId))) {
+                     /*   NodeList nlApartments = doc.getElementsByTagName("apartments");
+
+                        for (int a = 0; a < nlApartments.getLength(); a++) {
+                            Node nApartment = nlApartments.item(a);
+
+                            if (nApartment.getNodeType() == Node.ELEMENT_NODE) {
+                                Element eApartment = (Element) nApartment;
+                                arrApartmentsList.add(eApartment.getAttribute("id") + "#" + eApartment.getElementsByTagName("apt").item(0).getTextContent());
+                            }
+                        }*/
+                     NodeList childList = nlBuildings.item(i).getChildNodes();
+                        for (int j = 0; j < childList.getLength(); j++) {
+                            Node childNode = childList.item(j);
+
+                            if ("apartments".equals(childNode.getNodeName())) {
+
+                                if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+                                    Element eApartment = (Element) childNode;
+
+                                    arrApartmentsList.add(eApartment.getAttribute("id") + "#" + eApartment.getElementsByTagName("apt").item(0).getTextContent());
+                                }
+                                //System.out.println(childList.item(j).getTextContent().trim());
+                            }
+
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            // TODO: 30-12-2016 tratar das excepcoes
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Metodo que cria o ficheiro xml de edificios base
      * @param buildingXmlFile Ficheiro xml de edificios
@@ -227,7 +282,6 @@ public class xmlParser {
                     Element eBuilding = (Element) nBuilding;
 
                     if (eBuilding.hasAttribute("id") && eBuilding.getAttribute("id").equals(String.valueOf(id))) {
-                        String tt = eBuilding.getElementsByTagName("location").item(0).getTextContent();
                         building = new Buildings( eBuilding.getElementsByTagName("name").item(0).getTextContent(), eBuilding.getElementsByTagName("location").item(0).getTextContent(),Integer.valueOf(eBuilding.getAttribute("id")));
                     }
 

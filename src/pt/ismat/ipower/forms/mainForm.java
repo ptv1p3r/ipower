@@ -23,6 +23,7 @@ public class mainForm {
     public JTree treeBuildings;
     private JPanel leftFrame;
     private JPanel rightFrame;
+    private JPanel bottomFrame;
 
     public mainForm() {
         createTree();
@@ -215,6 +216,8 @@ public class mainForm {
 
         frame.setJMenuBar(menubar);
     }
+
+
 
     public void createTree(){
 
