@@ -112,6 +112,49 @@ public class xmlParser {
         }
     }
 
+    public static void readDevicesXml(String buildingXmlFile,ArrayList arrDevicesList,String ApartmentId){
+
+        try {
+            File fXmlFile = new File(buildingXmlFile);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(fXmlFile);
+
+            //http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+            doc.getDocumentElement().normalize();
+
+            NodeList nlApartments = doc.getElementsByTagName("apartments"); // retorna no dos apartamentos
+
+            for (int i = 0; i < nlApartments.getLength(); i++) { // percorre apartamentos
+                Node nApartment= nlApartments.item(i);
+
+                if (nApartment.getNodeType() == Node.ELEMENT_NODE) { // tipo de no
+                    Element eApartment = (Element) nApartment;
+
+                    if (eApartment.hasAttribute("id") && eApartment.getAttribute("id").equals(ApartmentId.toString())) { // valida apartamento correcto
+
+                        NodeList childList = nlApartments.item(i).getChildNodes();
+                        for (int j = 0; j < childList.getLength(); j++) {
+                            Node childNode = childList.item(j);
+
+                            if ("devices".equals(childNode.getNodeName())) {
+                                Element eDevice = (Element) childNode;
+                                arrDevicesList.add(eDevice.getAttribute("id") + "#" + eDevice.getAttribute("category"));
+                                //System.out.println(eDevice.getAttribute("id"));
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+        } catch (Exception e) {
+            // TODO: 30-12-2016 tratar das excepcoes
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Metodo que cria o ficheiro xml de edificios base
      * @param buildingXmlFile Ficheiro xml de edificios
@@ -295,6 +338,51 @@ public class xmlParser {
         }
 
         return building;
+    }
+
+    /**
+     * Metodo que carrega um edificio baseado nos seu dados do ficheiro xml
+     * @param buildingXmlFile Ficheiro xml de edificios
+     * @param id Identificador de edificio
+     * @return Edificio
+     */
+    public static Devices loadDeviceXml(String buildingXmlFile,String id){
+
+        Devices device = null;
+
+        try {
+
+            File fXmlFile = new File(buildingXmlFile);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(fXmlFile);
+
+            //http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+            doc.getDocumentElement().normalize();
+
+            NodeList nlDevicesList = doc.getElementsByTagName("devices");
+
+            if (nlDevicesList != null && nlDevicesList.getLength() > 0) {
+
+                for (int i = 0; i < nlDevicesList.getLength(); i++) {
+
+                    Node nDevice= nlDevicesList.item(i);
+                    Element eDevice = (Element) nDevice;
+
+                    if (eDevice.hasAttribute("id") && eDevice.getAttribute("id").equals(id)) {
+                        device = new Devices( eDevice.getAttribute("id"),Integer.valueOf(eDevice.getElementsByTagName("euc").item(0).getTextContent()));
+                    }
+
+                }
+
+            }
+
+        } catch (Exception e) {
+            // TODO: 30-12-2016 tratar das excepcoes
+            e.printStackTrace();
+        }
+
+        return device;
     }
 
 }

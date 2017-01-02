@@ -1,5 +1,6 @@
 package pt.ismat.ipower.forms;
 
+import pt.ismat.ipower.utils.Apartments;
 import pt.ismat.ipower.utils.Buildings;
 
 import javax.swing.*;
@@ -218,7 +219,6 @@ public class mainForm {
     }
 
 
-
     public void createTree(){
 
         ArrayList arrBuildingsList = Buildings.getBuildingsList();
@@ -231,7 +231,16 @@ public class mainForm {
             String[] arrBuilding = strBuilding.split("#");
 
             DefaultMutableTreeNode buildingNode = new DefaultMutableTreeNode(arrBuilding[0] + "-" + arrBuilding[1]);
-            buildingNode.add(new DefaultMutableTreeNode("Apartamento x"));
+
+            ArrayList arrApartmentsList = Apartments.getApartmentList(Integer.valueOf(arrBuilding[0]));
+
+            for (int b = 0; b < arrApartmentsList.size(); b++) {
+                String strApartment = (String) arrApartmentsList.get(b);
+                String[] arrApartment = strApartment.split("#");
+
+                buildingNode.add(new DefaultMutableTreeNode(arrApartment[0] + "-" + arrApartment[1]));
+            }
+
             root.add(buildingNode);
         }
 
