@@ -38,7 +38,11 @@ public class mainForm {
     private JLabel lblActiveDevices;
     private JLabel lblActiveDevicesTotal;
     private JLabel lblSimStatus;
-    private Counter cApartamentsCounter;
+    private JLabel lblEquipamentosTotalKw;
+    private   JLabel lblTotalKw;
+    private JLabel lblLeituras;
+    private JLabel lblLeiturasTotal;
+    private Counter cDevicesCounter;
 
     public mainForm() {
         createTree();
@@ -46,17 +50,16 @@ public class mainForm {
         pbEquipamentos.setMaximum(Devices.getDevices());
         pbEquipamentos.setValue(Devices.getActiveDevices());
 
-
-        btnLigar.addActionListener(new ActionListener() {
+         btnLigar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 // valida estado da thread
-                if (!cApartamentsCounter.isSuspended()){
-                    cApartamentsCounter = new Counter( "Contadores");
-                    cApartamentsCounter.start(); // inicia uma nova
+                if (!cDevicesCounter.isSuspended()){
+                    cDevicesCounter = new Counter( "Contador Equipamentos Activos");
+                    cDevicesCounter.start(); // inicia uma nova
                 } else {
-                    cApartamentsCounter.resume(); // faz o resume da thread
+                    cDevicesCounter.resume(); // faz o resume da thread
                 }
 
                 lblSimStatus.setText("activo");
@@ -70,7 +73,7 @@ public class mainForm {
         btnDesligar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cApartamentsCounter.suspend(); // suspende a thread
+                cDevicesCounter.suspend(); // suspende a thread
                 lblSimStatus.setText("inactivo");
                 btnLigar.setEnabled(true);
                 btnDesligar.setEnabled(false);

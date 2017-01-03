@@ -118,4 +118,17 @@ public class Devices {
 
         return arrDevicesList.size();
     }
+
+    /**
+     * Metodo que retorna um valor total de equipamentos activos existentes em todos os apartamentos
+     * @return Integer Devices Count
+     */
+    public static Integer getDeviceReading(String strDeviceId){
+        ArrayList arrDevicesList = new ArrayList();
+
+        //validateBuildingsFolder();
+        xmlParser.readDevicesTotalXml(strBuildingsXml,arrDevicesList);
+
+        return arrDevicesList.size();
+    }
 }
