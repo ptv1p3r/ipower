@@ -26,7 +26,6 @@ public class apartForm {
     private JLabel lblIdData;
     private JTextField txtName;
     private JLabel lblName;
-    private JButton button1;
     private JComboBox cbBuildings;
     private JLabel lblBuilding;
     private JPanel leftFrame;
@@ -40,18 +39,33 @@ public class apartForm {
 //        apt = cbBuildings.getSelectedItem().toString().split("-");
 //        setApartmentList(Integer.valueOf(apt[0]));
 
+        DefaultListModel lstBuildigModel = new DefaultListModel();
+
+        ArrayList arrBuildingsList = Buildings.getBuildingsList();
+
+        for (int i = 0; i < arrBuildingsList.size(); i++) {
+            String strBuilding = (String) arrBuildingsList.get(i);
+            String[] arrBuilding = strBuilding.split("#");
+            Arrays.sort(arrBuilding);
+            lstBuildigModel.addElement(arrBuilding[0]);
+            cbBuildings.addItem(arrBuilding[0]);
+        }
+
+        //TODO XML
         DefaultListModel lstApartmentModel = new DefaultListModel();
-/*
-        ArrayList arrApartmentsList = Apartments.getApartmentList(cbBuildings.setSelectedIndex(0));
+
+        ArrayList arrApartmentsList = Apartments.getApartmentList(cbBuildings.getSelectedIndex());
 
         for (int i = 0; i < arrApartmentsList.size(); i++) {
-            String strBuilding = (String) arrApartmentsList.get(i);
-            String[] arrBuilding = strBuilding.split("#");
-            lstApartmentModel.addElement(arrBuilding[0]);
+            String strApartment = (String) arrApartmentsList.get(i);
+            String[] arrApartment = strApartment.split("#");
+            Arrays.sort(arrApartment);
+            lstApartmentModel.addElement(arrApartment[0]);
         }
 
         lstApartments.setModel(lstApartmentModel);
-/*
+
+
 
         /**
          * Action Listener do botao de adicionar apartamento
@@ -78,21 +92,58 @@ public class apartForm {
                 }
             }
         });
+
+        /**
+         * Action Listener do botao remover edificio
+         */
+        btnRemover.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if (!lstApartments.isSelectionEmpty()){
+                    String selectedBuilding = lstApartments.getSelectedValue().toString();
+
+                    int resultado = JOptionPane.showConfirmDialog(
+                            mainFrame,
+                            "Deseja mesmo remover este apartamento assim como todos os seus dados?",
+                            "iPower - Remoção de Apartamento",
+                            JOptionPane.YES_NO_OPTION);
+
+                    if (resultado==0){
+                        String[] arrBuilding = selectedBuilding.split("-");
+
+                        Buildings.removeBuilding(Integer.valueOf(arrBuilding[0].trim())); // remove pasta e entrada do xml buildings
+                        lstApartmentModel.remove(lstApartments.getSelectedIndex()); // remove do model da jlist
+                        lstApartments.setModel(lstApartmentModel); // actualiza jlist com model
+
+                        lblIdData.setText("- nenhum -");
+                        txtName.setText("");
+
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(mainFrame,
+                            "Nenhum edificio seleccionado.",
+                            "iPower - Remoção de Edificio",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+
+            }
+        });
     }
 
-//    private void setApartmentList(Integer buildingId){
-//        DefaultListModel lstApartmentsModel = new DefaultListModel();
-//
-//        ArrayList arrApartmentsList = Apartments.getApartmentList(buildingId);
-//
-//        for (int i = 0; i < arrApartmentsList.size(); i++) {
-//            String strBuilding = (String) arrApartmentsList.get(i);
-//            String[] arrBuilding = strBuilding.split("#");
-//            lstApartmentsModel.addElement(arrBuilding[0] + "-" + arrBuilding[1]);
-//        }
-//
-//        lstApartments.setModel(lstApartmentsModel);
-//    }
+    private void setApartmentList(Integer buildingId){
+        DefaultListModel lstApartmentsModel = new DefaultListModel();
+
+        ArrayList arrApartmentsList = Apartments.getApartmentList(buildingId);
+
+        for (int i = 0; i < arrApartmentsList.size(); i++) {
+            String strBuilding = (String) arrApartmentsList.get(i);
+            String[] arrBuilding = strBuilding.split("#");
+            lstApartmentsModel.addElement(arrBuilding[0] + "-" + arrBuilding[1]);
+        }
+
+        lstApartments.setModel(lstApartmentsModel);
+    }
 
     /**
      * Metodo que constroi a combo box com uma lista de edificios existentes

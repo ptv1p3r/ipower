@@ -119,14 +119,6 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="1fda9" class="javax.swing.JButton" binding="button1" default-binding="true">
-                <constraints>
-                  <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Button"/>
-                </properties>
-              </component>
               <vspacer id="44f2d">
                 <constraints>
                   <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>

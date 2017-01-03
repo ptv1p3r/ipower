@@ -26,7 +26,6 @@ public class buildForm {
     private JLabel lblName;
     private JTextField txtLocation;
     private JLabel lblLocation;
-    private JButton button1;
     private JButton btnEditar;
 
     public buildForm() {

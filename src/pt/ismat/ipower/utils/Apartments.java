@@ -12,20 +12,21 @@ import java.util.Arrays;
 public class Apartments extends Buildings {
 
     final static String strApartmentPath = System.getProperty("user.dir") + "/buildings" + "/";
+    //final static String strApartmentXml = ;
 
-    private Integer intApartmentId;
+    private Integer strApartmentId;
     private String strApartmentName, apartmentPath;
 
     public Apartments(Integer id) {
         super(id);
 
-        this.intApartmentId=getNewApartmentId();
+        this.strApartmentId=getNewApartmentId();
         this.strApartmentName=getApartmentName();
-        this.apartmentPath=strBuildingsPath + "/" + getBuildingId()+ "/" + this.intApartmentId;
+        this.apartmentPath=strBuildingsPath + "/" + getBuildingId()+ "/" + this.strApartmentId;
     }
 
     public Integer getApartmentId() {
-        return intApartmentId;
+        return strApartmentId;
     }
 
     public String getApartmentName() {
@@ -96,8 +97,8 @@ public class Apartments extends Buildings {
     }
 
     /**
-     * Metodo que efetua a gravacao do novo edificio criando a pasta respectiva assim como a entrada no ficheiro de edificios xml
-     * @param Apartment Edificio a ser gravado
+     * Metodo que efetua a gravacao do novo apartamento criando a pasta respectiva
+     * @param Apartment Apartamento a ser gravado
      */
     public static void saveApartment(Apartments Apartment){
         try {
@@ -106,29 +107,29 @@ public class Apartments extends Buildings {
             if (!newApartment.exists()){ // valida se o edificio existe
                 newApartment.mkdir();
             }
-            //xmlParser.updateBuildingXml(strBuildingsXml,Apartment);
+            xmlParser.updateBuildingXml(strBuildingsXml,Apartment);
         } catch (Exception ex) {
             //TODO : validação de erros
             ex.printStackTrace();
         }
     }
 
-//    /**
-//     * Metodo que efetua a remoção do edificio do ficheiro buildings xml assim como a sua pasta associada
-//     * @param id Identificador de edificio
-//     */
-//    public static void removeApartment(Integer id){
-//
-//        try {
-//            File building = new File(apa + "/" + bu + "/" + id);
-//
-//            if (building.exists()){ // valida se o edificio existe
-//                building.delete();
-//            }
-//            xmlParser.removeBuildingXml(strBuildingsXml,id);
-//        } catch (Exception ex) {
-//            //TODO : validação de erros
-//            ex.printStackTrace();
-//        }
-//    }
+    /**
+     * Metodo que efetua a remoção do edificio do ficheiro apartamento xml assim como a sua pasta associada
+     * @param id Identificador de apartamento
+     */
+    public static void removeApartment(Integer id){
+
+        try {
+            File building = new File(strApartmentPath + "/" + id);
+
+            if (building.exists()){ // valida se o edificio existe
+                building.delete();
+            }
+            xmlParser.removeBuildingXml(strBuildingsXml,id);
+        } catch (Exception ex) {
+            //TODO : validação de erros
+            ex.printStackTrace();
+        }
+    }
 }
