@@ -71,7 +71,7 @@ public class Apartments extends Buildings {
      * @return Integer Novo id gerado
      */
     private Integer getNewApartmentId(){
-        Integer id=100;
+        Integer id=1000;
         int i;
 
         try {
