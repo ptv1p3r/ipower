@@ -3,6 +3,7 @@ package pt.ismat.ipower.utils;
 
 import pt.ismat.ipower.forms.mainForm;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
@@ -17,7 +18,7 @@ public class Counter implements Runnable {
     private String threadName;
     private static boolean suspended = false;
     private Date dataInicial, dataFinal;
-    private Integer intTotalKw;
+    private Double dblTotalKwh;
     private Integer intTotalLeituras;
 
     public Counter(String name)
@@ -25,7 +26,7 @@ public class Counter implements Runnable {
         this.threadName = name;
         this.dataInicial = new Date();
         this.dataFinal = this.dataInicial;
-        this.intTotalKw = 0;
+        this.dblTotalKwh = 0.0D;
         this.intTotalLeituras = 0;
 
         System.out.println("Creating " +  threadName );
@@ -45,10 +46,10 @@ public class Counter implements Runnable {
 
     /**
      * Metodo que retorna o total de kw
-     * @return Integer Total de kw
+     * @return Double Total de kw
      */
-    public Integer getTotalKw() {
-        return intTotalKw;
+    public Double getTotalKwh() {
+        return dblTotalKwh;
     }
 
     /**
@@ -78,12 +79,9 @@ public class Counter implements Runnable {
 
             DeviceReading newReading = new DeviceReading();
             Timer timer = new Timer(true); //timer como daemon thread
-            timer.scheduleAtFixedRate(newReading, 0, 60*1000);
+            timer.scheduleAtFixedRate(newReading, 0, 60*1000); // executa leitura minuto a minuto
 
-            while (!suspended){
-
-                //System.out.println("Reading started");
-                //System.out.println(intTotalKw);
+            while (!suspended){ // enquanto nao for suspensa
 
                 synchronized(this) {
                     while(suspended) {
@@ -141,16 +139,27 @@ public class Counter implements Runnable {
 
         private void completeReading() {
             try {
+                intTotalLeituras++;
+
                 ArrayList arrActiveDevices = Devices.getActiveDevicesList();
+                Double dblTempoLeitura = Math.round((Double.valueOf(intTotalLeituras)/60)*100D)/100D; // nr leituras (1 minuto ) / 60 minutos
+                Double dblTotalKw = 0.0D;
+
 
                 for (int i=0; i < arrActiveDevices.size(); i++ ){
                     String[] arrDevice = arrActiveDevices.get(i).toString().trim().split("#");
 
-                    intTotalKw = intTotalKw + Integer.valueOf(arrDevice[2]);
+                    // c = w / 1000 * h = kwh
+
+                    dblTotalKw = dblTotalKw + Double.valueOf(arrDevice[2])/1000; // conversao w -> kW
+
                 }
 
-                intTotalLeituras++;
-                mainForm.TotalKw.setText(String.valueOf(intTotalKw) + " Kw");
+                dblTotalKwh = Math.round((dblTotalKw * dblTempoLeitura) * 100D)/100D;
+
+
+                //DecimalFormat df=new DecimalFormat("0.000");
+                mainForm.TotalKw.setText(String.valueOf(dblTotalKwh) + " kWh");
                 mainForm.LeiturasTotal.setText(String.valueOf(intTotalLeituras));
             } catch (Exception e) {
                 e.printStackTrace();
