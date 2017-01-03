@@ -168,6 +168,52 @@ public class xmlParser {
     }
 
     /**
+     * Metodo que carrega os equipamentos activos de todos os apartamentos e adiciona a uma device list
+     * @param buildingXmlFile Ficheiro xml de edificios
+     * @param arrDevicesList Lista de equipamentos
+     */
+    public static void readActiveDevicesXml(String buildingXmlFile,ArrayList arrDevicesList){
+
+        try {
+            File fXmlFile = new File(buildingXmlFile);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(fXmlFile);
+
+            //http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+            doc.getDocumentElement().normalize();
+
+            NodeList nlApartments = doc.getElementsByTagName("apartments"); // retorna no dos apartamentos
+
+            for (int i = 0; i < nlApartments.getLength(); i++) { // percorre apartamentos
+                Node nApartment= nlApartments.item(i);
+
+                if (nApartment.getNodeType() == Node.ELEMENT_NODE) { // tipo de no
+
+                        NodeList childList = nlApartments.item(i).getChildNodes();
+                        for (int j = 0; j < childList.getLength(); j++) {
+                            Node childNode = childList.item(j);
+
+                            if ("devices".equals(childNode.getNodeName())) {
+                                Element eDevice = (Element) childNode;
+
+                                if (Boolean.valueOf(eDevice.getElementsByTagName("enable").item(0).getTextContent())) { // equipamentos activos
+                                    arrDevicesList.add(eDevice.getAttribute("id") + "#" + eDevice.getAttribute("category") + "#" + eDevice.getElementsByTagName("euc").item(0).getTextContent());
+                                }
+                            }
+
+                        }
+                    }
+
+            }
+
+        } catch (Exception e) {
+            // TODO: 30-12-2016 tratar das excepcoes
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Metodo que cria o ficheiro xml de edificios base
      * @param buildingXmlFile Ficheiro xml de edificios
      */

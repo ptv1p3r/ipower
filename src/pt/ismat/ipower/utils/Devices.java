@@ -56,14 +56,27 @@ public class Devices {
     }
 
     /**
-     * Metodo que retorna uma lista de apartamentos existentes de um edificio pelo seu id
-     * @return Apartments List
+     * Metodo que retorna uma lista de equipamentos existentes de um apartamento pelo seu id
+     * @return Devices List
      */
     public static ArrayList getDevicesList(String deviceId){
         ArrayList arrDevicesList = new ArrayList();
 
         //validateBuildingsFolder();
         xmlParser.readDevicesXml(strBuildingsXml,arrDevicesList,deviceId);
+
+        return arrDevicesList;
+    }
+
+    /**
+     * Metodo que retorna uma lista de equipamentos activos existentes de todos os apartamentos
+     * @return Devices List
+     */
+    public static ArrayList getActiveDevicesList(){
+        ArrayList arrDevicesList = new ArrayList();
+
+        //validateBuildingsFolder();
+        xmlParser.readActiveDevicesXml(strBuildingsXml,arrDevicesList);
 
         return arrDevicesList;
     }

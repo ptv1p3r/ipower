@@ -1,6 +1,7 @@
 package pt.ismat.ipower.utils;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -56,8 +57,13 @@ public class Counter implements Runnable {
 
                 for(int i = 100; i > 0; i--) {
                     System.out.println("Thread: " + threadName + ", " + i);
+
+                    ArrayList arrActiveDevices = Devices.getActiveDevicesList();
+                    System.out.println(arrActiveDevices.size());
+
                     // Let the thread sleep for a while.
                     Thread.sleep(300);
+
                     synchronized(this) {
                         while(suspended) {
                             wait();
