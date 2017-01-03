@@ -39,18 +39,24 @@ public class mainForm {
     private JLabel lblActiveDevicesTotal;
     private JLabel lblSimStatus;
     private JLabel lblEquipamentosTotalKw;
-    private   JLabel lblTotalKw;
+    private JLabel lblTotalKw;
     private JLabel lblLeituras;
     private JLabel lblLeiturasTotal;
-    private Counter cDevicesCounter;
+    public Counter cDevicesCounter;
+    public static JLabel LeiturasTotal;
+    public static JLabel TotalKw;
 
     public mainForm() {
         createTree();
+        LeiturasTotal = this.lblLeiturasTotal;
+        TotalKw = this.lblTotalKw;
+
         lblActiveDevicesTotal.setText(Devices.getActiveDevices().toString() + "/" + Devices.getDevices().toString());
         pbEquipamentos.setMaximum(Devices.getDevices());
         pbEquipamentos.setValue(Devices.getActiveDevices());
 
-         btnLigar.addActionListener(new ActionListener() {
+
+        btnLigar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -61,6 +67,7 @@ public class mainForm {
                 } else {
                     cDevicesCounter.resume(); // faz o resume da thread
                 }
+
 
                 lblSimStatus.setText("activo");
                 btnLigar.setEnabled(false);
@@ -82,6 +89,8 @@ public class mainForm {
                 System.out.println("Contador suspenso");
             }
         });
+
+
     }
 
     /**
@@ -271,7 +280,6 @@ public class mainForm {
 
         frame.setJMenuBar(menubar);
     }
-
 
     public void createTree(){
 

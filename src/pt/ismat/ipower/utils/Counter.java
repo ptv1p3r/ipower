@@ -3,7 +3,6 @@ package pt.ismat.ipower.utils;
 
 import pt.ismat.ipower.forms.mainForm;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
@@ -19,6 +18,7 @@ public class Counter implements Runnable {
     private static boolean suspended = false;
     private Date dataInicial, dataFinal;
     private Integer intTotalKw;
+    private Integer intTotalLeituras;
 
     public Counter(String name)
     {
@@ -26,8 +26,13 @@ public class Counter implements Runnable {
         this.dataInicial = new Date();
         this.dataFinal = this.dataInicial;
         this.intTotalKw = 0;
+        this.intTotalLeituras = 0;
 
         System.out.println("Creating " +  threadName );
+    }
+
+    public Integer getTotalLeituras() {
+        return intTotalLeituras;
     }
 
     /**
@@ -136,15 +141,17 @@ public class Counter implements Runnable {
 
         private void completeReading() {
             try {
-                //assuming it takes 20 secs to complete the task
-                //Thread.sleep(20000);
                 ArrayList arrActiveDevices = Devices.getActiveDevicesList();
 
                 for (int i=0; i < arrActiveDevices.size(); i++ ){
                     String[] arrDevice = arrActiveDevices.get(i).toString().trim().split("#");
-                    //System.out.println(arrActiveDevices.get(i));
+
                     intTotalKw = intTotalKw + Integer.valueOf(arrDevice[2]);
                 }
+
+                intTotalLeituras++;
+                mainForm.TotalKw.setText(String.valueOf(intTotalKw) + " Kw");
+                mainForm.LeiturasTotal.setText(String.valueOf(intTotalLeituras));
             } catch (Exception e) {
                 e.printStackTrace();
             }
