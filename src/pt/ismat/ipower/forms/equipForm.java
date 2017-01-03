@@ -38,6 +38,7 @@ public class equipForm {
     private JLabel lblLeituras;
     private JList lstLeituras;
     private JButton btnEditar;
+    private JCheckBox ckbEnable;
     private String[] apt;
     private DefaultListModel lstDevicesModel = new DefaultListModel();
 
@@ -117,13 +118,14 @@ public class equipForm {
 
                     lblIdData.setText(Device.getDeviceId().toString());
                     txtConsumo.setText(String.valueOf(Device.getConsumo()));
-
                     cbTipo.setSelectedItem(Device.getDeviceType());
+                    ckbEnable.setSelected(Device.isEnabled());
 
                 } else {
                     lblIdData.setText("- nenhum -");
                     txtConsumo.setText("0");
                     cbTipo.setSelectedItem("- nenhum -");
+                    ckbEnable.setSelected(false);
                 }
 
             }

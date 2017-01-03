@@ -129,14 +129,6 @@
                   <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                 </constraints>
               </vspacer>
-              <component id="98952" class="javax.swing.JProgressBar" binding="progressBar2" default-binding="true">
-                <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <stringPainted value="false"/>
-                </properties>
-              </component>
             </children>
           </grid>
           <component id="ce85" class="javax.swing.JButton" binding="btnDesligar">

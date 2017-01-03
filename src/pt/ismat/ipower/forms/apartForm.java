@@ -41,7 +41,7 @@ public class apartForm {
 //        setApartmentList(Integer.valueOf(apt[0]));
 
         DefaultListModel lstApartmentModel = new DefaultListModel();
-
+/*
         ArrayList arrApartmentsList = Apartments.getApartmentList(cbBuildings.setSelectedIndex(0));
 
         for (int i = 0; i < arrApartmentsList.size(); i++) {
@@ -51,7 +51,7 @@ public class apartForm {
         }
 
         lstApartments.setModel(lstApartmentModel);
-
+/*
 
         /**
          * Action Listener do botao de adicionar apartamento

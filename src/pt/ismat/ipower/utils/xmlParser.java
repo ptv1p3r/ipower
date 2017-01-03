@@ -382,7 +382,7 @@ public class xmlParser {
                     Element eDevice = (Element) nDevice;
 
                     if (eDevice.hasAttribute("id") && eDevice.getAttribute("id").equals(id)) {
-                        device = new Devices( eDevice.getAttribute("id"),Integer.valueOf(eDevice.getElementsByTagName("euc").item(0).getTextContent()),eDevice.getAttribute("category"));
+                        device = new Devices( eDevice.getAttribute("id"),Integer.valueOf(eDevice.getElementsByTagName("euc").item(0).getTextContent()),eDevice.getAttribute("category"),Boolean.valueOf(eDevice.getElementsByTagName("enable").item(0).getTextContent()));
                     }
 
                 }

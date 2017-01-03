@@ -12,15 +12,17 @@ public class Devices {
 
     private String strDeviceId, strDeviceType;
     private Integer intConsumo;
+    private Boolean bolEnabled = false ;
 
     /**
      * Construtor para equipamentos
      * @param strDeviceId Identificador de equipamento
      */
-    public Devices(String strDeviceId,Integer intConsumo,String strDeviceType) {
+    public Devices(String strDeviceId,Integer intConsumo,String strDeviceType,Boolean bolEnabled) {
         this.strDeviceId = strDeviceId;
         this.intConsumo = intConsumo;
         this.strDeviceType = strDeviceType;
+        this.bolEnabled = bolEnabled;
     }
 
     public String getDeviceId() {
@@ -33,6 +35,14 @@ public class Devices {
 
     public Integer getConsumo() {
         return intConsumo;
+    }
+
+    /**
+     * Metodo que retorna o estado do equipamento
+     * @return Boolean activo/inactivo
+     */
+    public Boolean isEnabled() {
+        return bolEnabled;
     }
 
     /**

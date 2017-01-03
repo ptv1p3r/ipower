@@ -34,7 +34,6 @@ public class mainForm {
     private JButton btnLigar;
     private JButton btnDesligar;
     private JProgressBar progressBar1;
-    private JProgressBar progressBar2;
     private JProgressBar pbSimulatorStatus;
     private Counter cApartamentsCounter;
 
