@@ -42,14 +42,18 @@ public class mainForm {
     private JLabel lblTotalKw;
     private JLabel lblLeituras;
     private JLabel lblLeiturasTotal;
+    private JLabel lblCargarTotal;
+    private JLabel lblCargaTotalData;
     public Counter cDevicesCounter;
     public static JLabel LeiturasTotal;
     public static JLabel TotalKw;
+    public static JLabel CargaTotal;
 
     public mainForm() {
         createTree();
         LeiturasTotal = this.lblLeiturasTotal;
         TotalKw = this.lblTotalKw;
+        CargaTotal = this.lblCargaTotalData;
 
         lblActiveDevicesTotal.setText(Devices.getActiveDevices().toString() + "/" + Devices.getDevices().toString());
         pbEquipamentos.setMaximum(Devices.getDevices());
@@ -62,7 +66,7 @@ public class mainForm {
 
                 // valida estado da thread
                 if (!cDevicesCounter.isSuspended()){
-                    cDevicesCounter = new Counter( "Contador Equipamentos Activos");
+                    cDevicesCounter = new Counter("Contador Equipamentos Activos");
                     cDevicesCounter.start(); // inicia uma nova
                 } else {
                     cDevicesCounter.resume(); // faz o resume da thread

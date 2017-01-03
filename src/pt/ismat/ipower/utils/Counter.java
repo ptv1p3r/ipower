@@ -140,25 +140,24 @@ public class Counter implements Runnable {
         private void completeReading() {
             try {
                 intTotalLeituras++;
-
-                ArrayList arrActiveDevices = Devices.getActiveDevicesList();
-                Double dblTempoLeitura = Math.round((Double.valueOf(intTotalLeituras)/60)*100D)/100D; // nr leituras (1 minuto ) / 60 minutos
                 Double dblTotalKw = 0.0D;
 
+                ArrayList arrActiveDevices = Devices.getActiveDevicesList();
 
                 for (int i=0; i < arrActiveDevices.size(); i++ ){
                     String[] arrDevice = arrActiveDevices.get(i).toString().trim().split("#");
-
-                    // c = w / 1000 * h = kwh
 
                     dblTotalKw = dblTotalKw + Double.valueOf(arrDevice[2])/1000; // conversao w -> kW
 
                 }
 
+                // c = w / 1000 * h = kwh
+                Double dblTempoLeitura = Math.round((Double.valueOf(intTotalLeituras)/60)*100D)/100D; // nr leituras (1 minuto ) / 60 minutos
                 dblTotalKwh = Math.round((dblTotalKw * dblTempoLeitura) * 100D)/100D;
 
 
                 //DecimalFormat df=new DecimalFormat("0.000");
+                mainForm.CargaTotal.setText(String.valueOf(dblTotalKw) + " kW");
                 mainForm.TotalKw.setText(String.valueOf(dblTotalKwh) + " kWh");
                 mainForm.LeiturasTotal.setText(String.valueOf(intTotalLeituras));
             } catch (Exception e) {
