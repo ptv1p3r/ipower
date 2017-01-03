@@ -35,10 +35,6 @@ public class apartForm {
 
     public apartForm() {
 
-//        setBuildingsList();
-//        apt = cbBuildings.getSelectedItem().toString().split("-");
-//        setApartmentList(Integer.valueOf(apt[0]));
-
         DefaultListModel lstBuildigModel = new DefaultListModel();
 
         ArrayList arrBuildingsList = Buildings.getBuildingsList();
@@ -74,11 +70,12 @@ public class apartForm {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if(txtName.getText().length()!=0 ){
-                    Apartments Apartment = new Apartments(Integer.parseInt(txtName.getText().trim()));
+                if(txtName.getText().length()!=0){
+                    Apartments Apartment = new Apartments(cbBuildings.getSelectedIndex(),txtName.getText().trim());
 
-                    lstApartmentModel.addElement(Apartment.getBuildingId() + " - " + Apartment.getName());
-                    Buildings.saveBuilding(Apartment);
+                    Apartment.setBuildingId(cbBuildings.getSelectedIndex());
+                    lstApartmentModel.addElement(Apartment.getApartmentId() + " - " + Apartment.getApartmentName());
+                    Apartment.saveApartment(Apartment);
                     lstApartments.setModel(lstApartmentModel);
 
                     lblIdData.setText("- nenhum -");

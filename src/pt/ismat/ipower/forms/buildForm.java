@@ -71,7 +71,7 @@ public class buildForm {
         });
 
         /**
-         * Action Listener do botao remover edificio
+         * Action Listener do botao remover apartamento
          */
         btnRemover.addActionListener(new ActionListener() {
             @Override

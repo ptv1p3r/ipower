@@ -11,22 +11,38 @@ import java.util.Arrays;
  */
 public class Apartments extends Buildings {
 
-    final static String strApartmentPath = System.getProperty("user.dir") + "/buildings" + "/";
+    final static String strApartmentPath = System.getProperty("user.dir") + "/buildings";
     //final static String strApartmentXml = ;
 
-    private Integer strApartmentId;
+    private Integer intApartmentId, buildingId;
     private String strApartmentName, apartmentPath;
 
-    public Apartments(Integer id) {
+    public Apartments(Integer id, String strApartmentName) {
         super(id);
+        setBuildingId(id);
+        setIntApartmentId(getNewApartmentId());
 
-        this.strApartmentId=getNewApartmentId();
-        this.strApartmentName=getApartmentName();
-        this.apartmentPath=strBuildingsPath + "/" + getBuildingId()+ "/" + this.strApartmentId;
+        this.intApartmentId=getApartmentId();
+        this.buildingId=getBuildingId();
+        this.strApartmentName=strApartmentName;
+        this.apartmentPath=strApartmentPath + "/" + (getBuildingId()+1000) + "/" + this.intApartmentId;
+    }
+
+    @Override
+    public Integer getBuildingId() {
+        return buildingId;
+    }
+
+    public void setBuildingId(Integer id) {
+        this.buildingId = id;
     }
 
     public Integer getApartmentId() {
-        return strApartmentId;
+        return intApartmentId;
+    }
+
+    public void setIntApartmentId(Integer intApartmentId) {
+        this.intApartmentId = intApartmentId;
     }
 
     public String getApartmentName() {
@@ -34,7 +50,7 @@ public class Apartments extends Buildings {
     }
 
     public String getApartmentPath() {
-        return strApartmentPath;
+        return apartmentPath;
     }
 
     /**
@@ -55,17 +71,17 @@ public class Apartments extends Buildings {
      * @return Integer Novo id gerado
      */
     private Integer getNewApartmentId(){
-        Integer id=1000;
-        int i=0;
+        Integer id=100;
+        int i;
 
         try {
-            File apartment = new File(strBuildingsPath + "/" + getBuildingId() + "/" + id);
+            File apartment = new File(strApartmentPath + "/" + (getBuildingId()+1000) + "/" + id);
 
             if (!apartment.exists()){ // valida se o edificio existe
                 apartment.mkdir();
             } else {
 
-                File apartmentFolder = new File(strBuildingsPath + "/" + getBuildingId());
+                File apartmentFolder = new File(strApartmentPath + "/" + (getBuildingId()+1000));
                 File[] arrApartments = apartmentFolder.listFiles();
                 Arrays.sort(arrApartments);
 
@@ -107,7 +123,7 @@ public class Apartments extends Buildings {
             if (!newApartment.exists()){ // valida se o edificio existe
                 newApartment.mkdir();
             }
-            xmlParser.updateBuildingXml(strBuildingsXml,Apartment);
+            //xmlParser.updateBuildingXml(strBuildingsXml,Apartment);
         } catch (Exception ex) {
             //TODO : validação de erros
             ex.printStackTrace();
@@ -118,18 +134,18 @@ public class Apartments extends Buildings {
      * Metodo que efetua a remoção do edificio do ficheiro apartamento xml assim como a sua pasta associada
      * @param id Identificador de apartamento
      */
-    public static void removeApartment(Integer id){
-
-        try {
-            File building = new File(strApartmentPath + "/" + id);
-
-            if (building.exists()){ // valida se o edificio existe
-                building.delete();
-            }
-            xmlParser.removeBuildingXml(strBuildingsXml,id);
-        } catch (Exception ex) {
-            //TODO : validação de erros
-            ex.printStackTrace();
-        }
-    }
+//    public static void removeApartment(Integer id){
+//
+//        try {
+//            File building = new File(strApartmentPath + "/" + id);
+//
+//            if (building.exists()){ // valida se o edificio existe
+//                building.delete();
+//            }
+//            xmlParser.removeBuildingXml(strBuildingsXml,id);
+//        } catch (Exception ex) {
+//            //TODO : validação de erros
+//            ex.printStackTrace();
+//        }
+//    }
 }
