@@ -4,10 +4,7 @@ import pt.ismat.ipower.utils.Apartments;
 import pt.ismat.ipower.utils.Buildings;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -91,14 +88,14 @@ public class apartForm {
         });
 
         /**
-         * Action Listener do botao remover edificio
+         * Action Listener do botao remover apartamento
          */
         btnRemover.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 if (!lstApartments.isSelectionEmpty()){
-                    String selectedBuilding = lstApartments.getSelectedValue().toString();
+                    String selectedApartment = lstApartments.getSelectedValue().toString();
 
                     int resultado = JOptionPane.showConfirmDialog(
                             mainFrame,
@@ -107,9 +104,9 @@ public class apartForm {
                             JOptionPane.YES_NO_OPTION);
 
                     if (resultado==0){
-                        String[] arrBuilding = selectedBuilding.split("-");
+                        String[] arrApartment = selectedApartment.split("-");
 
-                        Buildings.removeBuilding(Integer.valueOf(arrBuilding[0].trim())); // remove pasta e entrada do xml buildings
+                        Apartments.removeApartment(cbBuildings.getSelectedIndex()+1000,Integer.valueOf(arrApartment[0].trim())); // remove pasta e entrada do xml buildings
                         lstApartmentModel.remove(lstApartments.getSelectedIndex()); // remove do model da jlist
                         lstApartments.setModel(lstApartmentModel); // actualiza jlist com model
 
@@ -125,6 +122,8 @@ public class apartForm {
                 }
 
             }
+        });
+        lstApartments.addContainerListener(new ContainerAdapter() {
         });
     }
 

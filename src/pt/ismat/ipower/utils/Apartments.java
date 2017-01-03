@@ -11,7 +11,7 @@ import java.util.Arrays;
  */
 public class Apartments extends Buildings {
 
-    final static String strApartmentPath = System.getProperty("user.dir") + "/buildings";
+    final static String strBuildingPath = System.getProperty("user.dir") + "/buildings";
     //final static String strApartmentXml = ;
 
     private Integer intApartmentId, buildingId;
@@ -25,7 +25,7 @@ public class Apartments extends Buildings {
         this.intApartmentId=getApartmentId();
         this.buildingId=getBuildingId();
         this.strApartmentName=strApartmentName;
-        this.apartmentPath=strApartmentPath + "/" + (getBuildingId()+1000) + "/" + this.intApartmentId;
+        this.apartmentPath=strBuildingPath + "/" + (getBuildingId()+1000)+ "/" + this.intApartmentId;
     }
 
     @Override
@@ -75,27 +75,25 @@ public class Apartments extends Buildings {
         int i;
 
         try {
-            File apartment = new File(strApartmentPath + "/" + (getBuildingId()+1000) + "/" + id);
+            File apartment = new File(strBuildingPath + "/" + (getBuildingId()+1000) + "/" + id + ".xml");
 
-            if (!apartment.exists()){ // valida se o edificio existe
-                apartment.mkdir();
-            } else {
+            if (apartment.exists()) { //verifica se o apartamento ja tem um ficheiro xml correspondente
 
-                File apartmentFolder = new File(strApartmentPath + "/" + (getBuildingId()+1000));
-                File[] arrApartments = apartmentFolder.listFiles();
+                File apartmentXML = new File(strBuildingPath + "/" + (getBuildingId()+1000));
+                File[] arrApartments = apartmentXML.listFiles();
                 Arrays.sort(arrApartments);
 
                 //Cria um array de strings com tamanho do arrBuildings
                 String[] idList = new String[arrApartments.length];
 
-                //Transforma o conteudo do arrBuildings em Strings
+                //Transforma o conteudo do arrApartments em Strings
                 for (i = 0 ; i < arrApartments.length ; i++) {
                     idList[i]=arrApartments[i].getName();
                 }
 
                 try {   //enquanto que o valor do id for igual ao elemento correspondente na string, incrementa ambos
                     for (i=0 ; i<arrApartments.length ; i++) {
-                        if (id == Integer.parseInt(idList[i])) {
+                        if (id == Integer.parseInt(idList[i].substring(0, idList[i].lastIndexOf('.')))) {
                             id++;
                         }
                     }
@@ -118,12 +116,12 @@ public class Apartments extends Buildings {
      */
     public static void saveApartment(Apartments Apartment){
         try {
-            File newApartment = new File(Apartment.getApartmentPath());
+            File newApartment = new File(Apartment.getApartmentPath()+".xml");
 
-            if (!newApartment.exists()){ // valida se o edificio existe
-                newApartment.mkdir();
+            if (!newApartment.exists()){ // valida se o apartamento existe
+                xmlParser.createApartmentXml(Apartment.getApartmentPath()+".xml");
             }
-            //xmlParser.updateBuildingXml(strBuildingsXml,Apartment);
+
         } catch (Exception ex) {
             //TODO : validação de erros
             ex.printStackTrace();
@@ -132,20 +130,39 @@ public class Apartments extends Buildings {
 
     /**
      * Metodo que efetua a remoção do edificio do ficheiro apartamento xml assim como a sua pasta associada
-     * @param id Identificador de apartamento
+     * @param apartmentId Identificador de apartamento
+     * @param buildingId Identificador de edificio
      */
-//    public static void removeApartment(Integer id){
+    public static void removeApartment(Integer buildingId, Integer apartmentId){
+
+
+        try {
+            File apartment = new File(strBuildingPath + "/" + buildingId + "/" + apartmentId + ".xml");
+
+            if (apartment.exists()){ // valida se o apartamento existe
+                apartment.delete();
+            }
+
+        } catch (Exception ex) {
+            //TODO : validação de erros
+            ex.printStackTrace();
+        }
+    }
+
+//    private void validateApartmentXml(){
 //
 //        try {
-//            File building = new File(strApartmentPath + "/" + id);
 //
-//            if (building.exists()){ // valida se o edificio existe
-//                building.delete();
+//            File apartmentXml = new File(getApartmentPath());
+//
+//            if (!apartmentXml.exists()){ // valida se o apartamento tem ficheiro XML e cria
+//                xmlParser.createApartmentXml(getApartmentPath());
 //            }
-//            xmlParser.removeBuildingXml(strBuildingsXml,id);
+//
 //        } catch (Exception ex) {
-//            //TODO : validação de erros
+//            // TODO: 30-12-2016 tratar das excepcoes
 //            ex.printStackTrace();
 //        }
+//
 //    }
 }

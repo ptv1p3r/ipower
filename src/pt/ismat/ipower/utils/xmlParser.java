@@ -289,6 +289,38 @@ public class xmlParser {
     }
 
     /**
+     * Metodo que cria o ficheiro xml de edificios base
+     * @param apartmentXmlFile Ficheiro xml de edificios
+     */
+    public static void createApartmentXml(String apartmentXmlFile){
+
+        try {
+
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+            // root elemento
+            Document doc = docBuilder.newDocument();
+            Element root = doc.createElement("apartment");
+            doc.appendChild(root);
+
+            // escreve ficheiro xml
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(new File(apartmentXmlFile));
+
+            transformer.transform(source, result);
+
+        } catch (ParserConfigurationException pce) {
+            pce.printStackTrace();
+        } catch (TransformerException tfe) {
+            tfe.printStackTrace();
+        }
+
+    }
+
+    /**
      * Metodo que actualiza o ficheiro de edificios xml
      * @param buildingXmlFile Ficheiro xml de edificios
      * @param Building Edificio a ser adicionado

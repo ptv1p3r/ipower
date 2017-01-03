@@ -9,7 +9,7 @@
 			<devices id="d1001" category="Automático">
 				<enable>true</enable>
 				<auto>0</auto>
-				<euc>10</euc>
+				<euc>2750</euc>
 			</devices>
 			<devices id="d1002" category="Remoto">
 				<enable>false</enable>
