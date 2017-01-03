@@ -25,14 +25,26 @@ public class Devices {
         this.bolEnabled = bolEnabled;
     }
 
+    /**
+     * Metodo que retorna o identificador do equipamento
+     * @return String Identificador de equipamento
+     */
     public String getDeviceId() {
         return strDeviceId;
     }
 
+    /**
+     * Metodo que retorna o tipo de equipamento
+     * @return String Equipamento (Automatico,Remoto)
+     */
     public String getDeviceType() {
         return strDeviceType;
     }
 
+    /**
+     * Metodo que retorna o consumo do equipamento
+     * @return Integer Consumo kw
+     */
     public Integer getConsumo() {
         return intConsumo;
     }
@@ -79,5 +91,31 @@ public class Devices {
         xmlParser.readActiveDevicesXml(strBuildingsXml,arrDevicesList);
 
         return arrDevicesList;
+    }
+
+    /**
+     * Metodo que retorna um valor total de equipamentos activos existentes em todos os apartamentos
+     * @return Integer Devices Count
+     */
+    public static Integer getActiveDevices(){
+        ArrayList arrDevicesList = new ArrayList();
+
+        //validateBuildingsFolder();
+        xmlParser.readActiveDevicesXml(strBuildingsXml,arrDevicesList);
+
+        return arrDevicesList.size();
+    }
+
+    /**
+     * Metodo que retorna um valor total de equipamentos activos existentes em todos os apartamentos
+     * @return Integer Devices Count
+     */
+    public static Integer getDevices(){
+        ArrayList arrDevicesList = new ArrayList();
+
+        //validateBuildingsFolder();
+        xmlParser.readDevicesTotalXml(strBuildingsXml,arrDevicesList);
+
+        return arrDevicesList.size();
     }
 }

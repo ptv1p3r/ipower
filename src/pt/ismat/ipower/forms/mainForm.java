@@ -33,12 +33,18 @@ public class mainForm {
     private JPanel bottomFrame;
     private JButton btnLigar;
     private JButton btnDesligar;
-    private JProgressBar progressBar1;
+    private JProgressBar pbEquipamentos;
     private JProgressBar pbSimulatorStatus;
+    private JLabel lblActiveDevices;
+    private JLabel lblActiveDevicesTotal;
+    private JLabel lblSimStatus;
     private Counter cApartamentsCounter;
 
     public mainForm() {
         createTree();
+        lblActiveDevicesTotal.setText(Devices.getActiveDevices().toString() + "/" + Devices.getDevices().toString());
+        pbEquipamentos.setMaximum(Devices.getDevices());
+        pbEquipamentos.setValue(Devices.getActiveDevices());
 
 
         btnLigar.addActionListener(new ActionListener() {
@@ -47,13 +53,13 @@ public class mainForm {
 
                 // valida estado da thread
                 if (!cApartamentsCounter.isSuspended()){
-                    cApartamentsCounter = new Counter( "Apartamentos");
+                    cApartamentsCounter = new Counter( "Contadores");
                     cApartamentsCounter.start(); // inicia uma nova
                 } else {
                     cApartamentsCounter.resume(); // faz o resume da thread
                 }
 
-
+                lblSimStatus.setText("activo");
                 btnLigar.setEnabled(false);
                 btnDesligar.setEnabled(true);
                 pbSimulatorStatus.setVisible(true);
@@ -65,7 +71,7 @@ public class mainForm {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cApartamentsCounter.suspend(); // suspende a thread
-
+                lblSimStatus.setText("inactivo");
                 btnLigar.setEnabled(true);
                 btnDesligar.setEnabled(false);
                 pbSimulatorStatus.setEnabled(false);

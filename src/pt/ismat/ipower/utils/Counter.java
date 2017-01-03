@@ -55,21 +55,28 @@ public class Counter implements Runnable {
             // TODO percorrer todos os equipamentos ligados e recolher o seu consumo com time stamp inicial e final e valor kw (kw equipamento * tempo )
             System.out.println("Running " +  threadName );
 
-                for(int i = 100; i > 0; i--) {
-                    System.out.println("Thread: " + threadName + ", " + i);
+            while (!suspended){
+                System.out.println("Thread: " + threadName);
 
-                    ArrayList arrActiveDevices = Devices.getActiveDevicesList();
-                    System.out.println(arrActiveDevices.size());
+                ArrayList arrActiveDevices = Devices.getActiveDevicesList();
+                System.out.println(arrActiveDevices.size());
 
-                    // Let the thread sleep for a while.
-                    Thread.sleep(300);
+                for (int i = 0; i < arrActiveDevices.size()-1; i++){
 
-                    synchronized(this) {
-                        while(suspended) {
-                            wait();
-                        }
+                }
+
+
+
+                // Let the thread sleep for a while.
+                Thread.sleep(300);
+
+                synchronized(this) {
+                    while(suspended) {
+                        wait();
                     }
                 }
+            }
+
             System.out.println("Thread " +  threadName + " exiting.");
             dataFinal = new Date();
             System.out.println(getDataInicial().toString() + "#" + getDataFinal().toString());
