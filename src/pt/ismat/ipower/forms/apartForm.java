@@ -2,9 +2,13 @@ package pt.ismat.ipower.forms;
 
 import pt.ismat.ipower.utils.Apartments;
 import pt.ismat.ipower.utils.Buildings;
+import pt.ismat.ipower.utils.Devices;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -32,6 +36,7 @@ public class apartForm {
 
     public apartForm() {
 
+        //inicia a cbBuildings com os ids dos edificios
         DefaultListModel lstBuildigModel = new DefaultListModel();
 
         ArrayList arrBuildingsList = Buildings.getBuildingsList();
@@ -39,26 +44,22 @@ public class apartForm {
         for (int i = 0; i < arrBuildingsList.size(); i++) {
             String strBuilding = (String) arrBuildingsList.get(i);
             String[] arrBuilding = strBuilding.split("#");
-            Arrays.sort(arrBuilding);
             lstBuildigModel.addElement(arrBuilding[0]);
             cbBuildings.addItem(arrBuilding[0]);
         }
 
-        //TODO XML
-        DefaultListModel lstApartmentModel = new DefaultListModel();
+        //
+        DefaultListModel lstApartmentsModel = new DefaultListModel();
 
-        ArrayList arrApartmentsList = Apartments.getApartmentList(cbBuildings.getSelectedIndex());
+        ArrayList arrApartmentsList = Apartments.getApartmentList(cbBuildings.getSelectedIndex()+1000);
 
         for (int i = 0; i < arrApartmentsList.size(); i++) {
             String strApartment = (String) arrApartmentsList.get(i);
             String[] arrApartment = strApartment.split("#");
-            Arrays.sort(arrApartment);
-            lstApartmentModel.addElement(arrApartment[0]);
+            lstApartmentsModel.addElement(arrApartment[0]);
         }
 
-        lstApartments.setModel(lstApartmentModel);
-
-
+        lstApartments.setModel(lstApartmentsModel);
 
         /**
          * Action Listener do botao de adicionar apartamento
@@ -71,9 +72,9 @@ public class apartForm {
                     Apartments Apartment = new Apartments(cbBuildings.getSelectedIndex(),txtName.getText().trim());
 
                     Apartment.setBuildingId(cbBuildings.getSelectedIndex());
-                    lstApartmentModel.addElement(Apartment.getApartmentId() + " - " + Apartment.getApartmentName());
+                    lstApartmentsModel.addElement(Apartment.getApartmentId() + " - " + Apartment.getApartmentName());
                     Apartment.saveApartment(Apartment);
-                    lstApartments.setModel(lstApartmentModel);
+                    lstApartments.setModel(lstApartmentsModel);
 
                     lblIdData.setText("- nenhum -");
                     txtName.setText("");
@@ -107,8 +108,8 @@ public class apartForm {
                         String[] arrApartment = selectedApartment.split("-");
 
                         Apartments.removeApartment(cbBuildings.getSelectedIndex()+1000,Integer.valueOf(arrApartment[0].trim())); // remove pasta e entrada do xml buildings
-                        lstApartmentModel.remove(lstApartments.getSelectedIndex()); // remove do model da jlist
-                        lstApartments.setModel(lstApartmentModel); // actualiza jlist com model
+                        lstApartmentsModel.remove(lstApartments.getSelectedIndex()); // remove do model da jlist
+                        lstApartments.setModel(lstApartmentsModel); // actualiza jlist com model
 
                         lblIdData.setText("- nenhum -");
                         txtName.setText("");
@@ -123,10 +124,36 @@ public class apartForm {
 
             }
         });
-        lstApartments.addContainerListener(new ContainerAdapter() {
+
+
+        cbBuildings.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+
+                DefaultListModel lstApartmentsModel = new DefaultListModel();
+
+                String[] selectedItem = cbBuildings.getSelectedItem().toString().split("");
+
+                ArrayList arrApartmentList = Apartments.getApartmentList(cbBuildings.getSelectedIndex()+1000);
+
+                for (int i = 0; i < arrApartmentList.size(); i++) {
+                    String strBuilding = (String) arrApartmentList.get(i);
+                    String[] arrBuilding = strBuilding.split("#");
+                    lstApartmentsModel.addElement(arrBuilding[0] + "-" + arrBuilding[1]);
+                }
+
+                lstApartmentsModel.clear();
+                setApartmentList(cbBuildings.getSelectedIndex()+1000);
+                //lstApartments.setModel(lstApartmentsModel);
+
+                lblIdData.setText("- nenhum -");
+
+            }
         });
     }
 
+
+    //TODO: os apts so sao apts bem, apenas o numero, na inicializacao. Tratar disso e faze lo ler so os apts do edificio
     private void setApartmentList(Integer buildingId){
         DefaultListModel lstApartmentsModel = new DefaultListModel();
 
@@ -139,23 +166,6 @@ public class apartForm {
         }
 
         lstApartments.setModel(lstApartmentsModel);
-    }
-
-    /**
-     * Metodo que constroi a combo box com uma lista de edificios existentes
-     */
-    private void setBuildingsList(){
-        final DefaultComboBoxModel cbBuildingsModel = new DefaultComboBoxModel();
-
-        ArrayList arrBuildingsList = Buildings.getBuildingsList();
-        for (int i = 0; i < arrBuildingsList.size(); i++) {
-            String strBuilding = (String) arrBuildingsList.get(i);
-            String[] arrBuilding = strBuilding.split("#");
-            cbBuildingsModel.addElement(arrBuilding[0] + "-" + arrBuilding[1]);
-        }
-
-        cbBuildings.setModel(cbBuildingsModel);
-        cbBuildings.setSelectedIndex(0);
     }
 
 }

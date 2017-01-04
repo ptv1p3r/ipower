@@ -20,6 +20,7 @@ public class equipForm {
     private JLabel lblBuilding;
     private JComboBox cbBuildings;
     private JList lsDevices;
+    private JList evelsDevices;
     private JPanel rightFrame;
     private JButton btnAdicionar;
     private JButton btnRemover;

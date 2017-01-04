@@ -12,7 +12,6 @@ import java.util.Arrays;
 public class Apartments extends Buildings {
 
     final static String strBuildingPath = System.getProperty("user.dir") + "/buildings";
-    //final static String strApartmentXml = ;
 
     private Integer intApartmentId, buildingId;
     private String strApartmentName, apartmentPath;
@@ -53,6 +52,8 @@ public class Apartments extends Buildings {
         return apartmentPath;
     }
 
+
+
     /**
      * Metodo que retorna uma lista de apartamentos existentes de um edificio pelo seu id
      * @return Apartments List
@@ -60,8 +61,7 @@ public class Apartments extends Buildings {
     public static ArrayList getApartmentList(Integer buildingId){
         ArrayList arrApartmentsList = new ArrayList();
 
-        //validateBuildingsFolder();
-        xmlParser.readApartmentsXml(Buildings.strBuildingsXml,arrApartmentsList,buildingId);
+        xmlParser.readApartmentsXml(Apartments.strBuildingsXml,arrApartmentsList,buildingId);
 
         return arrApartmentsList;
     }
@@ -139,10 +139,10 @@ public class Apartments extends Buildings {
         try {
             File apartment = new File(strBuildingPath + "/" + buildingId + "/" + apartmentId + ".xml");
 
-            if (apartment.exists()){ // valida se o apartamento existe
+            if (apartment.exists()){ // valida se o edificio existe
                 apartment.delete();
             }
-
+            //xmlParser.removeBuildingXml(strBuildingsXml,id);
         } catch (Exception ex) {
             //TODO : validação de erros
             ex.printStackTrace();
