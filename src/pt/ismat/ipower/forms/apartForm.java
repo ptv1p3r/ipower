@@ -56,7 +56,7 @@ public class apartForm {
         for (int i = 0; i < arrApartmentsList.size(); i++) {
             String strApartment = (String) arrApartmentsList.get(i);
             String[] arrApartment = strApartment.split("#");
-            lstApartmentsModel.addElement(arrApartment[0]);
+            lstApartmentsModel.addElement(arrApartment[0] + " - " + arrApartment[1]);
         }
 
         lstApartments.setModel(lstApartmentsModel);
@@ -126,25 +126,28 @@ public class apartForm {
         });
 
 
+        /**
+         * Item listener da combobox com o id do edificio
+         */
         cbBuildings.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
 
+                //String[] selectedItem = cbBuildings.getSelectedItem().toString().split("");
+
                 DefaultListModel lstApartmentsModel = new DefaultListModel();
 
-                String[] selectedItem = cbBuildings.getSelectedItem().toString().split("");
+                ArrayList arrApartmentsList = Apartments.getApartmentList(cbBuildings.getSelectedIndex()+1000);
 
-                ArrayList arrApartmentList = Apartments.getApartmentList(cbBuildings.getSelectedIndex()+1000);
-
-                for (int i = 0; i < arrApartmentList.size(); i++) {
-                    String strBuilding = (String) arrApartmentList.get(i);
-                    String[] arrBuilding = strBuilding.split("#");
-                    lstApartmentsModel.addElement(arrBuilding[0] + "-" + arrBuilding[1]);
+                for (int i = 0; i < arrApartmentsList.size(); i++) {
+                    String strApartment = (String) arrApartmentsList.get(i);
+                    String[] arrApartment = strApartment.split("#");
+                    lstApartmentsModel.addElement(arrApartment[0] + " - " + arrApartment[1]);
                 }
 
-                lstApartmentsModel.clear();
+                //lstApartmentsModel.clear();
                 setApartmentList(cbBuildings.getSelectedIndex()+1000);
-                //lstApartments.setModel(lstApartmentsModel);
+                lstApartments.setModel(lstApartmentsModel);
 
                 lblIdData.setText("- nenhum -");
 
@@ -153,7 +156,10 @@ public class apartForm {
     }
 
 
-    //TODO: os apts so sao apts bem, apenas o numero, na inicializacao. Tratar disso e faze lo ler so os apts do edificio
+    /**
+     * Lista os apartamentos existentes num determinado edificio
+     * @param buildingId id do edificio selecionado
+     */
     private void setApartmentList(Integer buildingId){
         DefaultListModel lstApartmentsModel = new DefaultListModel();
 

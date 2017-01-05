@@ -85,15 +85,8 @@ public class xmlParser {
                     if (eBuilding.hasAttribute("id") && eBuilding.getAttribute("id").equals(String.valueOf(buildingId))) {
                         NodeList nlApartments = doc.getElementsByTagName("apartments");
 
-                        for (int a = 0; a < nlApartments.getLength(); a++) {
-                            Node nApartment = nlApartments.item(a);
+                        NodeList childList = nlBuildings.item(i).getChildNodes();
 
-                            if (nApartment.getNodeType() == Node.ELEMENT_NODE) {
-                                Element eApartment = (Element) nApartment;
-                                arrApartmentsList.add(eApartment.getAttribute("id") + "#" + eApartment.getElementsByTagName("apt").item(0).getTextContent());
-                            }
-                        }
-                     NodeList childList = nlBuildings.item(i).getChildNodes();
                         for (int j = 0; j < childList.getLength(); j++) {
                             Node childNode = childList.item(j);
 
