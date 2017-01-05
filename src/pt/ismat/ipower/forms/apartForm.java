@@ -5,10 +5,7 @@ import pt.ismat.ipower.utils.Buildings;
 import pt.ismat.ipower.utils.Devices;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -48,7 +45,7 @@ public class apartForm {
             cbBuildings.addItem(arrBuilding[0]);
         }
 
-        //
+        //inicializa a list do primeiro edificio na combobox
         DefaultListModel lstApartmentsModel = new DefaultListModel();
 
         ArrayList arrApartmentsList = Apartments.getApartmentList(cbBuildings.getSelectedIndex()+1000);
@@ -133,8 +130,6 @@ public class apartForm {
             @Override
             public void itemStateChanged(ItemEvent e) {
 
-                //String[] selectedItem = cbBuildings.getSelectedItem().toString().split("");
-
                 DefaultListModel lstApartmentsModel = new DefaultListModel();
 
                 ArrayList arrApartmentsList = Apartments.getApartmentList(cbBuildings.getSelectedIndex()+1000);
@@ -145,12 +140,40 @@ public class apartForm {
                     lstApartmentsModel.addElement(arrApartment[0] + " - " + arrApartment[1]);
                 }
 
-                //lstApartmentsModel.clear();
                 setApartmentList(cbBuildings.getSelectedIndex()+1000);
                 lstApartments.setModel(lstApartmentsModel);
 
                 lblIdData.setText("- nenhum -");
+                txtName.setText(" ");
 
+            }
+        });
+
+        /**
+         * Mouse Listener para o evento click na lista de edificios
+         */
+        lstApartments.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                if (!lstApartments.isSelectionEmpty()){
+                    // vamos buscar o index pelo ponto gerado pelo mouse click
+                    int index = lstApartments.locationToIndex(e.getPoint());
+
+                    // vamos buscar o elemento pelo seu index
+                    Object selectedBuilding = lstApartments.getModel().getElementAt(index);
+                    String[] arrBuilding = selectedBuilding.toString().split("-");
+
+                    //Apartments Apartamento = Apartments.loadApartment(Integer.valueOf(arrBuilding[0].trim()));
+
+                    lblIdData.setText(arrBuilding[0]);
+                    txtName.setText(arrBuilding[1]);
+                } else {
+                    lblIdData.setText("- nenhum -");
+                    txtName.setText(" ");
+
+                }
             }
         });
     }

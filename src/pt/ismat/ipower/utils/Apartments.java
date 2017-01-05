@@ -149,20 +149,4 @@ public class Apartments extends Buildings {
         }
     }
 
-//    private void validateApartmentXml(){
-//
-//        try {
-//
-//            File apartmentXml = new File(getApartmentPath());
-//
-//            if (!apartmentXml.exists()){ // valida se o apartamento tem ficheiro XML e cria
-//                xmlParser.createApartmentXml(getApartmentPath());
-//            }
-//
-//        } catch (Exception ex) {
-//            // TODO: 30-12-2016 tratar das excepcoes
-//            ex.printStackTrace();
-//        }
-//
-//    }
 }
