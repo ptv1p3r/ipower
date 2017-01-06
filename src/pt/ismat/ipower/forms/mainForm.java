@@ -80,8 +80,9 @@ public class mainForm {
                 lblSimStatus.setText("activo");
                 btnLigar.setEnabled(false);
                 btnDesligar.setEnabled(true);
-                pbSimulatorStatus.setVisible(true);
+
                 pbSimulatorStatus.setIndeterminate(true);
+                //pbSimulatorStatus.setVisible(true);
             }
         });
 
@@ -93,7 +94,7 @@ public class mainForm {
             public void actionPerformed(ActionEvent e) {
 
                 // TODO Criar algoritmo que efetua o registo da leitura dos equipamentos no respectivo apartamento no seu ficheiro xml
-                cDevicesCounter.suspend(); // suspende a thread
+                cDevicesCounter.terminate(); // termina o contador
 
                 // TODO Metodo que faça update dos valores no gui
                 SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
@@ -105,9 +106,8 @@ public class mainForm {
                 lblSimStatus.setText("inactivo");
                 btnLigar.setEnabled(true);
                 btnDesligar.setEnabled(false);
-                pbSimulatorStatus.setEnabled(false);
-                pbSimulatorStatus.setVisible(false);
-
+                //pbSimulatorStatus.setVisible(false);
+                pbSimulatorStatus.setIndeterminate(false);
 
             }
         });

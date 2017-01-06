@@ -18,10 +18,10 @@ import java.util.TimerTask;
 public class Counter implements Runnable {
     private Thread t;
     private String threadName;
-    private static boolean suspended = false;
     private Date dataInicial, dataFinal;
     private Double dblTotalKwh;
     private Integer intTotalLeituras;
+    private Timer timer;
 
 
     /**
@@ -57,22 +57,6 @@ public class Counter implements Runnable {
         return threadName;
     }
 
-    /**
-     * Metodo que retorna o total de kw
-     * @return Double Total de kw
-     */
-    public Double getTotalKwh() {
-        return dblTotalKwh;
-    }
-
-    /**
-     * Metodo que retorna o estado da thread, se esta supensa ou nao
-     * @return Estado da thread (suspensa)
-     */
-    public static Boolean isSuspended() {
-        return suspended;
-    }
-
     public Date getDataInicial() {
         return dataInicial;
     }
@@ -84,39 +68,19 @@ public class Counter implements Runnable {
     @Override
     public void run()
     {
-        try
-        {
+        //try
+        //{
             //dataInicial = dt.parse(dataInicial.toString());
             // TODO percorrer todos os equipamentos ligados e recolher o seu consumo com time stamp inicial e final e valor kw (kw equipamento * tempo )
             //System.out.println("Running " +  threadName + dataInicial);
 
             DeviceReading newReading = new DeviceReading();
-            Timer timer = new Timer(false); //timer como daemon thread
+            timer = new Timer(false); //timer como daemon thread
             timer.scheduleAtFixedRate(newReading, 0, 60*1000); // executa leitura minuto a minuto
 
-            while (!suspended){ // enquanto nao for suspensa
-
-                mainForm.LeiturasTotal.setText(String.valueOf(intTotalLeituras));
-
-                synchronized(this) {
-                    while(suspended) {
-                        timer.cancel();
-                        dataFinal = new Date();
-
-                        System.out.println("Leitura interrompida");
-                        wait();
-
-                    }
-                }
+            if (t.isInterrupted()){
+                System.out.println("Thread " +  threadName + " exiting.");
             }
-
-            dataFinal = new Date();
-            System.out.println("Thread " +  threadName + " exiting.");
-
-        }
-        catch (InterruptedException e) {
-            System.out.println("Thread " +  threadName + " interrupted.");
-        }
     }
 
     /**
@@ -127,22 +91,16 @@ public class Counter implements Runnable {
         if (t == null) {
             t = new Thread (this, threadName);
             t.start ();
+
         }
     }
 
     /**
-     * Metodo que coloca a thread em suspenso
+     * Metodo que termina a thread e timer
      */
-    public void suspend() {
-        suspended = true;
-    }
-
-    /**
-     * Metodo que retorna a thread e a tira de modo suspensao
-     */
-    public synchronized void resume() {
-        suspended = false;
-        notify();
+    public void terminate() {
+        timer.cancel();
+        t.interrupt();
     }
 
     private class DeviceReading extends TimerTask {
@@ -151,6 +109,7 @@ public class Counter implements Runnable {
         public void run() {
             System.out.println("Reading started at:"+new Date());
             completeReading();
+            dataFinal = new Date();
             System.out.println("Reading finished at:"+new Date());
         }
 
@@ -179,7 +138,7 @@ public class Counter implements Runnable {
                 //DecimalFormat df=new DecimalFormat("0.000");
                 mainForm.CargaTotal.setText(String.valueOf(dblTotalKw) + " kW");
                 mainForm.TotalKw.setText(String.valueOf(dblTotalKwh) + " kWh");
-                //mainForm.LeiturasTotal.setText(String.valueOf(intTotalLeituras));
+                mainForm.LeiturasTotal.setText(String.valueOf(intTotalLeituras));
 
             } catch (Exception e) {
                 e.printStackTrace();
