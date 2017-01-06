@@ -67,13 +67,9 @@ public class mainForm {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                // valida estado da thread
-                //if (!cDevicesCounter.isSuspended()){
-                    cDevicesCounter = new Counter("Contador Equipamentos Activos");
-                    cDevicesCounter.start(); // inicia uma nova
-                //} else {
-               //     cDevicesCounter.resume(); // faz o resume da thread
-               // }
+                cDevicesCounter = new Counter("Contador Equipamentos Activos");
+                cDevicesCounter.start();
+
                 SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
 
                 lblStatusBarData.setText("Em funcionamento...Iniciado em: " + dt.format(cDevicesCounter.getDataInicial()));
@@ -95,11 +91,12 @@ public class mainForm {
 
                 // TODO Criar algoritmo que efetua o registo da leitura dos equipamentos no respectivo apartamento no seu ficheiro xml
                 cDevicesCounter.terminate(); // termina o contador
+                cDevicesCounter.resetCounter();
 
                 // TODO Metodo que faça update dos valores no gui
                 SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
                 lblStatusBarData.setText("Desligado...Iniciado em: " + dt.format(cDevicesCounter.getDataInicial()) + " Terminado em: " + dt.format(cDevicesCounter.getDataFinal()));
-                cDevicesCounter.resetCounter();
+
                 lblLeiturasTotal.setText("0");
                 lblTotalKw.setText("0 Kw");
                 lblCargaTotalData.setText("0 Kw");

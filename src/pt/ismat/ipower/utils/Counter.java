@@ -66,32 +66,28 @@ public class Counter implements Runnable {
     }
 
     @Override
-    public void run()
-    {
-        //try
-        //{
-            //dataInicial = dt.parse(dataInicial.toString());
-            // TODO percorrer todos os equipamentos ligados e recolher o seu consumo com time stamp inicial e final e valor kw (kw equipamento * tempo )
-            //System.out.println("Running " +  threadName + dataInicial);
+    public void run(){
+        // TODO percorrer todos os equipamentos ligados e recolher o seu consumo com time stamp inicial e final e valor kw (kw equipamento * tempo )
 
-            DeviceReading newReading = new DeviceReading();
-            timer = new Timer(false); //timer como daemon thread
-            timer.scheduleAtFixedRate(newReading, 0, 60*1000); // executa leitura minuto a minuto
+        DeviceReading newReading = new DeviceReading();
+        timer = new Timer(false); //timer como daemon thread
+        timer.scheduleAtFixedRate(newReading, 0, 60*1000); // executa leitura minuto a minuto
 
-            if (t.isInterrupted()){
-                System.out.println("Thread " +  threadName + " exiting.");
-            }
+        // TODO em testes
+        if (t.isInterrupted()){
+            System.out.println("Thread " +  threadName + " exiting.");
+        }
     }
 
     /**
      * Metodo que inicia a thread
      */
     public void start () {
+        // TODO Retirar prints de consola
         System.out.println("Starting " +  threadName );
         if (t == null) {
             t = new Thread (this, threadName);
             t.start ();
-
         }
     }
 
