@@ -144,8 +144,9 @@ public class Apartments extends Buildings {
 
             if (apartment.exists()){ // valida se o edificio existe
                 apartment.delete();
+                xmlParser.removeApartmentXml(strBuildingsXml, buildingId, apartmentId);
             }
-            //xmlParser.removeBuildingXml(strBuildingsXml,id);
+
         } catch (Exception ex) {
             //TODO : validação de erros
             ex.printStackTrace();

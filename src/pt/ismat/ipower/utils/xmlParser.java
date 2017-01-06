@@ -459,6 +459,73 @@ public class xmlParser {
     }
 
     /**
+     * Metodo que remove o apartamento do ficheiro buildings.xml atraves do seu id
+     * @param buildingXmlFile Ficheiro xml de edificios
+     * @param buildingId Identificador de edificio
+     * @param apartmentId Identificador de apartamento
+     */
+    public static void removeApartmentXml(String buildingXmlFile,Integer buildingId, Integer apartmentId){
+        try {
+
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+            Document document = docBuilder.parse(buildingXmlFile);
+
+            NodeList nlBuildingList = document.getElementsByTagName("building");
+
+            if (nlBuildingList != null && nlBuildingList.getLength() > 0) {
+
+                for (int i = 0; i < nlBuildingList.getLength(); i++) {
+
+                    Node nBuilding= nlBuildingList.item(i);
+                    Element eBuilding = (Element) nBuilding;
+
+                    if (eBuilding.hasAttribute("id") && eBuilding.getAttribute("id").equals(String.valueOf(buildingId))) {
+
+                        NodeList nlApartmentList = document.getElementsByTagName("apartments");
+
+                        if (nlApartmentList != null && nlApartmentList.getLength() > 0) {
+                            //TODO: Apaga todos os apartamentos com o mesmo id
+                            for (int j = 0 ; j<nlApartmentList.getLength() ; j++) {
+
+                                Node nApartment = nlApartmentList.item(j);
+                                Element eApartment = (Element) nApartment;
+
+                                if (eApartment.hasAttribute("id") && eApartment.getAttribute("id").equals(String.valueOf(apartmentId))) {
+                                    nApartment.getParentNode().removeChild(nApartment);
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+
+            }
+
+
+            // escreve ficheiro xml
+            DOMSource source = new DOMSource(document);
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            StreamResult result = new StreamResult(buildingXmlFile);
+
+            transformer.transform(source, result);
+
+        } catch (ParserConfigurationException pce) {
+            pce.printStackTrace();
+        } catch (TransformerException tfe) {
+            tfe.printStackTrace();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }catch (SAXException sax) {
+            sax.printStackTrace();
+        }
+    }
+
+    /**
      * Metodo que carrega um edificio baseado nos seu dados do ficheiro xml
      * @param buildingXmlFile Ficheiro xml de edificios
      * @param id Identificador de edificio
