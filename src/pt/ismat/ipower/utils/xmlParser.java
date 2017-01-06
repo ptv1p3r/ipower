@@ -19,6 +19,7 @@ import java.util.ArrayList;
  * Created by v1p3r on 29-12-2016.
  */
 public class xmlParser {
+    private static Document documento;
 
     /**
      * Metodo que le ficheiro xml de edificios e adiciona entradas a uma Building List
@@ -28,15 +29,8 @@ public class xmlParser {
     public static void readBuildingXml(String buildingXmlFile,ArrayList arrBuildingsList){
 
         try {
-            File fXmlFile = new File(buildingXmlFile);
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(fXmlFile);
-
-            //http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
-            doc.getDocumentElement().normalize();
-
-            NodeList nlBuildings = doc.getElementsByTagName("building");
+            documento = xmlHeaderDocument(buildingXmlFile);
+            NodeList nlBuildings = documento.getElementsByTagName("building");
 
             for (int i = 0; i < nlBuildings.getLength(); i++) {
 
@@ -58,7 +52,7 @@ public class xmlParser {
     }
 
     /**
-     * Metodo que le os apatamentos de um determinado edificio e adiciona entradas a uma apartments list
+     * Metodo que le os apartamentos de um determinado edificio e adiciona entradas a uma apartments list
      * @param buildingXmlFile Ficheiro xml de edificios
      * @param arrApartmentsList Lista de apartamentos
      * @param buildingId Identificador de edificio
@@ -66,15 +60,8 @@ public class xmlParser {
     public static void readApartmentsXml(String buildingXmlFile,ArrayList arrApartmentsList,Integer buildingId){
 
         try {
-            File fXmlFile = new File(buildingXmlFile);
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(fXmlFile);
-
-            //http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
-            doc.getDocumentElement().normalize();
-
-            NodeList nlBuildings = doc.getElementsByTagName("building");
+            documento = xmlHeaderDocument(buildingXmlFile);
+            NodeList nlBuildings = documento.getElementsByTagName("building");
 
             for (int i = 0; i < nlBuildings.getLength(); i++) {
                 Node nBuilding = nlBuildings.item(i);
@@ -83,7 +70,7 @@ public class xmlParser {
                     Element eBuilding = (Element) nBuilding;
 
                     if (eBuilding.hasAttribute("id") && eBuilding.getAttribute("id").equals(String.valueOf(buildingId))) {
-                        NodeList nlApartments = doc.getElementsByTagName("apartments");
+                        NodeList nlApartments = documento.getElementsByTagName("apartments");
 
                         NodeList childList = nlBuildings.item(i).getChildNodes();
 
@@ -120,15 +107,8 @@ public class xmlParser {
     public static void readDevicesXml(String buildingXmlFile,ArrayList arrDevicesList,String ApartmentId){
 
         try {
-            File fXmlFile = new File(buildingXmlFile);
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(fXmlFile);
-
-            //http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
-            doc.getDocumentElement().normalize();
-
-            NodeList nlApartments = doc.getElementsByTagName("apartments"); // retorna no dos apartamentos
+            documento = xmlHeaderDocument(buildingXmlFile);
+            NodeList nlApartments = documento.getElementsByTagName("apartments"); // retorna no dos apartamentos
 
             for (int i = 0; i < nlApartments.getLength(); i++) { // percorre apartamentos
                 Node nApartment= nlApartments.item(i);
@@ -168,15 +148,8 @@ public class xmlParser {
     public static void readActiveDevicesXml(String buildingXmlFile,ArrayList arrDevicesList){
 
         try {
-            File fXmlFile = new File(buildingXmlFile);
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(fXmlFile);
-
-            //http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
-            doc.getDocumentElement().normalize();
-
-            NodeList nlApartments = doc.getElementsByTagName("apartments"); // retorna no dos apartamentos
+            documento = xmlHeaderDocument(buildingXmlFile);
+            NodeList nlApartments = documento.getElementsByTagName("apartments"); // retorna no dos apartamentos
 
             for (int i = 0; i < nlApartments.getLength(); i++) { // percorre apartamentos
                 Node nApartment= nlApartments.item(i);
@@ -214,15 +187,8 @@ public class xmlParser {
     public static void readDevicesTotalXml(String buildingXmlFile,ArrayList arrDevicesList){
 
         try {
-            File fXmlFile = new File(buildingXmlFile);
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(fXmlFile);
-
-            //http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
-            doc.getDocumentElement().normalize();
-
-            NodeList nlApartments = doc.getElementsByTagName("apartments"); // retorna no dos apartamentos
+            documento = xmlHeaderDocument(buildingXmlFile);
+            NodeList nlApartments = documento.getElementsByTagName("apartments"); // retorna no dos apartamentos
 
             for (int i = 0; i < nlApartments.getLength(); i++) { // percorre apartamentos
                 Node nApartment= nlApartments.item(i);
@@ -281,7 +247,6 @@ public class xmlParser {
 
     }
 
-    //adiciona apartamentos no sitio correto no xml
     /**
      * Metodo que actualiza o ficheiro de edificios xml
      * @param buildingXmlFile Ficheiro xml de edificios
@@ -472,16 +437,8 @@ public class xmlParser {
         Buildings building = null;
 
         try {
-
-            File fXmlFile = new File(buildingXmlFile);
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(fXmlFile);
-
-            //http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
-            doc.getDocumentElement().normalize();
-
-            NodeList nlBuildingList = doc.getElementsByTagName("building");
+            documento = xmlHeaderDocument(buildingXmlFile);
+            NodeList nlBuildingList = documento.getElementsByTagName("building");
 
             if (nlBuildingList != null && nlBuildingList.getLength() > 0) {
 
@@ -549,6 +506,33 @@ public class xmlParser {
         }
 
         return device;
+    }
+
+    /**
+     * Metodo que devolve um documento xml normalizado
+     * @param xmlFile Caminho de ficheiro xml
+     * @return Document Documento normalizado
+     */
+    private static Document xmlHeaderDocument(String xmlFile){
+        try {
+
+            File fXmlFile = new File(xmlFile);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            documento = dBuilder.parse(fXmlFile);
+
+            //http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+            documento.getDocumentElement().normalize();
+
+        } catch (ParserConfigurationException pce){
+            pce.printStackTrace();
+        } catch (IOException ioe){
+            ioe.printStackTrace();
+        } catch (SAXException se){
+            se.printStackTrace();
+        }
+
+        return documento;
     }
 
 }

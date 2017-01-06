@@ -93,10 +93,7 @@ public class equipForm {
 
                 lsDevices.setModel(lstDevicesModel);
 
-                lblIdData.setText("- nenhum -");
-                txtConsumo.setText("0");
-                cbTipo.setSelectedItem("- nenhum -");
-
+                setGuiElementsOff();
             }
         });
 
@@ -126,9 +123,7 @@ public class equipForm {
                     ckbEnable.setSelected(Device.isEnabled());
 
                 } else {
-                    lblIdData.setText("- nenhum -");
-                    txtConsumo.setText("0");
-                    cbTipo.setSelectedItem("- nenhum -");
+                    setGuiElementsOff();
                     ckbEnable.setSelected(false);
                 }
 
@@ -175,6 +170,13 @@ public class equipForm {
 
         lsDevices.setModel(lstDevicesModel);
 
+    }
+
+    private void setGuiElementsOff(){
+        lblIdData.setText("- nenhum -");
+        txtConsumo.setText("0");
+        cbTipo.setSelectedItem("- nenhum -");
+        cbDeviceType.setSelectedItem("- nenhum -");
     }
 
 }
