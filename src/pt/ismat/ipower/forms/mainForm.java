@@ -13,6 +13,7 @@ import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -44,6 +45,8 @@ public class mainForm {
     private JLabel lblLeiturasTotal;
     private JLabel lblCargarTotal;
     private JLabel lblCargaTotalData;
+    private JLabel lblStatusBar;
+    private JLabel lblStatusBarData;
     public Counter cDevicesCounter;
     public static JLabel LeiturasTotal;
     public static JLabel TotalKw;
@@ -65,14 +68,15 @@ public class mainForm {
             public void actionPerformed(ActionEvent e) {
 
                 // valida estado da thread
-                if (!cDevicesCounter.isSuspended()){
+                //if (!cDevicesCounter.isSuspended()){
                     cDevicesCounter = new Counter("Contador Equipamentos Activos");
                     cDevicesCounter.start(); // inicia uma nova
-                } else {
-                    cDevicesCounter.resume(); // faz o resume da thread
-                }
+                //} else {
+               //     cDevicesCounter.resume(); // faz o resume da thread
+               // }
+                SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
 
-
+                lblStatusBarData.setText("Em funcionamento...Iniciado em: " + dt.format(cDevicesCounter.getDataInicial()));
                 lblSimStatus.setText("activo");
                 btnLigar.setEnabled(false);
                 btnDesligar.setEnabled(true);
@@ -81,16 +85,30 @@ public class mainForm {
             }
         });
 
+        /**
+         * Metodo que associa um action listener ao botao desligar
+         */
         btnDesligar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                // TODO Criar algoritmo que efetua o registo da leitura dos equipamentos no respectivo apartamento no seu ficheiro xml
                 cDevicesCounter.suspend(); // suspende a thread
+
+                // TODO Metodo que faça update dos valores no gui
+                SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
+                lblStatusBarData.setText("Desligado...Iniciado em: " + dt.format(cDevicesCounter.getDataInicial()) + " Terminado em: " + dt.format(cDevicesCounter.getDataFinal()));
+                cDevicesCounter.resetCounter();
+                lblLeiturasTotal.setText("0");
+                lblTotalKw.setText("0 Kw");
+                lblCargaTotalData.setText("0 Kw");
                 lblSimStatus.setText("inactivo");
                 btnLigar.setEnabled(true);
                 btnDesligar.setEnabled(false);
                 pbSimulatorStatus.setEnabled(false);
                 pbSimulatorStatus.setVisible(false);
-                System.out.println("Contador suspenso");
+
+
             }
         });
 
@@ -315,6 +333,7 @@ public class mainForm {
                     String[] arrDevice = strDevice.split("#");
 
                     apartmentNode.add(new DefaultMutableTreeNode(arrDevice[0] + "-" + arrDevice[1]));
+
                 }
             }
 

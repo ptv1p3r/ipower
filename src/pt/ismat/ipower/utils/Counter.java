@@ -4,6 +4,8 @@ package pt.ismat.ipower.utils;
 import pt.ismat.ipower.forms.mainForm;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
@@ -14,13 +16,18 @@ import java.util.TimerTask;
  * @version 0.0
  */
 public class Counter implements Runnable {
-    public Thread t;
+    private Thread t;
     private String threadName;
     private static boolean suspended = false;
     private Date dataInicial, dataFinal;
     private Double dblTotalKwh;
     private Integer intTotalLeituras;
 
+
+    /**
+     * Metodo construtor do contador
+     * @param name Nome do contador
+     */
     public Counter(String name)
     {
         this.threadName = name;
@@ -29,11 +36,17 @@ public class Counter implements Runnable {
         this.dblTotalKwh = 0.0D;
         this.intTotalLeituras = 0;
 
-        System.out.println("Creating " +  threadName );
+        //System.out.println("Creating " +  threadName );
     }
 
-    public Integer getTotalLeituras() {
-        return intTotalLeituras;
+    /**
+     * Metodo que efetua o reset as variaveis do contador
+     */
+    public void resetCounter() {
+        this.intTotalLeituras = 0;
+        this.dblTotalKwh = 0.0D;
+        this.dataInicial = new Date();
+        this.dataFinal = this.dataInicial;
     }
 
     /**
@@ -73,31 +86,35 @@ public class Counter implements Runnable {
     {
         try
         {
-            dataInicial = new Date();
+            //dataInicial = dt.parse(dataInicial.toString());
             // TODO percorrer todos os equipamentos ligados e recolher o seu consumo com time stamp inicial e final e valor kw (kw equipamento * tempo )
-            System.out.println("Running " +  threadName + dataInicial);
+            //System.out.println("Running " +  threadName + dataInicial);
 
             DeviceReading newReading = new DeviceReading();
-            Timer timer = new Timer(true); //timer como daemon thread
+            Timer timer = new Timer(false); //timer como daemon thread
             timer.scheduleAtFixedRate(newReading, 0, 60*1000); // executa leitura minuto a minuto
 
             while (!suspended){ // enquanto nao for suspensa
 
+                mainForm.LeiturasTotal.setText(String.valueOf(intTotalLeituras));
+
                 synchronized(this) {
                     while(suspended) {
                         timer.cancel();
-                        System.out.println("Leitura cancelada");
+                        dataFinal = new Date();
+
+                        System.out.println("Leitura interrompida");
                         wait();
+
                     }
                 }
             }
 
-            System.out.println("Thread " +  threadName + " exiting.");
             dataFinal = new Date();
-            System.out.println(getDataInicial().toString() + "#" + getDataFinal().toString());
+            System.out.println("Thread " +  threadName + " exiting.");
+
         }
-        catch (InterruptedException e)
-        {
+        catch (InterruptedException e) {
             System.out.println("Thread " +  threadName + " interrupted.");
         }
     }
@@ -121,14 +138,14 @@ public class Counter implements Runnable {
     }
 
     /**
-     * Metodo que retorna a thread e a tira de modo suspenso
+     * Metodo que retorna a thread e a tira de modo suspensao
      */
     public synchronized void resume() {
         suspended = false;
         notify();
     }
 
-    public class DeviceReading extends TimerTask {
+    private class DeviceReading extends TimerTask {
 
         @Override
         public void run() {
@@ -137,8 +154,12 @@ public class Counter implements Runnable {
             System.out.println("Reading finished at:"+new Date());
         }
 
+        /**
+         * Metodo que efetua uma leitura a todos os dispositivos
+         */
         private void completeReading() {
             try {
+                // TODO Terminar algoritmo de recolha e gravacao das leituras
                 intTotalLeituras++;
                 Double dblTotalKw = 0.0D;
 
@@ -155,11 +176,11 @@ public class Counter implements Runnable {
                 Double dblTempoLeitura = Math.round((Double.valueOf(intTotalLeituras)/60)*100D)/100D; // nr leituras (1 minuto ) / 60 minutos
                 dblTotalKwh = Math.round((dblTotalKw * dblTempoLeitura) * 100D)/100D;
 
-
                 //DecimalFormat df=new DecimalFormat("0.000");
                 mainForm.CargaTotal.setText(String.valueOf(dblTotalKw) + " kW");
                 mainForm.TotalKw.setText(String.valueOf(dblTotalKwh) + " kWh");
-                mainForm.LeiturasTotal.setText(String.valueOf(intTotalLeituras));
+                //mainForm.LeiturasTotal.setText(String.valueOf(intTotalLeituras));
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
