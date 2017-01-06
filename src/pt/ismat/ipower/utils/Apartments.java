@@ -12,10 +12,12 @@ import java.util.Arrays;
 public class Apartments extends Buildings {
 
     final static String strBuildingPath = System.getProperty("user.dir") + "/buildings";
+    final static String strBuildingsXml = strBuildingsPath + "/buildings.xml";
 
     private Integer intApartmentId, buildingId;
     private String strApartmentName, apartmentPath;
 
+    //TODO:Compor estrutura.
     public Apartments(Integer id, String strApartmentName) {
         super(id);
         setBuildingId(id);
@@ -33,7 +35,7 @@ public class Apartments extends Buildings {
     }
 
     public void setBuildingId(Integer id) {
-        this.buildingId = id;
+        this.buildingId = id+1000;
     }
 
     public Integer getApartmentId() {
@@ -66,6 +68,7 @@ public class Apartments extends Buildings {
         return arrApartmentsList;
     }
 
+    //TODO: Tratar de ir buscar o id atraves do xml
     /**
      * Metodo que gera um novo id disponivel
      * @return Integer Novo id gerado
@@ -116,12 +119,12 @@ public class Apartments extends Buildings {
      */
     public static void saveApartment(Apartments Apartment){
         try {
-            File newApartment = new File(Apartment.getApartmentPath()+".xml");
-
-            if (!newApartment.exists()){ // valida se o apartamento existe
-                xmlParser.createApartmentXml(Apartment.getApartmentPath()+".xml");
-            }
-
+//            File newApartment = new File(Apartment.getApartmentPath()+".xml");
+//
+//            if (!newApartment.exists()){ // valida se o apartamento existe
+//                xmlParser.updateApartmentXml(strBuildingsXml, Apartment);
+//            }
+            xmlParser.updateApartmentXml(strBuildingsXml, Apartment, Apartment.getBuildingId());
         } catch (Exception ex) {
             //TODO : validação de erros
             ex.printStackTrace();

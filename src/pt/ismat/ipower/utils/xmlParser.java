@@ -282,33 +282,72 @@ public class xmlParser {
     }
 
     /**
-     * Metodo que cria o ficheiro xml de edificios base
-     * @param apartmentXmlFile Ficheiro xml de edificios
+     * Metodo que actualiza o ficheiro de edificios xml
+     * @param buildingXmlFile Ficheiro xml de edificios
+     * @param Apartment Edificio a ser adicionado
      */
-    public static void createApartmentXml(String apartmentXmlFile){
+    public static void updateApartmentXml(String buildingXmlFile,Apartments Apartment, Integer buildingId){
 
         try {
 
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-            // root elemento
-            Document doc = docBuilder.newDocument();
-            Element root = doc.createElement("apartment");
-            doc.appendChild(root);
+            Document document = docBuilder.parse(buildingXmlFile);
 
-            // escreve ficheiro xml
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File(apartmentXmlFile));
+            document.getDocumentElement().normalize();
 
-            transformer.transform(source, result);
+            // root
+            //Element root = document.getDocumentElement();
+
+            NodeList nlBuildingList = document.getElementsByTagName("building");
+
+            if (nlBuildingList != null && nlBuildingList.getLength() > 0) {
+
+                for (int i = 0; i < nlBuildingList.getLength(); i++) {
+
+                    Node nBuilding= nlBuildingList.item(i);
+                    Element eBuilding = (Element) nBuilding;
+
+                    if (eBuilding.hasAttribute("id") && eBuilding.getAttribute("id").equals(String.valueOf(buildingId))) {
+
+                        Element newApartment = document.createElement("apartments");
+
+                        // atributo id
+                        Attr attr = document.createAttribute("id");
+                        attr.setValue(Apartment.getApartmentId().toString());
+                        newApartment.setAttributeNode(attr);
+
+                        // apt nome
+                        Element apartmentName = document.createElement("apt");
+                        apartmentName.appendChild(document.createTextNode(Apartment.getApartmentName()));
+                        newApartment.appendChild(apartmentName);
+
+                        nBuilding.appendChild(newApartment);
+
+
+                        // escreve ficheiro xml
+                        DOMSource source = new DOMSource(document);
+
+                        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                        Transformer transformer = transformerFactory.newTransformer();
+                        StreamResult result = new StreamResult(buildingXmlFile);
+
+                        transformer.transform(source, result);
+                    }
+
+                }
+
+            }
 
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
         } catch (TransformerException tfe) {
             tfe.printStackTrace();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }catch (SAXException sax) {
+            sax.printStackTrace();
         }
 
     }
