@@ -66,9 +66,22 @@ public class apartForm {
             public void actionPerformed(ActionEvent e) {
 
                 if(txtName.getText().length()!=0){
+                    //cria um novo apartamento com a informacao inserida
                     Apartments Apartment = new Apartments(cbBuildings.getSelectedIndex(),txtName.getText().trim());
 
-                    Apartment.setBuildingId(cbBuildings.getSelectedIndex());
+                    //recebe a lista de apartamentos do edificio selecionado
+                    ArrayList arrApartmentsList = Apartments.getApartmentList(cbBuildings.getSelectedIndex()+1000);
+
+                    lstApartmentsModel.clear(); //limpa a lstApartmentModel de modo a que fique limpa do default
+
+                    //volta a preencher a lstApartmentModel com os apartamentos do edificio da combobox
+                    for (int i = 0; i < arrApartmentsList.size(); i++) {
+                        String strApartment = (String) arrApartmentsList.get(i);
+                        String[] arrApartment = strApartment.split("#");
+                        lstApartmentsModel.addElement(arrApartment[0] + " - " + arrApartment[1]);
+                    }
+
+                    //adiciona o novo elemento a lista, e cria o respetivo xml e atualiza a lista
                     lstApartmentsModel.addElement(Apartment.getApartmentId() + " - " + Apartment.getApartmentName());
                     Apartment.saveApartment(Apartment);
                     lstApartments.setModel(lstApartmentsModel);
@@ -191,7 +204,7 @@ public class apartForm {
         for (int i = 0; i < arrApartmentsList.size(); i++) {
             String strBuilding = (String) arrApartmentsList.get(i);
             String[] arrBuilding = strBuilding.split("#");
-            lstApartmentsModel.addElement(arrBuilding[0] + "-" + arrBuilding[1]);
+            lstApartmentsModel.addElement(arrBuilding[0] + " - " + arrBuilding[1]);
         }
 
         lstApartments.setModel(lstApartmentsModel);

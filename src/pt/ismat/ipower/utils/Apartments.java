@@ -77,12 +77,12 @@ public class Apartments extends Buildings {
         int i;
 
         try {
-            File apartment = new File(strBuildingPath + "/" + getBuildingId() + "/" + id + ".xml");
+            File apartmentXML = new File(strBuildingPath + "/" + getBuildingId() + "/" + id + ".xml");
 
-            if (apartment.exists()) { //verifica se o apartamento ja tem um ficheiro xml correspondente
+            if (apartmentXML.exists()) { //verifica se o apartamento ja tem um ficheiro xml correspondente
 
-                File apartmentXML = new File(strBuildingPath + "/" + getBuildingId());
-                File[] arrApartments = apartmentXML.listFiles();
+                File apartmentList = new File(strBuildingPath + "/" + getBuildingId()); //vai buscar a lista de ficheiros xml
+                File[] arrApartments = apartmentList.listFiles();
                 Arrays.sort(arrApartments);
 
                 //Cria um array de strings com tamanho do arrBuildings
@@ -99,7 +99,7 @@ public class Apartments extends Buildings {
                             id++;
                         }
                     }
-                } catch (ArrayIndexOutOfBoundsException e) { //caso nao exista o valor do id na idList, este obtem o ultimo valor da lista+1
+                } catch (ArrayIndexOutOfBoundsException e) { //caso nao exista o valor do id na idList, este obtem o ultimo id da lista+1
                     id=Integer.parseInt(idList[i])+1;
                 }
             }
