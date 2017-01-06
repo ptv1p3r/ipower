@@ -281,6 +281,7 @@ public class xmlParser {
 
     }
 
+    //adiciona apartamentos no sitio correto no xml
     /**
      * Metodo que actualiza o ficheiro de edificios xml
      * @param buildingXmlFile Ficheiro xml de edificios
