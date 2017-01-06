@@ -17,7 +17,6 @@ public class Apartments extends Buildings {
     private Integer intApartmentId, buildingId;
     private String strApartmentName, apartmentPath;
 
-    //TODO:Compor estrutura.
     public Apartments(Integer id, String strApartmentName) {
         super(id);
         setBuildingId(id);
