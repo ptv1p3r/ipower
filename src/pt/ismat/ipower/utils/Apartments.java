@@ -15,17 +15,17 @@ public class Apartments extends Buildings {
     final static String strBuildingsXml = strBuildingsPath + "/buildings.xml";
 
     private Integer intApartmentId, buildingId;
-    private String strApartmentName, apartmentPath;
+    private String strApartmentName, apartmentXmlPath;
 
     public Apartments(Integer id, String strApartmentName) {
         super(id);
         setBuildingId(id);
-        setIntApartmentId(getNewApartmentId());
+        setApartmentId(getNewApartmentId());
 
         this.intApartmentId=getApartmentId();
         this.buildingId=getBuildingId();
         this.strApartmentName=strApartmentName;
-        this.apartmentPath=strBuildingPath + "/" + (getBuildingId()+1000)+ "/" + this.intApartmentId;
+        this.apartmentXmlPath=strBuildingPath + "/" + (getBuildingId())+ "/" + this.intApartmentId + ".xml";
     }
 
     @Override
@@ -41,7 +41,7 @@ public class Apartments extends Buildings {
         return intApartmentId;
     }
 
-    public void setIntApartmentId(Integer intApartmentId) {
+    public void setApartmentId(Integer intApartmentId) {
         this.intApartmentId = intApartmentId;
     }
 
@@ -49,8 +49,8 @@ public class Apartments extends Buildings {
         return strApartmentName;
     }
 
-    public String getApartmentPath() {
-        return apartmentPath;
+    public String getapartmentXmlPath() {
+        return apartmentXmlPath;
     }
 
 
@@ -77,11 +77,11 @@ public class Apartments extends Buildings {
         int i;
 
         try {
-            File apartment = new File(strBuildingPath + "/" + (getBuildingId()+1000) + "/" + id + ".xml");
+            File apartment = new File(strBuildingPath + "/" + getBuildingId() + "/" + id + ".xml");
 
             if (apartment.exists()) { //verifica se o apartamento ja tem um ficheiro xml correspondente
 
-                File apartmentXML = new File(strBuildingPath + "/" + (getBuildingId()+1000));
+                File apartmentXML = new File(strBuildingPath + "/" + getBuildingId());
                 File[] arrApartments = apartmentXML.listFiles();
                 Arrays.sort(arrApartments);
 
@@ -113,17 +113,18 @@ public class Apartments extends Buildings {
     }
 
     /**
-     * Metodo que efetua a gravacao do novo apartamento criando a pasta respectiva
+     * Metodo que efetua a gravacao do novo apartamento criando o ficheiro xml respetivo no lugar indicado
      * @param Apartment Apartamento a ser gravado
      */
     public static void saveApartment(Apartments Apartment){
         try {
-//            File newApartment = new File(Apartment.getApartmentPath()+".xml");
-//
-//            if (!newApartment.exists()){ // valida se o apartamento existe
-//                xmlParser.updateApartmentXml(strBuildingsXml, Apartment);
-//            }
-            xmlParser.updateApartmentXml(strBuildingsXml, Apartment, Apartment.getBuildingId());
+            File newApartment = new File(Apartment.getapartmentXmlPath());
+
+            if (!newApartment.exists()){ // valida se o apartamento existe
+                xmlParser.createApartmentXml(Apartment.getapartmentXmlPath());  //cria o xml
+                xmlParser.updateApartmentXml(strBuildingsXml, Apartment, Apartment.getBuildingId());    //update ao xml criado
+            }
+
         } catch (Exception ex) {
             //TODO : validação de erros
             ex.printStackTrace();
