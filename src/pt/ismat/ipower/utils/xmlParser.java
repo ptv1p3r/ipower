@@ -7,6 +7,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -227,22 +228,14 @@ public class xmlParser {
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
             // root elemento
-            Document doc = docBuilder.newDocument();
-            Element root = doc.createElement("buildings");
-            doc.appendChild(root);
+            documento = docBuilder.newDocument();
+            Element root = documento.createElement("buildings");
+            documento.appendChild(root);
 
-            // escreve ficheiro xml
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File(buildingXmlFile));
-
-            transformer.transform(source, result);
+            xmlWriteDocument(buildingXmlFile);
 
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
-        } catch (TransformerException tfe) {
-            tfe.printStackTrace();
         }
 
     }
@@ -259,24 +252,15 @@ public class xmlParser {
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
             // root elemento
-            Document doc = docBuilder.newDocument();
-            Element root = doc.createElement("device");
-            doc.appendChild(root);
+            documento = docBuilder.newDocument();
+            Element root = documento.createElement("device");
+            documento.appendChild(root);
 
-            // escreve ficheiro xml
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File(apartmentXmlFile));
-
-            transformer.transform(source, result);
+            xmlWriteDocument(apartmentXmlFile);
 
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
-        } catch (TransformerException tfe) {
-            tfe.printStackTrace();
         }
-
     }
 
     /**
@@ -362,47 +346,38 @@ public class xmlParser {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-            Document document = docBuilder.parse(buildingXmlFile);
+            //Document document = docBuilder.parse(buildingXmlFile);
+            documento = docBuilder.parse(buildingXmlFile);
 
             // root
-            Element root = document.getDocumentElement();
+            Element root = documento.getDocumentElement();
 
-            Element newBuilding = document.createElement("building");
+            Element newBuilding = documento.createElement("building");
 
             // atributo id
-            Attr attr = document.createAttribute("id");
+            Attr attr = documento.createAttribute("id");
             attr.setValue(Building.getBuildingId().toString());
             newBuilding.setAttributeNode(attr);
 
             // nome
-            Element buildingName = document.createElement("name");
-            buildingName.appendChild(document.createTextNode(Building.getName()));
+            Element buildingName = documento.createElement("name");
+            buildingName.appendChild(documento.createTextNode(Building.getName()));
             newBuilding.appendChild(buildingName);
 
             // localizacao
-            Element buildingLocation = document.createElement("location");
-            buildingLocation.appendChild(document.createTextNode(Building.getLocation()));
+            Element buildingLocation = documento.createElement("location");
+            buildingLocation.appendChild(documento.createTextNode(Building.getLocation()));
             newBuilding.appendChild(buildingLocation);
 
             root.appendChild(newBuilding);
 
-
-            // escreve ficheiro xml
-            DOMSource source = new DOMSource(document);
-
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            StreamResult result = new StreamResult(buildingXmlFile);
-
-            transformer.transform(source, result);
+            xmlWriteDocument(buildingXmlFile);
 
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
-        } catch (TransformerException tfe) {
-            tfe.printStackTrace();
         } catch (IOException ioe) {
             ioe.printStackTrace();
-        }catch (SAXException sax) {
+        } catch (SAXException sax) {
             sax.printStackTrace();
         }
 
@@ -632,6 +607,30 @@ public class xmlParser {
         }
 
         return documento;
+    }
+
+    /**
+     * Metodo que escreve o documento normalizado para o ficheiro xml
+     * @param buildingXmlFile Caminho de ficheiro xml
+     */
+    private static void xmlWriteDocument(String buildingXmlFile){
+
+        try {
+            // escreve ficheiro xml
+            DOMSource source = new DOMSource(documento);
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            StreamResult result = new StreamResult(buildingXmlFile);
+
+            transformer.transform(source, result);
+
+        } catch (TransformerConfigurationException tce){
+            tce.printStackTrace();
+        } catch (TransformerException te){
+            te.printStackTrace();
+        }
+
     }
 
 }

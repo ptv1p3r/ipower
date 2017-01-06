@@ -123,6 +123,9 @@ public class Counter implements Runnable {
                 for (int i=0; i < arrActiveDevices.size(); i++ ){
                     String[] arrDevice = arrActiveDevices.get(i).toString().trim().split("#");
 
+                    // TODO aplicar algoritmo para equipamentos automaticos ligar/desligar consoante variaveis de estacao do ano e tipo de equipamento
+
+
                     dblTotalKw = dblTotalKw + Double.valueOf(arrDevice[2])/1000; // conversao w -> kW
 
                 }

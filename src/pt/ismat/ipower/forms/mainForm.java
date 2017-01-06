@@ -125,39 +125,6 @@ public class mainForm {
         JMenu file = new JMenu("Ficheiros");
         file.setMnemonic(KeyEvent.VK_F); // adiciona tecla
 
-        // Ficheiros->Importar
-        JMenuItem importarItem = new JMenuItem("Importar...", icon);
-        importarItem.setMnemonic(KeyEvent.VK_I);
-        // adiciona o listener para captar evento
-        importarItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-
-                // Filtros de ficheiros
-                FileFilter excel2003 = new FileNameExtensionFilter("ficheiros Excel 2003 ou inf. (.xls)", new String[] {"xls"});
-                FileFilter excel2007 = new FileNameExtensionFilter("ficheiros Excel 2007 ou sup. (.xlsx)", new String[] {"xlsx"});
-
-                JFileChooser fileChooser = new JFileChooser(); // Adiciona o file chooser para indicar o ficheiro a importar
-
-                // Aplica filtros
-                fileChooser.addChoosableFileFilter(excel2007); // opcao para filtro
-                fileChooser.setFileFilter(excel2003); // filtro selected
-                fileChooser.setAcceptAllFileFilterUsed(false); // desliga all files do filtro
-
-                fileChooser.setCurrentDirectory(new File(System.getProperty("user.home"))); // path para localizar ficheiro
-                int result = fileChooser.showOpenDialog(frame);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    //System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-
-//                    Parser excelFile = new Parser(selectedFile);
-//                    excelFile.exportToPdf();
-                }
-            }
-        });
-        file.add(importarItem);
-
-        file.addSeparator();
-
         // Ficheiros->Sair
         JMenuItem eMenuItem = new JMenuItem("Sair", icon);
         eMenuItem.setMnemonic(KeyEvent.VK_S);
