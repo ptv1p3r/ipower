@@ -241,7 +241,7 @@ public class mainForm {
                 equipFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
                 equipFrame.setResizable(false);
-                equipFrame.setPreferredSize(new Dimension(400, 400));
+                equipFrame.setPreferredSize(new Dimension(600, 400));
 
                 equipFrame.pack();
                 equipFrame.setLocationRelativeTo(null);

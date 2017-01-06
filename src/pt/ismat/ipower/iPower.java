@@ -21,15 +21,15 @@ public class iPower {
                 }
 
             }
+
+            javax.swing.SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    mainForm.createGUI();
+                }
+            });
+
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
-
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                mainForm.createGUI();
-            }
-        });
-
     }
 }

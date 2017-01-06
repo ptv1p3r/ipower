@@ -10,19 +10,21 @@ import static pt.ismat.ipower.utils.Buildings.strBuildingsXml;
  */
 public class Devices {
 
-    private String strDeviceId, strDeviceType;
-    private Integer intConsumo;
+    private String strDeviceId, strDeviceCategory;
+    private Integer intConsumo, intDeviceType;
     private Boolean bolEnabled = false ;
+
 
     /**
      * Construtor para equipamentos
      * @param strDeviceId Identificador de equipamento
      */
-    public Devices(String strDeviceId,Integer intConsumo,String strDeviceType,Boolean bolEnabled) {
+    public Devices(String strDeviceId,Integer intConsumo,String strDeviceCategory,Integer intDeviceType,Boolean bolEnabled) {
         this.strDeviceId = strDeviceId;
         this.intConsumo = intConsumo;
-        this.strDeviceType = strDeviceType;
+        this.strDeviceCategory = strDeviceCategory;
         this.bolEnabled = bolEnabled;
+        this.intDeviceType = intDeviceType;
     }
 
     /**
@@ -34,11 +36,19 @@ public class Devices {
     }
 
     /**
-     * Metodo que retorna o tipo de equipamento
+     * Metodo que retorna a categoria de equipamento
      * @return String Equipamento (Automatico,Remoto)
      */
-    public String getDeviceType() {
-        return strDeviceType;
+    public String getDeviceCategory() {
+        return strDeviceCategory;
+    }
+
+    /**
+     * Metodo que retorna o tipo de equipamento
+     * @return Integer Tipo (nenhum,frigorifico,aquecedor)
+     */
+    public Integer getDeviceType() {
+        return intDeviceType;
     }
 
     /**
