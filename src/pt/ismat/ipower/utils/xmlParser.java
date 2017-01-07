@@ -284,6 +284,11 @@ public class xmlParser {
                     //entra quando encontra o edificio
                     if (eBuilding.hasAttribute("id") && eBuilding.getAttribute("id").equals(String.valueOf(buildingId))) {
 
+                        //Vai buscar o node apartments ao node do building
+                        NodeList nlApartmentList = eBuilding.getElementsByTagName("apartments");
+                        Node nApartments=nlApartmentList.item(0);
+
+                        //cria o node do apartment
                         Element newApartment = document.createElement("apartment");
 
                         // atributo id
@@ -296,7 +301,7 @@ public class xmlParser {
                         apartmentName.setValue(Apartment.getApartmentName());
                         newApartment.setAttributeNode(apartmentName);
 
-                        nBuilding.appendChild(newApartment);
+                        nApartments.appendChild(newApartment);
 
 
                         // escreve ficheiro xml
@@ -364,6 +369,10 @@ public class xmlParser {
             newBuilding.setAttributeNode(buildingLocation);
 
             root.appendChild(newBuilding);
+
+            //abre o node dos apartments e da apend ao node do edificio
+            Element eBuilding = documento.createElement("apartments");
+            newBuilding.appendChild(eBuilding);
 
             xmlWriteDocument(buildingXmlFile);
 
