@@ -113,6 +113,8 @@ public class Buildings {
                     }
                 } catch (ArrayIndexOutOfBoundsException e) { //caso nao exista o valor do id na idList, este obtem o ultimo valor da lista+1
                     id=Integer.parseInt(idList[i])+1;
+                } catch (NumberFormatException n) {
+                    //TODO: descobrir o porque deste erro, sempre que e inserido novo building, da este erro no id
                 }
             }
 

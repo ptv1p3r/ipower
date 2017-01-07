@@ -311,8 +311,6 @@ public class xmlParser {
                         Transformer transformer = transformerFactory.newTransformer();
                         StreamResult result = new StreamResult(buildingXmlFile);
 
-                        //identacao
-                        //transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
                         transformer.transform(source, result);
                     }
@@ -461,25 +459,36 @@ public class xmlParser {
 
                     if (eBuilding.hasAttribute("id") && eBuilding.getAttribute("id").equals(String.valueOf(buildingId))) {
 
-                        NodeList nlApartmentList = document.getElementsByTagName("apartments");
+                        //Vai buscar o node apartments ao node do building
+                        NodeList nlApartments = eBuilding.getElementsByTagName("apartments");
 
-                        if (nlApartmentList != null && nlApartmentList.getLength() > 0) {
-                            //TODO: Apaga todos os apartamentos com o mesmo id
-                            for (int j = 0 ; j<nlApartmentList.getLength() ; j++) {
+                        for (int j=0 ; j<nlApartments.getLength() ; j++ ) {
 
-                                Node nApartment = nlApartmentList.item(j);
-                                Element eApartment = (Element) nApartment;
+                            Node nApartments = nlApartments.item(j);
+                            Element eApartments = (Element) nApartments;
 
-                                if (eApartment.hasAttribute("id") && eApartment.getAttribute("id").equals(String.valueOf(apartmentId))) {
-                                    nApartment.getParentNode().removeChild(nApartment);
+                            //verifica se existem apartamentos no edificio
+                            if (eApartments!=null) {
+
+                                //guarda todos os nodes dos apartamentos
+                                NodeList nlApartment = eBuilding.getElementsByTagName("apartment");
+
+                                for (int k=0 ; k<nlApartment.getLength() ; k++) {
+
+                                    Node nApartment = nlApartment.item(k);
+                                    Element eApartment = (Element) nApartment;
+
+                                    //procura pelo apartamento selecionado
+                                    if (eApartment.hasAttribute("id") && eApartment.getAttribute("id").equals(String.valueOf(apartmentId))) {
+
+                                        //remove o node
+                                        nApartment.getParentNode().removeChild(nApartment);
+                                    }
                                 }
                             }
                         }
-
                     }
-
                 }
-
             }
 
 
