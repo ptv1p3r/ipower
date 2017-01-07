@@ -41,8 +41,6 @@ public class buildForm {
 
         lstBuildings.setModel(lstBuildingsModel);
 
-
-
         /**
          * Action Listener do botao de adicionar edificio
          */
@@ -134,6 +132,24 @@ public class buildForm {
                     lblIdData.setText("- nenhum -");
                     txtName.setText("");
                     txtLocation.setText("");
+                }
+
+                //bloqueia o txtLocation e o txtName
+                txtLocation.setEnabled(false);
+                txtName.setEnabled(false);
+            }
+        });
+
+        //testing
+        btnEditar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!txtName.isEnabled() && !txtLocation.isEnabled()) {
+                    txtName.setEnabled(true);
+                    txtLocation.setEnabled(true);
+                } else {
+                    txtName.setEnabled(false);
+                    txtLocation.setEnabled(false);
                 }
             }
         });

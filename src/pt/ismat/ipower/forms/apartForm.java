@@ -135,6 +135,22 @@ public class apartForm {
             }
         });
 
+        /**
+         * Action Listener do botao editar apartamento
+         */
+        btnEditar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if (!txtName.isEnabled()) {
+                    txtName.setEnabled(true);
+                } else {
+                    txtName.setEnabled(false);
+                }
+
+            }
+        });
+
 
         /**
          * Item listener da combobox com o id do edificio
@@ -189,6 +205,9 @@ public class apartForm {
                     txtName.setText(" ");
 
                 }
+
+                //bloqueia o txtName
+                txtName.setEnabled(false);
             }
         });
     }

@@ -534,7 +534,7 @@ public class xmlParser {
                     Element eBuilding = (Element) nBuilding;
 
                     if (eBuilding.hasAttribute("id") && eBuilding.getAttribute("id").equals(String.valueOf(id))) {
-                        building = new Buildings( eBuilding.getElementsByTagName("name").item(0).getTextContent(), eBuilding.getElementsByTagName("location").item(0).getTextContent(),Integer.valueOf(eBuilding.getAttribute("id")));
+                        building = new Buildings( eBuilding.getAttribute("name"), eBuilding.getAttribute("location"),Integer.valueOf(eBuilding.getAttribute("id")));
                     }
 
                 }
