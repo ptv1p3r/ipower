@@ -145,6 +145,8 @@ public class apartForm {
 
                 DefaultListModel lstApartmentsModel = new DefaultListModel();
 
+                lstApartmentsModel.clear();
+
                 ArrayList arrApartmentsList = Apartments.getApartmentList(cbBuildings.getSelectedIndex()+1000);
 
                 for (int i = 0; i < arrApartmentsList.size(); i++) {

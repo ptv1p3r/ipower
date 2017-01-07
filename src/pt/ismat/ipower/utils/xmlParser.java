@@ -6,10 +6,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
@@ -41,7 +38,7 @@ public class xmlParser {
 
                     Element eElement = (Element) nBuilding;
 
-                    arrBuildingsList.add(eElement.getAttribute("id") + "#" + eElement.getElementsByTagName("name").item(0).getTextContent());
+                    arrBuildingsList.add(eElement.getAttribute("id") + "#" + eElement.getAttribute("name"));
 
                 }
             }
@@ -61,33 +58,32 @@ public class xmlParser {
     public static void readApartmentsXml(String buildingXmlFile,ArrayList arrApartmentsList,Integer buildingId){
 
         try {
+            //buildings.xml
             documento = xmlHeaderDocument(buildingXmlFile);
             NodeList nlBuildings = documento.getElementsByTagName("building");
 
+            //vai a procura do edificio
             for (int i = 0; i < nlBuildings.getLength(); i++) {
                 Node nBuilding = nlBuildings.item(i);
 
                 if (nBuilding.getNodeType() == Node.ELEMENT_NODE) {
                     Element eBuilding = (Element) nBuilding;
 
+                    //confirma o edificio
                     if (eBuilding.hasAttribute("id") && eBuilding.getAttribute("id").equals(String.valueOf(buildingId))) {
-                        NodeList nlApartments = documento.getElementsByTagName("apartments");
 
-                        NodeList childList = nlBuildings.item(i).getChildNodes();
+                        //vai buscar todos os apartamentos do edificio
+                        NodeList nlApartments = eBuilding.getElementsByTagName("apartment");
 
-                        for (int j = 0; j < childList.getLength(); j++) {
-                            Node childNode = childList.item(j);
+                        //le a informacao de todos os apartamentos
+                        for (int k = 0; k < nlApartments.getLength(); k++) {
+                            Node nApartments = nlApartments.item(k);
 
-                            if ("apartments".equals(childNode.getNodeName())) {
+                            if (nApartments.getNodeType() == Node.ELEMENT_NODE) {
+                                Element eApartment = (Element) nApartments;
 
-                                if (childNode.getNodeType() == Node.ELEMENT_NODE) {
-                                    Element eApartment = (Element) childNode;
-
-                                    arrApartmentsList.add(eApartment.getAttribute("id") + "#" + eApartment.getElementsByTagName("apt").item(0).getTextContent());
-                                }
-                                //System.out.println(childList.item(j).getTextContent().trim());
+                                arrApartmentsList.add(eApartment.getAttribute("id") + "#" + eApartment.getAttribute("apt"));
                             }
-
                         }
                     }
                 }
@@ -128,10 +124,8 @@ public class xmlParser {
                                 arrDevicesList.add(eDevice.getAttribute("id") + "#" + eDevice.getAttribute("category"));
 
                             }
-
                         }
                     }
-
                 }
             }
 
@@ -157,21 +151,20 @@ public class xmlParser {
 
                 if (nApartment.getNodeType() == Node.ELEMENT_NODE) { // tipo de no
 
-                        NodeList childList = nlApartments.item(i).getChildNodes();
-                        for (int j = 0; j < childList.getLength(); j++) {
-                            Node childNode = childList.item(j);
+                    NodeList childList = nlApartments.item(i).getChildNodes();
 
-                            if ("devices".equals(childNode.getNodeName())) {
-                                Element eDevice = (Element) childNode;
+                    for (int j = 0; j < childList.getLength(); j++) {
+                        Node childNode = childList.item(j);
 
-                                if (Boolean.valueOf(eDevice.getElementsByTagName("enable").item(0).getTextContent())) { // equipamentos activos
-                                    arrDevicesList.add(eDevice.getAttribute("id") + "#" + eDevice.getAttribute("category") + "#" + eDevice.getElementsByTagName("euc").item(0).getTextContent());
-                                }
+                        if ("devices".equals(childNode.getNodeName())) {
+                            Element eDevice = (Element) childNode;
+
+                            if (Boolean.valueOf(eDevice.getElementsByTagName("enable").item(0).getTextContent())) { // equipamentos activos
+                                arrDevicesList.add(eDevice.getAttribute("id") + "#" + eDevice.getAttribute("category") + "#" + eDevice.getElementsByTagName("euc").item(0).getTextContent());
                             }
-
                         }
                     }
-
+                }
             }
 
         } catch (Exception e) {
@@ -279,31 +272,29 @@ public class xmlParser {
 
             document.getDocumentElement().normalize();
 
-            // root
-            //Element root = document.getDocumentElement();
-
             NodeList nlBuildingList = document.getElementsByTagName("building");
 
-            if (nlBuildingList != null && nlBuildingList.getLength() > 0) {
+            if (nlBuildingList != null && nlBuildingList.getLength() > 0) { //verifica se a nodelist dos edificios foi bem lida
 
-                for (int i = 0; i < nlBuildingList.getLength(); i++) {
+                for (int i = 0; i < nlBuildingList.getLength(); i++) {  //procura pelo edificio com o id inserido
 
                     Node nBuilding= nlBuildingList.item(i);
                     Element eBuilding = (Element) nBuilding;
 
+                    //entra quando encontra o edificio
                     if (eBuilding.hasAttribute("id") && eBuilding.getAttribute("id").equals(String.valueOf(buildingId))) {
 
-                        Element newApartment = document.createElement("apartments");
+                        Element newApartment = document.createElement("apartment");
 
                         // atributo id
-                        Attr attr = document.createAttribute("id");
-                        attr.setValue(Apartment.getApartmentId().toString());
-                        newApartment.setAttributeNode(attr);
+                        Attr apartmentId = document.createAttribute("id");
+                        apartmentId.setValue(Apartment.getApartmentId().toString());
+                        newApartment.setAttributeNode(apartmentId);
 
                         // apt nome
-                        Element apartmentName = document.createElement("apt");
-                        apartmentName.appendChild(document.createTextNode(Apartment.getApartmentName()));
-                        newApartment.appendChild(apartmentName);
+                        Attr apartmentName = document.createAttribute("apt");
+                        apartmentName.setValue(Apartment.getApartmentName());
+                        newApartment.setAttributeNode(apartmentName);
 
                         nBuilding.appendChild(newApartment);
 
@@ -314,6 +305,9 @@ public class xmlParser {
                         TransformerFactory transformerFactory = TransformerFactory.newInstance();
                         Transformer transformer = transformerFactory.newTransformer();
                         StreamResult result = new StreamResult(buildingXmlFile);
+
+                        //identacao
+                        //transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
                         transformer.transform(source, result);
                     }
@@ -355,19 +349,19 @@ public class xmlParser {
             Element newBuilding = documento.createElement("building");
 
             // atributo id
-            Attr attr = documento.createAttribute("id");
-            attr.setValue(Building.getBuildingId().toString());
-            newBuilding.setAttributeNode(attr);
+            Attr attrBuildingId = documento.createAttribute("id");
+            attrBuildingId.setValue(Building.getBuildingId().toString());
+            newBuilding.setAttributeNode(attrBuildingId);
 
             // nome
-            Element buildingName = documento.createElement("name");
-            buildingName.appendChild(documento.createTextNode(Building.getName()));
-            newBuilding.appendChild(buildingName);
+            Attr buildingName = documento.createAttribute("name");
+            buildingName.setValue(Building.getName());
+            newBuilding.setAttributeNode(buildingName);
 
             // localizacao
-            Element buildingLocation = documento.createElement("location");
-            buildingLocation.appendChild(documento.createTextNode(Building.getLocation()));
-            newBuilding.appendChild(buildingLocation);
+            Attr buildingLocation = documento.createAttribute("location");
+            buildingLocation.setValue(Building.getLocation());
+            newBuilding.setAttributeNode(buildingLocation);
 
             root.appendChild(newBuilding);
 
