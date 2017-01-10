@@ -142,10 +142,37 @@ public class apartForm {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                //caso esteja trancado, ativa
                 if (!txtName.isEnabled()) {
                     txtName.setEnabled(true);
-                } else {
+                } else {    //le o que tem a fazer e tranca as casas
                     txtName.setEnabled(false);
+
+                    //cria um novo apartamento com o nome novo, ignora os espacos da indentacao da lable.
+                    Apartments Apartment = new Apartments(cbBuildings.getSelectedIndex() + 1000, Integer.parseInt(lblIdData.getText().trim()),
+                            txtName.getText());
+
+                    //edita o xml do apartamento
+                    Apartment.editApartment(Apartment.getBuildingId(), Apartment.getApartmentId(),Apartment.getApartmentName());
+
+                    //recebe a lista de apartamentos do edificio selecionado
+                    ArrayList arrApartmentsList = Apartments.getApartmentList(cbBuildings.getSelectedIndex()+1000);
+
+                    //limpa a lstApartmentModel
+                    lstApartmentsModel.clear();
+
+                    //volta a preencher a lstApartmentModel com os apartamentos do edificio da combobox atualizados
+                    for (int i = 0; i < arrApartmentsList.size(); i++) {
+                        String strApartment = (String) arrApartmentsList.get(i);
+                        String[] arrApartment = strApartment.split("#");
+                        lstApartmentsModel.addElement(arrApartment[0] + " - " + arrApartment[1]);
+                    }
+
+                    lstApartments.setModel(lstApartmentsModel);
+
+                    //preenche as casas com a nova informacao do apartamento
+                    lblIdData.setText(Integer.toString(Apartment.getApartmentId()));
+                    txtName.setText(Apartment.getApartmentName());
                 }
 
             }

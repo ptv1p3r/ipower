@@ -28,6 +28,13 @@ public class Apartments extends Buildings {
         this.apartmentXmlPath=strBuildingPath + "/" + (getBuildingId())+ "/" + this.intApartmentId + ".xml";
     }
 
+    public Apartments(Integer id, Integer intApartmentId, String strApartmentName) {
+        super(id);
+        this.intApartmentId = intApartmentId;
+        this.buildingId = id;
+        this.strApartmentName = strApartmentName;
+    }
+
     @Override
     public Integer getBuildingId() {
         return buildingId;
@@ -153,4 +160,14 @@ public class Apartments extends Buildings {
         }
     }
 
+    public static void editApartment(Integer buildingId, Integer apartmentId, String apartmentName) {
+
+        try {
+            xmlParser.editApartmentXml(strBuildingsXml, buildingId, apartmentId, apartmentName);    //update ao xml
+
+        } catch (Exception ex) {
+            //TODO : validação de erros
+            ex.printStackTrace();
+        }
+    }
 }
