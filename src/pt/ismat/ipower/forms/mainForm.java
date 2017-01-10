@@ -47,6 +47,7 @@ public class mainForm {
     private JLabel lblCargaTotalData;
     private JLabel lblStatusBar;
     private JLabel lblStatusBarData;
+    private JButton btnUpdate;
     public Counter cDevicesCounter;
     public static JLabel LeiturasTotal;
     public static JLabel TotalKw;
@@ -109,7 +110,13 @@ public class mainForm {
             }
         });
 
-
+        //to be approved
+        btnUpdate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createTree();
+            }
+        });
     }
 
     /**
@@ -300,7 +307,6 @@ public class mainForm {
 
                 }
             }
-
 
 
             root.add(buildingNode);
