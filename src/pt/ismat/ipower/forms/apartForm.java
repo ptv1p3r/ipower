@@ -148,31 +148,42 @@ public class apartForm {
                 } else {    //le o que tem a fazer e tranca as casas
                     txtName.setEnabled(false);
 
-                    //cria um novo apartamento com o nome novo, ignora os espacos da indentacao da lable.
-                    Apartments Apartment = new Apartments(cbBuildings.getSelectedIndex() + 1000, Integer.parseInt(lblIdData.getText().trim()),
-                            txtName.getText());
+                    //janela para confirmacao da edicao
+                    int resultado = JOptionPane.showConfirmDialog(
+                            mainFrame,
+                            "Deseja mesmo editar este apartamento?",
+                            "iPower - Edição de Apartamento",
+                            JOptionPane.YES_NO_OPTION);
 
-                    //edita o xml do apartamento
-                    Apartment.editApartment(Apartment.getBuildingId(), Apartment.getApartmentId(),Apartment.getApartmentName());
+                    //efetua a edicao
+                    if (resultado == 0) {
 
-                    //recebe a lista de apartamentos do edificio selecionado
-                    ArrayList arrApartmentsList = Apartments.getApartmentList(cbBuildings.getSelectedIndex()+1000);
+                        //cria um novo apartamento com o nome novo, ignora os espacos da indentacao da lable.
+                        Apartments Apartment = new Apartments(cbBuildings.getSelectedIndex() + 1000, Integer.parseInt(lblIdData.getText().trim()),
+                                txtName.getText());
 
-                    //limpa a lstApartmentModel
-                    lstApartmentsModel.clear();
+                        //edita o xml do apartamento
+                        Apartment.editApartment(Apartment.getBuildingId(), Apartment.getApartmentId(), Apartment.getApartmentName());
 
-                    //volta a preencher a lstApartmentModel com os apartamentos do edificio da combobox atualizados
-                    for (int i = 0; i < arrApartmentsList.size(); i++) {
-                        String strApartment = (String) arrApartmentsList.get(i);
-                        String[] arrApartment = strApartment.split("#");
-                        lstApartmentsModel.addElement(arrApartment[0] + " - " + arrApartment[1]);
+                        //recebe a lista de apartamentos do edificio selecionado
+                        ArrayList arrApartmentsList = Apartments.getApartmentList(cbBuildings.getSelectedIndex() + 1000);
+
+                        //limpa a lstApartmentModel
+                        lstApartmentsModel.clear();
+
+                        //volta a preencher a lstApartmentModel com os apartamentos do edificio da combobox atualizados
+                        for (int i = 0; i < arrApartmentsList.size(); i++) {
+                            String strApartment = (String) arrApartmentsList.get(i);
+                            String[] arrApartment = strApartment.split("#");
+                            lstApartmentsModel.addElement(arrApartment[0] + " - " + arrApartment[1]);
+                        }
+
+                        lstApartments.setModel(lstApartmentsModel);
+
+                        //preenche as casas com a nova informacao do apartamento
+                        lblIdData.setText(Integer.toString(Apartment.getApartmentId()));
+                        txtName.setText(Apartment.getApartmentName());
                     }
-
-                    lstApartments.setModel(lstApartmentsModel);
-
-                    //preenche as casas com a nova informacao do apartamento
-                    lblIdData.setText(Integer.toString(Apartment.getApartmentId()));
-                    txtName.setText(Apartment.getApartmentName());
                 }
 
             }
@@ -190,20 +201,26 @@ public class apartForm {
 
                 lstApartmentsModel.clear();
 
+                //vai buscar a lista de apartamentos do edificio selecionado
                 ArrayList arrApartmentsList = Apartments.getApartmentList(cbBuildings.getSelectedIndex()+1000);
 
+                //preenche a lstApartments com os apartamentos existentes do edificio selecionado
                 for (int i = 0; i < arrApartmentsList.size(); i++) {
                     String strApartment = (String) arrApartmentsList.get(i);
                     String[] arrApartment = strApartment.split("#");
                     lstApartmentsModel.addElement(arrApartment[0] + " - " + arrApartment[1]);
                 }
 
-                setApartmentList(cbBuildings.getSelectedIndex()+1000);
                 lstApartments.setModel(lstApartmentsModel);
 
+                //deixa as lables vazias
                 lblIdData.setText("- nenhum -");
                 txtName.setText(" ");
 
+                //caso a lable esteja trancada, destranca a mesma
+                if (!txtName.isEnabled()) {
+                    txtName.setEnabled(true);
+                }
             }
         });
 
