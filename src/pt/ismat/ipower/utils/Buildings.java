@@ -173,6 +173,17 @@ public class Buildings {
         return xmlParser.loadBuildingXml(strBuildingsXml,id);
     }
 
+    public static void editBuilding(String buildingName, String buildingLocation, Integer buildingId) {
+
+        try {
+            xmlParser.editBuildingXml(strBuildingsXml, buildingName, buildingLocation, buildingId);    //update ao xml
+
+        } catch (Exception ex) {
+            //TODO : validação de erros
+            ex.printStackTrace();
+        }
+    }
+
     /**
      * Metodo que retorna uma lista de edificios existentes
      * @return Buildings List

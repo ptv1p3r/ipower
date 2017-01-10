@@ -277,7 +277,7 @@ public class mainForm {
             String strBuilding = (String) arrBuildingsList.get(i);
             String[] arrBuilding = strBuilding.split("#");
 
-            DefaultMutableTreeNode buildingNode = new DefaultMutableTreeNode(arrBuilding[0] + "-" + arrBuilding[1]);
+            DefaultMutableTreeNode buildingNode = new DefaultMutableTreeNode(arrBuilding[0] + " - " + arrBuilding[1]);
 
             // Cria cada apartamento
             ArrayList arrApartmentsList = Apartments.getApartmentList(Integer.valueOf(arrBuilding[0]));
@@ -286,7 +286,7 @@ public class mainForm {
                 String strApartment = (String) arrApartmentsList.get(b);
                 String[] arrApartment = strApartment.split("#");
 
-                DefaultMutableTreeNode apartmentNode = new DefaultMutableTreeNode(arrApartment[0] + "-" + arrApartment[1]);
+                DefaultMutableTreeNode apartmentNode = new DefaultMutableTreeNode(arrApartment[0] + " - " + arrApartment[1]);
                 buildingNode.add(apartmentNode);
 
                 // Cria os equipamentos de cada apartamento
@@ -296,7 +296,7 @@ public class mainForm {
                     String strDevice = (String) arrDevicesList.get(d);
                     String[] arrDevice = strDevice.split("#");
 
-                    apartmentNode.add(new DefaultMutableTreeNode(arrDevice[0] + "-" + arrDevice[1]));
+                    apartmentNode.add(new DefaultMutableTreeNode(arrDevice[0] + " - " + arrDevice[1]));
 
                 }
             }

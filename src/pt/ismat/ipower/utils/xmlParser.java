@@ -591,6 +591,59 @@ public class xmlParser {
         }
     }
 
+
+    /**
+     * Metodo que edita o apartamento do ficheiro buildings.xml atraves do seu id
+     * @param buildingXmlFile Ficheiro xml de edificios
+     * @param buildingId Identificador de edificio
+     */
+    public static void editBuildingXml(String buildingXmlFile,String buildingName, String buildingLocation, Integer buildingId){
+        try {
+
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+            Document document = docBuilder.parse(buildingXmlFile);
+
+            NodeList nlBuildingList = document.getElementsByTagName("building");
+
+            if (nlBuildingList != null && nlBuildingList.getLength() > 0) {
+
+                for (int i = 0; i < nlBuildingList.getLength(); i++) {
+
+                    Node nBuilding= nlBuildingList.item(i);
+                    Element eBuilding = (Element) nBuilding;
+
+                    if (eBuilding.hasAttribute("id") && eBuilding.getAttribute("id").equals(String.valueOf(buildingId))) {
+
+                        eBuilding.setAttribute("location", buildingLocation.trim());
+                        eBuilding.setAttribute("name", buildingName.trim());
+                    }
+                }
+            }
+
+
+            // escreve ficheiro xml
+            DOMSource source = new DOMSource(document);
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            StreamResult result = new StreamResult(buildingXmlFile);
+
+            transformer.transform(source, result);
+
+        } catch (ParserConfigurationException pce) {
+            pce.printStackTrace();
+        } catch (TransformerException tfe) {
+            tfe.printStackTrace();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }catch (SAXException sax) {
+            sax.printStackTrace();
+        }
+    }
+
+
     /**
      * Metodo que carrega um edificio baseado nos seu dados do ficheiro xml
      * @param buildingXmlFile Ficheiro xml de edificios
@@ -613,7 +666,8 @@ public class xmlParser {
                     Element eBuilding = (Element) nBuilding;
 
                     if (eBuilding.hasAttribute("id") && eBuilding.getAttribute("id").equals(String.valueOf(id))) {
-                        building = new Buildings( eBuilding.getAttribute("name"), eBuilding.getAttribute("location"),Integer.valueOf(eBuilding.getAttribute("id")));
+                        building = new Buildings( eBuilding.getAttribute("name"), eBuilding.getAttribute("location"),
+                                Integer.valueOf(eBuilding.getAttribute("id")));
                     }
 
                 }
