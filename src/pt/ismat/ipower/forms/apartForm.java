@@ -2,12 +2,11 @@ package pt.ismat.ipower.forms;
 
 import pt.ismat.ipower.utils.Apartments;
 import pt.ismat.ipower.utils.Buildings;
-import pt.ismat.ipower.utils.Devices;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 
 /**
  * @author Pedro Roldan on 31-12-2016.
@@ -145,47 +144,60 @@ public class apartForm {
                 //caso esteja trancado, ativa
                 if (!txtName.isEnabled()) {
                     txtName.setEnabled(true);
-                } else {    //le o que tem a fazer e tranca as casas
-                    txtName.setEnabled(false);
 
-                    //janela para confirmacao da edicao
-                    int resultado = JOptionPane.showConfirmDialog(
-                            mainFrame,
-                            "Deseja mesmo editar este apartamento?",
-                            "iPower - Edição de Apartamento",
-                            JOptionPane.YES_NO_OPTION);
+                } else { //le o que tem a fazer e tranca as casas
 
-                    //efetua a edicao
-                    if (resultado == 0) {
+                    //verifica se foi selecionado algum apartamento
+                    if (lblIdData.getText() == "- nenhum -") {
 
-                        //cria um novo apartamento com o nome novo, ignora os espacos da indentacao da lable.
-                        Apartments Apartment = new Apartments(cbBuildings.getSelectedIndex() + 1000, Integer.parseInt(lblIdData.getText().trim()),
-                                txtName.getText());
+                        JOptionPane.showMessageDialog(mainFrame,
+                                "Nenhum apartamento seleccionado.",
+                                "iPower - Edição de Apartamento",
+                                JOptionPane.WARNING_MESSAGE);
 
-                        //edita o xml do apartamento
-                        Apartment.editApartment(Apartment.getBuildingId(), Apartment.getApartmentId(), Apartment.getApartmentName());
+                    } else {
 
-                        //recebe a lista de apartamentos do edificio selecionado
-                        ArrayList arrApartmentsList = Apartments.getApartmentList(cbBuildings.getSelectedIndex() + 1000);
+                        txtName.setEnabled(false);
 
-                        //limpa a lstApartmentModel
-                        lstApartmentsModel.clear();
+                        //janela para confirmacao da edicao
+                        int resultado = JOptionPane.showConfirmDialog(
+                                mainFrame,
+                                "Deseja mesmo editar este apartamento?",
+                                "iPower - Edição de Apartamento",
+                                JOptionPane.YES_NO_OPTION);
 
-                        //volta a preencher a lstApartmentModel com os apartamentos do edificio da combobox atualizados
-                        for (int i = 0; i < arrApartmentsList.size(); i++) {
-                            String strApartment = (String) arrApartmentsList.get(i);
-                            String[] arrApartment = strApartment.split("#");
-                            lstApartmentsModel.addElement(arrApartment[0] + " - " + arrApartment[1]);
+                        //efetua a edicao
+                        if (resultado == 0) {
+
+                            //cria um novo apartamento com o nome novo, ignora os espacos da indentacao da lable.
+                            Apartments Apartment = new Apartments(cbBuildings.getSelectedIndex() + 1000, Integer.parseInt(lblIdData.getText().trim()),
+                                    txtName.getText());
+
+                            //edita o xml do apartamento
+                            Apartment.editApartment(Apartment.getBuildingId(), Apartment.getApartmentId(), Apartment.getApartmentName());
+
+                            //recebe a lista de apartamentos do edificio selecionado
+                            ArrayList arrApartmentsList = Apartments.getApartmentList(cbBuildings.getSelectedIndex() + 1000);
+
+                            //limpa a lstApartmentModel
+                            lstApartmentsModel.clear();
+
+                            //volta a preencher a lstApartmentModel com os apartamentos do edificio da combobox atualizados
+                            for (int i = 0; i < arrApartmentsList.size(); i++) {
+                                String strApartment = (String) arrApartmentsList.get(i);
+                                String[] arrApartment = strApartment.split("#");
+                                lstApartmentsModel.addElement(arrApartment[0] + " - " + arrApartment[1]);
+                            }
+
+                            lstApartments.setModel(lstApartmentsModel);
+
+                            //preenche as casas com a nova informacao do apartamento
+                            lblIdData.setText(Integer.toString(Apartment.getApartmentId()));
+                            txtName.setText(Apartment.getApartmentName());
                         }
 
-                        lstApartments.setModel(lstApartmentsModel);
-
-                        //preenche as casas com a nova informacao do apartamento
-                        lblIdData.setText(Integer.toString(Apartment.getApartmentId()));
-                        txtName.setText(Apartment.getApartmentName());
                     }
                 }
-
             }
         });
 
@@ -255,24 +267,4 @@ public class apartForm {
             }
         });
     }
-
-
-    /**
-     * Lista os apartamentos existentes num determinado edificio
-     * @param buildingId id do edificio selecionado
-     */
-    private void setApartmentList(Integer buildingId){
-        DefaultListModel lstApartmentsModel = new DefaultListModel();
-
-        ArrayList arrApartmentsList = Apartments.getApartmentList(buildingId);
-
-        for (int i = 0; i < arrApartmentsList.size(); i++) {
-            String strBuilding = (String) arrApartmentsList.get(i);
-            String[] arrBuilding = strBuilding.split("#");
-            lstApartmentsModel.addElement(arrBuilding[0] + " - " + arrBuilding[1]);
-        }
-
-        lstApartments.setModel(lstApartmentsModel);
-    }
-
 }

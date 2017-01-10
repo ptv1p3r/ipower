@@ -144,49 +144,62 @@ public class buildForm {
         btnEditar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                //caso esteja trancado, ativa
                 if (!txtName.isEnabled() && !txtLocation.isEnabled()) {
                     txtName.setEnabled(true);
                     txtLocation.setEnabled(true);
-                } else {
 
-                    //janela para confirmacao da edicao
-                    int resultado = JOptionPane.showConfirmDialog(
-                            mainFrame,
-                            "Deseja mesmo editar este edificio ?",
-                            "iPower - Edição de Edificio",
-                            JOptionPane.YES_NO_OPTION);
+                } else { //le o que tem a fazer e tranca as lables
 
-                    //efetua a edicao
-                    if (resultado == 0) {
-                        txtName.setEnabled(false);
-                        txtLocation.setEnabled(false);
+                    //verifica se foi selecionado algum apartamento
+                    if (lblIdData.getText() == "- nenhum -") {
 
-                        //cria um novo apartamento as novas informacoes, ignora os espacos da indentacao da lable.
-                        Buildings Building = new Buildings(txtName.getText().trim(), txtLocation.getText().trim(), Integer.parseInt(lblIdData.getText().trim()));
+                        JOptionPane.showMessageDialog(mainFrame,
+                                "Nenhum edificio seleccionado.",
+                                "iPower - Edição de Edificio",
+                                JOptionPane.WARNING_MESSAGE);
 
-                        //edita o xml do apartamento
-                        Building.editBuilding(Building.getName(), Building.getLocation(), Building.getBuildingId());
+                    } else {
 
-                        //recebe a lista de edificios do edificio selecionado
-                        ArrayList arrBuildingsList = Buildings.getBuildingsList();
+                        //janela para confirmacao da edicao
+                        int resultado = JOptionPane.showConfirmDialog(
+                                mainFrame,
+                                "Deseja mesmo editar este edificio ?",
+                                "iPower - Edição de Edificio",
+                                JOptionPane.YES_NO_OPTION);
 
-                        //limpa a lstBuildingModel
-                        lstBuildingsModel.clear();
+                        //efetua a edicao
+                        if (resultado == 0) {
+                            txtName.setEnabled(false);
+                            txtLocation.setEnabled(false);
 
-                        //volta a preencher a lstApartmentModel com os apartamentos do edificio da combobox atualizados
-                        for (int i = 0; i < arrBuildingsList.size(); i++) {
-                            String strBuilding = (String) arrBuildingsList.get(i);
-                            String[] arrBuilding = strBuilding.split("#");
-                            lstBuildingsModel.addElement(arrBuilding[0] + " - " + arrBuilding[1]);
+                            //cria um novo apartamento as novas informacoes, ignora os espacos da indentacao da lable.
+                            Buildings Building = new Buildings(txtName.getText().trim(), txtLocation.getText().trim(), Integer.parseInt(lblIdData.getText().trim()));
+
+                            //edita o xml do apartamento
+                            Building.editBuilding(Building.getName(), Building.getLocation(), Building.getBuildingId());
+
+                            //recebe a lista de edificios do edificio selecionado
+                            ArrayList arrBuildingsList = Buildings.getBuildingsList();
+
+                            //limpa a lstBuildingModel
+                            lstBuildingsModel.clear();
+
+                            //volta a preencher a lstApartmentModel com os apartamentos do edificio da combobox atualizados
+                            for (int i = 0; i < arrBuildingsList.size(); i++) {
+                                String strBuilding = (String) arrBuildingsList.get(i);
+                                String[] arrBuilding = strBuilding.split("#");
+                                lstBuildingsModel.addElement(arrBuilding[0] + " - " + arrBuilding[1]);
+                            }
+
+                            lstBuildings.setModel(lstBuildingsModel);
+
+                            //preenche as casas com a nova informacao do apartamento
+                            lblIdData.setText(Building.getBuildingId().toString());
+                            txtName.setText(Building.getName());
+                            txtLocation.setText(Building.getLocation());
                         }
-
-                        lstBuildings.setModel(lstBuildingsModel);
-
-
-                        //preenche as casas com a nova informacao do apartamento
-                        lblIdData.setText(Building.getBuildingId().toString());
-                        txtName.setText(Building.getName());
-                        txtLocation.setText(Building.getLocation());
                     }
                 }
             }
