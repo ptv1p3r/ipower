@@ -126,7 +126,7 @@ public class apartForm {
                     }
                 } else {
                     JOptionPane.showMessageDialog(mainFrame,
-                            "Nenhum edificio seleccionado.",
+                            "Nenhum apartamento seleccionado.",
                             "iPower - Remoção de Edificio",
                             JOptionPane.WARNING_MESSAGE);
                 }

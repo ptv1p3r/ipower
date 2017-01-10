@@ -17,6 +17,11 @@ public class Apartments extends Buildings {
     private Integer intApartmentId, buildingId;
     private String strApartmentName, apartmentXmlPath;
 
+    /**
+     * Construtor de Apartamento
+     * @param id Identificador de edificio
+     * @param strApartmentName Nome do apartamento
+     */
     public Apartments(Integer id, String strApartmentName) {
         super(id);
         setBuildingId(id);
@@ -28,6 +33,12 @@ public class Apartments extends Buildings {
         this.apartmentXmlPath=strBuildingPath + "/" + (getBuildingId())+ "/" + this.intApartmentId + ".xml";
     }
 
+    /**
+     * * Construtor de Apartamento
+     * @param id Identificador de edificio
+     * @param intApartmentId Identificador de apartamento
+     * @param strApartmentName Nome do apartamento
+     */
     public Apartments(Integer id, Integer intApartmentId, String strApartmentName) {
         super(id);
         this.intApartmentId = intApartmentId;
@@ -35,31 +46,54 @@ public class Apartments extends Buildings {
         this.strApartmentName = strApartmentName;
     }
 
+    /**
+     * Retorna o identificador do edificio
+     * @return buildingId
+     */
     @Override
     public Integer getBuildingId() {
         return buildingId;
     }
 
+    /**
+     * Define o identificador do edificio
+     * @param id Identificador do edificio
+     */
     public void setBuildingId(Integer id) {
         this.buildingId = id+1000;
     }
 
+    /**
+     * Retorna o identificador do apartamento
+     * @return intApartmentId
+     */
     public Integer getApartmentId() {
         return intApartmentId;
     }
 
+    /**
+     * Define o identificador do apartamento
+     * @param intApartmentId Identificador do apartamento
+     */
     public void setApartmentId(Integer intApartmentId) {
         this.intApartmentId = intApartmentId;
     }
 
+    /**
+     * Retorna o nome do apartamento
+     * @return strApartmentName
+     */
     public String getApartmentName() {
         return strApartmentName;
     }
 
+    /**
+     * Retorna o path do xml do apartamento
+     * @return apartmentXmlPath
+     */
     public String getapartmentXmlPath() {
         return apartmentXmlPath;
     }
-
 
 
     /**
@@ -74,7 +108,6 @@ public class Apartments extends Buildings {
         return arrApartmentsList;
     }
 
-    //TODO: Tratar de ir buscar o id atraves do xml
     /**
      * Metodo que gera um novo id disponivel
      * @return Integer Novo id gerado
@@ -139,7 +172,7 @@ public class Apartments extends Buildings {
     }
 
     /**
-     * Metodo que efetua a remoção do edificio do ficheiro apartamento xml assim como a sua pasta associada
+     * Metodo que efetua a remoção do apartamento do ficheiro buildings.xml assim como o seu xml associado
      * @param apartmentId Identificador de apartamento
      * @param buildingId Identificador de edificio
      */
@@ -160,6 +193,12 @@ public class Apartments extends Buildings {
         }
     }
 
+    /**
+     * Metodo que efetua a edição do apartamento no ficheiro buildings.xml
+     * @param buildingId Identificador de edificio
+     * @param apartmentId Identificador de apartamento
+     * @param apartmentName Nome do apartamento
+     */
     public static void editApartment(Integer buildingId, Integer apartmentId, String apartmentName) {
 
         try {

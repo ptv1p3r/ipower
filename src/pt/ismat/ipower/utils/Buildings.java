@@ -41,7 +41,10 @@ public class Buildings {
         this.strPath = strBuildingsPath + "/" + this.intBuildingId;
     }
 
-    //Test para os apartamentos
+    /**
+     * Construtor de edificios para ser utilizado nos apartamentos
+     * @param id Identificador do edificio
+     */
     public Buildings(Integer id) {
         this.intBuildingId = id;
     }
@@ -173,6 +176,10 @@ public class Buildings {
         return xmlParser.loadBuildingXml(strBuildingsXml,id);
     }
 
+    /**
+     * Metodo que efetua a edição do edificio no ficheiro buildings.xml
+     * @param buildingId Identificador de edificio
+     */
     public static void editBuilding(String buildingName, String buildingLocation, Integer buildingId) {
 
         try {
@@ -197,6 +204,9 @@ public class Buildings {
         return arrBuildingsList;
     }
 
+    /**
+     * Metodo que valida a existencia da pasta buildings e da pasta dos edificios criados
+     */
     private static void validateBuildingsFolder(){
 
         try {

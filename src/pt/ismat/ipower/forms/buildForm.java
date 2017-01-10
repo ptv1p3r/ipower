@@ -29,6 +29,8 @@ public class buildForm {
     private JButton btnEditar;
 
     public buildForm() {
+
+        //inicia a cbBuildings com os ids dos edificios
         DefaultListModel lstBuildingsModel = new DefaultListModel();
 
         ArrayList arrBuildingsList = Buildings.getBuildingsList();
@@ -140,7 +142,9 @@ public class buildForm {
             }
         });
 
-        //testing
+        /**
+         * Action Listener do botao editar edificio
+         */
         btnEditar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

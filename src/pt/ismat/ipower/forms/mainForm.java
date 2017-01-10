@@ -63,7 +63,9 @@ public class mainForm {
         pbEquipamentos.setMaximum(Devices.getDevices());
         pbEquipamentos.setValue(Devices.getActiveDevices());
 
-
+        /**
+         * Metodo que associa um action listener ao botao ligar
+         */
         btnLigar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -111,6 +113,9 @@ public class mainForm {
         });
 
         //to be approved
+        /**
+         * Metodo que associa um action listener ao botao update
+         */
         btnUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -259,7 +264,8 @@ public class mainForm {
         JMenuItem sobreItem = new JMenuItem("Sobre", icon);
         sobreItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame,"Autores: Pedro Roldan 21501217\nLeandro Moreira 21501217\nVersão: 0.1 alpha\nISMAT POO 2016","Sobre iPower...",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(frame,"Autores: Pedro Roldan 21501217\nLeandro Moreira 21601599\nVersão: 0.1 alpha\nISMAT POO 2016/2017",
+                        "Sobre iPower...",JOptionPane.INFORMATION_MESSAGE);
             }
         });
         ajuda.add(sobreItem);
@@ -274,6 +280,9 @@ public class mainForm {
         frame.setJMenuBar(menubar);
     }
 
+    /**
+     * Metodo que cria a JTree treeBuildings
+     */
     public void createTree(){
 
         // Cria cada edificio
