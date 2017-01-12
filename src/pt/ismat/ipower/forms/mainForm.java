@@ -306,13 +306,13 @@ public class mainForm {
                 buildingNode.add(apartmentNode);
 
                 // Cria os equipamentos de cada apartamento
-                ArrayList arrDevicesList = Devices.getDevicesList(Integer.valueOf(arrApartment[0]));
+                ArrayList arrDevicesList = Devices.getDevicesList(Integer.valueOf(arrBuilding[0]), Integer.valueOf(arrApartment[0]));
 
                 for (int d = 0; d < arrDevicesList.size(); d++) {
                     String strDevice = (String) arrDevicesList.get(d);
                     String[] arrDevice = strDevice.split("#");
 
-                    apartmentNode.add(new DefaultMutableTreeNode(arrDevice[0] + " - " + arrDevice[1]));
+                    apartmentNode.add(new DefaultMutableTreeNode(arrDevice[0]));
 
                 }
             }

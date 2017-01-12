@@ -99,30 +99,49 @@ public class xmlParser {
      * Metodo que carrega os equipamentos de um apartamento e adiciona a uma device list
      * @param buildingXmlFile Ficheiro xml de edificios
      * @param arrDevicesList Lista de equipamentos
-     * @param ApartmentId Identificador de apartamento
+     * @param apartmentId Identificador de apartamento
      */
-    public static void readDevicesXml(String buildingXmlFile,ArrayList arrDevicesList,Integer ApartmentId){
+    public static void readDevicesXml(String buildingXmlFile,ArrayList arrDevicesList, Integer buildingId,Integer apartmentId){
 
         try {
             documento = xmlHeaderDocument(buildingXmlFile);
-            NodeList nlApartments = documento.getElementsByTagName("apartments"); // retorna no dos apartamentos
 
-            for (int i = 0; i < nlApartments.getLength(); i++) { // percorre apartamentos
-                Node nApartment= nlApartments.item(i);
+            NodeList nlBuildings = documento.getElementsByTagName("building");
 
-                if (nApartment.getNodeType() == Node.ELEMENT_NODE) { // tipo de no
-                    Element eApartment = (Element) nApartment;
+            //vai a procura do edificio
+            for (int i = 0; i < nlBuildings.getLength(); i++) {
+                Node nBuilding = nlBuildings.item(i);
 
-                    if (eApartment.hasAttribute("id") && eApartment.getAttribute("id").equals(ApartmentId.toString())) { // valida apartamento correcto
+                if (nBuilding.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eBuilding = (Element) nBuilding;
 
-                        NodeList childList = nlApartments.item(i).getChildNodes();
-                        for (int j = 0; j < childList.getLength(); j++) {
-                            Node childNode = childList.item(j);
+                    //confirma o edificio
+                    if (eBuilding.hasAttribute("id") && eBuilding.getAttribute("id").equals(String.valueOf(buildingId))) {
 
-                            if ("devices".equals(childNode.getNodeName())) {
-                                Element eDevice = (Element) childNode;
-                                arrDevicesList.add(eDevice.getAttribute("id") + "#" + eDevice.getAttribute("category"));
+                        NodeList nlApartments = eBuilding.getElementsByTagName("apartment"); // retorna no dos apartamentos
 
+                        for (int j = 0; j < nlApartments.getLength(); j++) { // percorre apartamentos
+                            Node nApartment = nlApartments.item(j);
+
+                            if (nApartment.getNodeType() == Node.ELEMENT_NODE) { // tipo de no
+                                Element eApartment = (Element) nApartment;
+
+                                // valida apartamento correcto
+                                if (eApartment.hasAttribute("id") && eApartment.getAttribute("id").equals(apartmentId.toString())) {
+
+                                    NodeList nlDevice = eApartment.getElementsByTagName("device");
+
+                                    for (int k = 0; k < nlDevice.getLength(); k++) {
+                                        Node nDevice = nlDevice.item(k);
+                                        Element eDevice = (Element) nDevice;
+
+                                        if (eDevice.hasAttribute("id")) {
+
+                                            arrDevicesList.add(eDevice.getAttribute("id")/* + "#" + eDevice.getAttribute("category")*/);
+
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

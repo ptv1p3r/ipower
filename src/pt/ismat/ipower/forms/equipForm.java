@@ -48,8 +48,7 @@ public class equipForm {
         apt = cbBuildings.getSelectedItem().toString().split(" - ");
         setApartmentsList(Integer.valueOf(apt[0]));
         String[] selectedItem = cbApartments.getSelectedItem().toString().split(" - ");
-        setDeviceList(Integer.valueOf(selectedItem[0]));
-
+        setDeviceList(Integer.valueOf(apt[0]), Integer.valueOf(selectedItem[0]));
 
 
 
@@ -79,14 +78,15 @@ public class equipForm {
 
                 DefaultListModel lstDevicesModel = new DefaultListModel();
 
-                String[] selectedItem = cbApartments.getSelectedItem().toString().split(" - ");
+                String[] selectedBuilding = cbBuildings.getSelectedItem().toString().split(" - ");
+                String[] selectedApartment = cbApartments.getSelectedItem().toString().split(" - ");
 
-                ArrayList arrDevicesList = Devices.getDevicesList(Integer.parseInt(selectedItem[0]));
+                ArrayList arrDevicesList = Devices.getDevicesList(Integer.parseInt(selectedBuilding[0]), Integer.parseInt(selectedApartment[0]));
 
                 for (int i = 0; i < arrDevicesList.size(); i++) {
                     String strBuilding = (String) arrDevicesList.get(i);
                     String[] arrBuilding = strBuilding.split("#");
-                    lstDevicesModel.addElement(arrBuilding[0] + " - " + arrBuilding[1]);
+                    lstDevicesModel.addElement(arrBuilding[0]);
                 }
 
                 lsDevices.setModel(lstDevicesModel);
@@ -152,7 +152,7 @@ public class equipForm {
                             cbDeviceType.getSelectedItem().toString(), ckbEnable.isSelected());
 
 
-                    ArrayList arrDevicesList = Devices.getDevicesList(apartmentId);
+                    ArrayList arrDevicesList = Devices.getDevicesList(buildingId, apartmentId);
 
                     lstDevicesModel.clear();
 
@@ -222,14 +222,16 @@ public class equipForm {
 
     }
 
-    private void setDeviceList(Integer apartmentId){
+    private void setDeviceList(Integer buildingId, Integer apartmentId){
 
-        ArrayList arrDevicesList = Devices.getDevicesList(apartmentId);
+        ArrayList arrDevicesList = Devices.getDevicesList(buildingId, apartmentId);
+
+        lstDevicesModel.clear();
 
         for (int i = 0; i < arrDevicesList.size(); i++) {
-            String strBuilding = (String) arrDevicesList.get(i);
-            String[] arrBuilding = strBuilding.split("#");
-            lstDevicesModel.addElement(arrBuilding[0] + " - " + arrBuilding[1]);
+            String strDevice = (String) arrDevicesList.get(i);
+            String[] arrDevice = strDevice.split("#");
+            lstDevicesModel.addElement(arrDevice[0]);
         }
 
         lsDevices.setModel(lstDevicesModel);

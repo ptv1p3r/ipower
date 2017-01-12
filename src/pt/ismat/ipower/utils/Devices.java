@@ -32,7 +32,7 @@ public class Devices {
     public Devices(Integer intBuildingId, Integer intApartmentId,Integer intConsumo,String strDeviceCategory,String strDeviceType,Boolean bolEnabled) {
         this.intBuildingId=intBuildingId;
         this.intApartmentId=intApartmentId;
-        this.intDeviceId = getNewDeviceId(intApartmentId);
+        this.intDeviceId = getNewDeviceId(intBuildingId, intApartmentId);
         this.intConsumo = intConsumo;
         this.strDeviceCategory = strDeviceCategory;
         this.bolEnabled = bolEnabled;
@@ -129,11 +129,11 @@ public class Devices {
      * Metodo que retorna uma lista de equipamentos existentes de um apartamento pelo seu id
      * @return Devices List
      */
-    public static ArrayList getDevicesList(Integer apartmentId){
+    public static ArrayList getDevicesList(Integer buildingId, Integer apartmentId){
         ArrayList arrDevicesList = new ArrayList();
 
         //validateBuildingsFolder();
-        xmlParser.readDevicesXml(strBuildingsXml,arrDevicesList, apartmentId);
+        xmlParser.readDevicesXml(strBuildingsXml,arrDevicesList, buildingId, apartmentId);
 
         return arrDevicesList;
     }
@@ -142,12 +142,12 @@ public class Devices {
      * Metodo que gera um novo id disponivel
      * @return Integer Novo id gerado
      */
-    private Integer getNewDeviceId(Integer apartmentId){
+    private Integer getNewDeviceId(Integer buildingId, Integer apartmentId){
         Integer id=1000;
         int i;
 
         try {
-            ArrayList devicesList = getDevicesList(apartmentId);
+            ArrayList devicesList = getDevicesList(buildingId, apartmentId);
 
             Integer[] deviceId = new Integer[devicesList.size()];
 
