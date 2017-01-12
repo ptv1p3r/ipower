@@ -269,11 +269,11 @@ public class xmlParser {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-            Document document = docBuilder.parse(buildingXmlFile);
+            documento = docBuilder.parse(buildingXmlFile);
 
-            document.getDocumentElement().normalize();
+            documento.getDocumentElement().normalize();
 
-            NodeList nlBuildingList = document.getElementsByTagName("building");
+            NodeList nlBuildingList = documento.getElementsByTagName("building");
 
             if (nlBuildingList != null && nlBuildingList.getLength() > 0) { //verifica se a nodelist dos edificios foi bem lida
 
@@ -290,26 +290,26 @@ public class xmlParser {
                         Node nApartments=nlApartmentList.item(0);
 
                         //cria o node do apartment
-                        Element newApartment = document.createElement("apartment");
+                        Element newApartment = documento.createElement("apartment");
 
                         // atributo id
-                        Attr apartmentId = document.createAttribute("id");
+                        Attr apartmentId = documento.createAttribute("id");
                         apartmentId.setValue(Apartment.getApartmentId().toString());
                         newApartment.setAttributeNode(apartmentId);
 
                         // apt nome
-                        Attr apartmentName = document.createAttribute("apt");
+                        Attr apartmentName = documento.createAttribute("apt");
                         apartmentName.setValue(Apartment.getApartmentName());
                         newApartment.setAttributeNode(apartmentName);
 
                         nApartments.appendChild(newApartment);
 
                         //insere um node devices para os equipamentos
-                        Element eDevice = document.createElement("devices");
+                        Element eDevice = documento.createElement("devices");
                         newApartment.appendChild(eDevice);
 
                         // escreve ficheiro xml
-                        DOMSource source = new DOMSource(document);
+                        DOMSource source = new DOMSource(documento);
 
                         TransformerFactory transformerFactory = TransformerFactory.newInstance();
                         Transformer transformer = transformerFactory.newTransformer();
@@ -399,9 +399,9 @@ public class xmlParser {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-            Document document = docBuilder.parse(buildingXmlFile);
+            documento = docBuilder.parse(buildingXmlFile);
 
-            NodeList nlBuildingList = document.getElementsByTagName("building");
+            NodeList nlBuildingList = documento.getElementsByTagName("building");
             if (nlBuildingList != null && nlBuildingList.getLength() > 0) {
 
                 //procura o node selecionado
@@ -422,7 +422,7 @@ public class xmlParser {
 
 
             // escreve ficheiro xml
-            DOMSource source = new DOMSource(document);
+            DOMSource source = new DOMSource(documento);
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
@@ -453,9 +453,9 @@ public class xmlParser {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-            Document document = docBuilder.parse(buildingXmlFile);
+            documento = docBuilder.parse(buildingXmlFile);
 
-            NodeList nlBuildingList = document.getElementsByTagName("building");
+            NodeList nlBuildingList = documento.getElementsByTagName("building");
 
             if (nlBuildingList != null && nlBuildingList.getLength() > 0) {
 
@@ -501,7 +501,7 @@ public class xmlParser {
 
 
             // escreve ficheiro xml
-            DOMSource source = new DOMSource(document);
+            DOMSource source = new DOMSource(documento);
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
@@ -532,9 +532,9 @@ public class xmlParser {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-            Document document = docBuilder.parse(buildingXmlFile);
+            documento = docBuilder.parse(buildingXmlFile);
 
-            NodeList nlBuildingList = document.getElementsByTagName("building");
+            NodeList nlBuildingList = documento.getElementsByTagName("building");
 
             if (nlBuildingList != null && nlBuildingList.getLength() > 0) {
 
@@ -580,7 +580,7 @@ public class xmlParser {
 
 
             // escreve ficheiro xml
-            DOMSource source = new DOMSource(document);
+            DOMSource source = new DOMSource(documento);
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
@@ -611,9 +611,9 @@ public class xmlParser {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-            Document document = docBuilder.parse(buildingXmlFile);
+            documento = docBuilder.parse(buildingXmlFile);
 
-            NodeList nlBuildingList = document.getElementsByTagName("building");
+            NodeList nlBuildingList = documento.getElementsByTagName("building");
 
             if (nlBuildingList != null && nlBuildingList.getLength() > 0) {
 
@@ -632,7 +632,7 @@ public class xmlParser {
 
 
             // escreve ficheiro xml
-            DOMSource source = new DOMSource(document);
+            DOMSource source = new DOMSource(documento);
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
@@ -752,9 +752,9 @@ public class xmlParser {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-            Document document = docBuilder.parse(buildingXmlFile);
+            documento = docBuilder.parse(buildingXmlFile);
 
-            NodeList nlBuildingList = document.getElementsByTagName("building");
+            NodeList nlBuildingList = documento.getElementsByTagName("building");
 
             if (nlBuildingList != null && nlBuildingList.getLength() > 0) {
 
@@ -791,20 +791,20 @@ public class xmlParser {
                                         NodeList nlDevicesList = eApartment.getElementsByTagName("devices");
                                         Node nDevice=nlDevicesList.item(0);
 
-                                        Element newDevice = document.createElement("device");
+                                        Element newDevice = documento.createElement("device");
 
                                         // atributo id
-                                        Attr attrDeviceId = document.createAttribute("id");
+                                        Attr attrDeviceId = documento.createAttribute("id");
                                         attrDeviceId.setValue(device.getDeviceId().toString());
                                         newDevice.setAttributeNode(attrDeviceId);
 
                                         // atributo category
-                                        Attr attrDeviceCategory = document.createAttribute("category");
+                                        Attr attrDeviceCategory = documento.createAttribute("category");
                                         attrDeviceCategory.setValue(device.getDeviceCategory());
                                         newDevice.setAttributeNode(attrDeviceCategory);
 
                                         // atributo type
-                                        Attr attrDeviceType = document.createAttribute("type");
+                                        Attr attrDeviceType = documento.createAttribute("type");
                                         attrDeviceType.setValue(device.getDeviceType());
                                         newDevice.setAttributeNode(attrDeviceType);
 
@@ -822,7 +822,7 @@ public class xmlParser {
 
 
             // escreve ficheiro xml
-            DOMSource source = new DOMSource(document);
+            DOMSource source = new DOMSource(documento);
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
@@ -854,9 +854,9 @@ public class xmlParser {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-            Document document = docBuilder.parse(buildingXmlFile);
+            documento = docBuilder.parse(buildingXmlFile);
 
-            NodeList nlBuildingList = document.getElementsByTagName("building");
+            NodeList nlBuildingList = documento.getElementsByTagName("building");
 
             if (nlBuildingList != null && nlBuildingList.getLength() > 0) {
 
@@ -915,7 +915,7 @@ public class xmlParser {
 
 
             // escreve ficheiro xml
-            DOMSource source = new DOMSource(document);
+            DOMSource source = new DOMSource(documento);
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
@@ -949,9 +949,9 @@ public class xmlParser {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-            Document document = docBuilder.parse(buildingXmlFile);
+            documento = docBuilder.parse(buildingXmlFile);
 
-            NodeList nlBuildingList = document.getElementsByTagName("building");
+            NodeList nlBuildingList = documento.getElementsByTagName("building");
 
             if (nlBuildingList != null && nlBuildingList.getLength() > 0) {
 
@@ -1011,7 +1011,7 @@ public class xmlParser {
 
 
             // escreve ficheiro xml
-            DOMSource source = new DOMSource(document);
+            DOMSource source = new DOMSource(documento);
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
