@@ -5,11 +5,9 @@ import pt.ismat.ipower.utils.Buildings;
 import pt.ismat.ipower.utils.Devices;
 
 import javax.swing.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.StringJoiner;
 
 /**
  * @author Pedro Roldan on 31-12-2016.
@@ -47,10 +45,10 @@ public class equipForm {
 
     public equipForm() {
         setBuildingsList();
-        apt = cbBuildings.getSelectedItem().toString().split("-");
+        apt = cbBuildings.getSelectedItem().toString().split(" - ");
         setApartmentsList(Integer.valueOf(apt[0]));
-        String[] selectedItem = cbApartments.getSelectedItem().toString().split("-");
-        setDeviceList(selectedItem[0]);
+        String[] selectedItem = cbApartments.getSelectedItem().toString().split(" - ");
+        setDeviceList(Integer.valueOf(selectedItem[0]));
 
 
 
@@ -63,7 +61,7 @@ public class equipForm {
             @Override
             public void itemStateChanged(ItemEvent e) {
 
-                apt = cbBuildings.getSelectedItem().toString().split("-");
+                apt = cbBuildings.getSelectedItem().toString().split(" - ");
 
                 lstDevicesModel.clear();
                 lsDevices.setModel(lstDevicesModel);
@@ -81,14 +79,14 @@ public class equipForm {
 
                 DefaultListModel lstDevicesModel = new DefaultListModel();
 
-                String[] selectedItem = cbApartments.getSelectedItem().toString().split("-");
+                String[] selectedItem = cbApartments.getSelectedItem().toString().split(" - ");
 
-                ArrayList arrDevicesList = Devices.getDevicesList(selectedItem[0]);
+                ArrayList arrDevicesList = Devices.getDevicesList(Integer.parseInt(selectedItem[0]));
 
                 for (int i = 0; i < arrDevicesList.size(); i++) {
                     String strBuilding = (String) arrDevicesList.get(i);
                     String[] arrBuilding = strBuilding.split("#");
-                    lstDevicesModel.addElement(arrBuilding[0] + "-" + arrBuilding[1]);
+                    lstDevicesModel.addElement(arrBuilding[0] + " - " + arrBuilding[1]);
                 }
 
                 lsDevices.setModel(lstDevicesModel);
@@ -112,20 +110,79 @@ public class equipForm {
 
                     // vamos buscar o elemento pelo seu index
                     Object selectedDevice = lsDevices.getModel().getElementAt(index);
-                    String[] arrDevices = selectedDevice.toString().split("-");
+                    String[] arrDevices = selectedDevice.toString().split(" - ");
 
                     Devices Device = Devices.loadDevice(arrDevices[0].trim());
 
                     lblIdData.setText(Device.getDeviceId().toString());
                     txtConsumo.setText(String.valueOf(Device.getConsumo()));
                     cbTipo.setSelectedItem(Device.getDeviceCategory());
-                    cbDeviceType.setSelectedIndex(Device.getDeviceType());
+                    cbDeviceType.setSelectedItem(Device.getDeviceType());
                     ckbEnable.setSelected(Device.isEnabled());
 
                 } else {
                     setGuiElementsOff();
                     ckbEnable.setSelected(false);
                 }
+
+            }
+        });
+
+        //Testing, not ready
+        btnAdicionar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if (cbTipo.getSelectedItem().toString() != "- nenhum -" && cbDeviceType.getSelectedItem().toString() != "- nenhum -" &&
+                        (txtConsumo.getText() != "- nenhum -" || txtConsumo.getText().length()!=0)) {
+
+                    Integer apartmentId = Integer.parseInt(cbApartments.getSelectedItem().toString().replaceAll("\\D+", ""));
+                    Integer buildingId = Integer.parseInt(cbApartments.getSelectedItem().toString().replaceAll("\\D+", ""));
+
+                    Integer consumo = Integer.parseInt(txtConsumo.getText().trim());
+
+                    //mudar a recepcao do id para como o dos outros.
+                    Devices device = new Devices(1000, consumo, cbTipo.getSelectedItem().toString(), cbDeviceType.getSelectedItem().toString(),
+                            ckbEnable.isSelected());
+
+
+                    ArrayList arrDevicesList = Devices.getDevicesList(apartmentId);
+
+                    lstDevicesModel.clear();
+
+                    //volta a preencher a lstDevicesModel com os apartamentos do edificio da combobox
+                    for (int i = 0; i < arrDevicesList.size(); i++) {
+                        String strDevices = (String) arrDevicesList.get(i);
+                        String[] arrDevices = strDevices.split("#");
+                        lstDevicesModel.addElement(arrDevices[0]);
+                    }
+
+                    //adiciona o novo elemento a lista, e cria o respetivo xml e atualiza a lista
+                    lstDevicesModel.addElement(device.getDeviceId());
+                    //Devices.saveDevice(device);
+                    lsDevices.setModel(lstDevicesModel);
+
+                    setGuiElementsOff();
+
+                } else {
+                    JOptionPane.showMessageDialog(mainFrame,
+                            "O campo [Nome] não pode ser vazio.",
+                            "iPower - Criação de Apartamento",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+
+        btnEditar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        btnRemover.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
             }
         });
@@ -139,7 +196,7 @@ public class equipForm {
         for (int i = 0; i < arrBuildingsList.size(); i++) {
             String strBuilding = (String) arrBuildingsList.get(i);
             String[] arrBuilding = strBuilding.split("#");
-            cbBuildingsModel.addElement(arrBuilding[0] + "-" + arrBuilding[1]);
+            cbBuildingsModel.addElement(arrBuilding[0] + " - " + arrBuilding[1]);
         }
 
         cbBuildings.setModel(cbBuildingsModel);
@@ -153,19 +210,20 @@ public class equipForm {
         for (int i = 0; i < arrApartmentsList.size(); i++) {
             String strApartment = (String) arrApartmentsList.get(i);
             String[] arrApartment= strApartment.split("#");
-            cbApartmentModel.addElement(arrApartment[0] + "-" + arrApartment[1]);
+            cbApartmentModel.addElement(arrApartment[0] + " - " + arrApartment[1]);
         }
         cbApartments.setModel(cbApartmentModel);
 
     }
 
-    private void setDeviceList(String apartmentId){
+    private void setDeviceList(Integer apartmentId){
+
         ArrayList arrDevicesList = Devices.getDevicesList(apartmentId);
 
         for (int i = 0; i < arrDevicesList.size(); i++) {
             String strBuilding = (String) arrDevicesList.get(i);
             String[] arrBuilding = strBuilding.split("#");
-            lstDevicesModel.addElement(arrBuilding[0] + "-" + arrBuilding[1]);
+            lstDevicesModel.addElement(arrBuilding[0] + " - " + arrBuilding[1]);
         }
 
         lsDevices.setModel(lstDevicesModel);

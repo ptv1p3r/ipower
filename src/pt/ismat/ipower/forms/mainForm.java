@@ -306,7 +306,7 @@ public class mainForm {
                 buildingNode.add(apartmentNode);
 
                 // Cria os equipamentos de cada apartamento
-                ArrayList arrDevicesList = Devices.getDevicesList(arrApartment[0]);
+                ArrayList arrDevicesList = Devices.getDevicesList(Integer.valueOf(arrApartment[0]));
 
                 for (int d = 0; d < arrDevicesList.size(); d++) {
                     String strDevice = (String) arrDevicesList.get(d);

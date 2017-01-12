@@ -10,29 +10,29 @@ import static pt.ismat.ipower.utils.Buildings.strBuildingsXml;
  */
 public class Devices {
 
-    private String strDeviceId, strDeviceCategory;
-    private Integer intConsumo, intDeviceType;
+    private String strDeviceCategory, strDeviceType;
+    private Integer intConsumo, intDeviceId;
     private Boolean bolEnabled = false ;
 
 
     /**
      * Construtor para equipamentos
-     * @param strDeviceId Identificador de equipamento
+     * @param intDeviceId Identificador de equipamento
      */
-    public Devices(String strDeviceId,Integer intConsumo,String strDeviceCategory,Integer intDeviceType,Boolean bolEnabled) {
-        this.strDeviceId = strDeviceId;
+    public Devices(Integer intDeviceId,Integer intConsumo,String strDeviceCategory,String strDeviceType,Boolean bolEnabled) {
+        this.intDeviceId = intDeviceId;
         this.intConsumo = intConsumo;
         this.strDeviceCategory = strDeviceCategory;
         this.bolEnabled = bolEnabled;
-        this.intDeviceType = intDeviceType;
+        this.strDeviceType = strDeviceType;
     }
 
     /**
      * Metodo que retorna o identificador do equipamento
-     * @return String Identificador de equipamento
+     * @return Integer Identificador de equipamento
      */
-    public String getDeviceId() {
-        return strDeviceId;
+    public Integer getDeviceId() {
+        return intDeviceId;
     }
 
     /**
@@ -45,10 +45,10 @@ public class Devices {
 
     /**
      * Metodo que retorna o tipo de equipamento
-     * @return Integer Tipo (nenhum,frigorifico,aquecedor)
+     * @return String Tipo (nenhum,frigorifico,aquecedor)
      */
-    public Integer getDeviceType() {
-        return intDeviceType;
+    public String getDeviceType() {
+        return strDeviceType;
     }
 
     /**
@@ -81,11 +81,11 @@ public class Devices {
      * Metodo que retorna uma lista de equipamentos existentes de um apartamento pelo seu id
      * @return Devices List
      */
-    public static ArrayList getDevicesList(String deviceId){
+    public static ArrayList getDevicesList(Integer apartmentId){
         ArrayList arrDevicesList = new ArrayList();
 
         //validateBuildingsFolder();
-        xmlParser.readDevicesXml(strBuildingsXml,arrDevicesList,deviceId);
+        xmlParser.readDevicesXml(strBuildingsXml,arrDevicesList, apartmentId);
 
         return arrDevicesList;
     }
@@ -133,7 +133,7 @@ public class Devices {
      * Metodo que retorna um valor total de equipamentos activos existentes em todos os apartamentos
      * @return Integer Devices Count
      */
-    public static Integer getDeviceReading(String strDeviceId){
+    public static Integer getDeviceReading(Integer intDeviceId){
         ArrayList arrDevicesList = new ArrayList();
 
         //validateBuildingsFolder();
