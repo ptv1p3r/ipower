@@ -1031,6 +1031,97 @@ public class xmlParser {
     }
 
     /**
+     * Metodo que actualiza o ficheiro de xml de um determinado apartamento com um equipamento
+     * @param apartmentXmlFile Ficheiro xml do apartamento
+     * @param device Equipamento a ser adicionado
+     */
+    public static void updateApartmentDeviceXml(String apartmentXmlFile,Devices device){
+
+        try {
+
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+            //Document document = docBuilder.parse(buildingXmlFile);
+            documento = docBuilder.parse(apartmentXmlFile);
+
+            // root
+            Element root = documento.getDocumentElement();
+
+            Element newDevice = documento.createElement("device");
+
+            // atributo id
+            Attr attrDevcieId = documento.createAttribute("id");
+            attrDevcieId.setValue(device.getDeviceId().toString());
+            newDevice.setAttributeNode(attrDevcieId);
+
+            root.appendChild(newDevice);
+
+            //abre o node das leituras e da apend ao node do equipamento
+            Element eReading = documento.createElement("readings");
+            newDevice.appendChild(newDevice);
+
+
+            xmlWriteDocument(apartmentXmlFile);
+
+        } catch (ParserConfigurationException pce) {
+            pce.printStackTrace();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } catch (SAXException sax) {
+            sax.printStackTrace();
+        }
+
+    }
+
+    /**
+     * Metodo que remove do ficheiro de xml de um determinado apartamento um equipamento selecionado
+     * @param apartmentXmlFile Ficheiro xml do apartamento
+     * @param device Equipamento a ser adicionado
+     */
+    public static void removeApartmentDeviceXml(String apartmentXmlFile,Devices device){
+
+        try {
+
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+            documento = docBuilder.parse(apartmentXmlFile);
+
+            //vai buscar todos os equipamentos existentes no ficheiro xml
+            NodeList nlDeviceList = documento.getElementsByTagName("device");
+
+            if (nlDeviceList != null && nlDeviceList.getLength() > 0) {
+
+                //percorre todos os equipamentos
+                for (int i = 0; i < nlDeviceList.getLength(); i++) {
+
+                    Node nDevice = nlDeviceList.item(i);
+                    Element eDevice = (Element) nDevice;
+
+                    //encontra o selecionado
+                    if (eDevice.hasAttribute("id") && eDevice.getAttribute("id").equals(String.valueOf(device.getDeviceId()))) {
+
+                        //remove o selecionado
+                        nDevice.getParentNode().removeChild(nDevice);
+
+                    }
+                }
+            }
+
+            xmlWriteDocument(apartmentXmlFile);
+
+        } catch (ParserConfigurationException pce) {
+            pce.printStackTrace();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } catch (SAXException sax) {
+            sax.printStackTrace();
+        }
+
+    }
+
+    /**
      * Metodo que devolve um documento xml normalizado
      * @param xmlFile Caminho de ficheiro xml
      * @return Document Documento normalizado
