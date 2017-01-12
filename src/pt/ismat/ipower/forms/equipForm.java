@@ -108,11 +108,17 @@ public class equipForm {
                     // vamos buscar o index pelo ponto gerado pelo mouse click
                     int index = lsDevices.locationToIndex(e.getPoint());
 
+                    String[] strBuildingId = cbBuildings.getSelectedItem().toString().split(" - ");
+                    Integer buildingId = Integer.valueOf(strBuildingId[0]);
+
+                    String[] strApartmentId = cbBuildings.getSelectedItem().toString().split(" - ");
+                    Integer apartmentId = Integer.valueOf(strApartmentId[0]);
+
                     // vamos buscar o elemento pelo seu index
                     Object selectedDevice = lsDevices.getModel().getElementAt(index);
                     String[] arrDevices = selectedDevice.toString().split(" - ");
 
-                    Devices Device = Devices.loadDevice(arrDevices[0].trim());
+                    Devices Device = Devices.loadDevice(buildingId,apartmentId,Integer.valueOf(arrDevices[0].trim()));
 
                     lblIdData.setText(Device.getDeviceId().toString());
                     txtConsumo.setText(String.valueOf(Device.getConsumo()));
@@ -142,8 +148,8 @@ public class equipForm {
                     Integer consumo = Integer.parseInt(txtConsumo.getText().trim());
 
                     //mudar a recepcao do id para como o dos outros.
-                    Devices device = new Devices(1000, consumo, cbTipo.getSelectedItem().toString(), cbDeviceType.getSelectedItem().toString(),
-                            ckbEnable.isSelected());
+                    Devices device = new Devices(buildingId, apartmentId, consumo, cbTipo.getSelectedItem().toString(),
+                            cbDeviceType.getSelectedItem().toString(), ckbEnable.isSelected());
 
 
                     ArrayList arrDevicesList = Devices.getDevicesList(apartmentId);
@@ -159,7 +165,7 @@ public class equipForm {
 
                     //adiciona o novo elemento a lista, e cria o respetivo xml e atualiza a lista
                     lstDevicesModel.addElement(device.getDeviceId());
-                    //Devices.saveDevice(device);
+                    Devices.saveDevice(buildingId, apartmentId, device);
                     lsDevices.setModel(lstDevicesModel);
 
                     setGuiElementsOff();

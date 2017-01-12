@@ -1,6 +1,8 @@
 package pt.ismat.ipower.utils;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static pt.ismat.ipower.utils.Buildings.strBuildingsXml;
 
@@ -10,16 +12,46 @@ import static pt.ismat.ipower.utils.Buildings.strBuildingsXml;
  */
 public class Devices {
 
+    final static String strBuildingsPath = System.getProperty("user.dir") + "/buildings";
+    final static String strBuildingsXml = strBuildingsPath + "/buildings.xml";
+
     private String strDeviceCategory, strDeviceType;
-    private Integer intConsumo, intDeviceId;
+    private Integer intConsumo, intDeviceId, intApartmentId, intBuildingId;
     private Boolean bolEnabled = false ;
 
 
     /**
-     * Construtor para equipamentos
-     * @param intDeviceId Identificador de equipamento
+     * Construtor de equipamento
+     * @param intBuildingId Identificador de edificio
+     * @param intApartmentId Identificador de apartamento
+     * @param intConsumo consumo (W)
+     * @param strDeviceCategory Categoria do equipamento
+     * @param strDeviceType Tipo de equipamento
+     * @param bolEnabled Estado do equipamento
      */
-    public Devices(Integer intDeviceId,Integer intConsumo,String strDeviceCategory,String strDeviceType,Boolean bolEnabled) {
+    public Devices(Integer intBuildingId, Integer intApartmentId,Integer intConsumo,String strDeviceCategory,String strDeviceType,Boolean bolEnabled) {
+        this.intBuildingId=intBuildingId;
+        this.intApartmentId=intApartmentId;
+        this.intDeviceId = getNewDeviceId(intApartmentId);
+        this.intConsumo = intConsumo;
+        this.strDeviceCategory = strDeviceCategory;
+        this.bolEnabled = bolEnabled;
+        this.strDeviceType = strDeviceType;
+    }
+
+    /**
+     * construtor para equipamentos
+     * @param intBuildingId Identificador de edificio
+     * @param intApartmentId Identificador de apartamento
+     * @param intDeviceId Identificador de equipamento
+     * @param intConsumo consumo (W)
+     * @param strDeviceCategory Categoria do equipamento
+     * @param strDeviceType Tipo de equipamento
+     * @param bolEnabled Estado do equipamento
+     */
+    public Devices(Integer intBuildingId, Integer intApartmentId,Integer intDeviceId, Integer intConsumo,String strDeviceCategory,String strDeviceType,Boolean bolEnabled) {
+        this.intBuildingId=intBuildingId;
+        this.intApartmentId=intApartmentId;
         this.intDeviceId = intDeviceId;
         this.intConsumo = intConsumo;
         this.strDeviceCategory = strDeviceCategory;
@@ -33,6 +65,22 @@ public class Devices {
      */
     public Integer getDeviceId() {
         return intDeviceId;
+    }
+
+    /**
+     * Metodo que retorna o identificador do apartamento
+     * @return Integer Identificador de apartamento
+     */
+    public Integer getApartmentId() {
+        return intApartmentId;
+    }
+
+    /**
+     * Metodo que retorna o identificador do edificio
+     * @return Integer Identificador de edificio
+     */
+    public Integer getBuildingId() {
+        return intBuildingId;
     }
 
     /**
@@ -72,9 +120,9 @@ public class Devices {
      * @param deviceId Identificador de equipamento
      * @return equipamento
      */
-    public static Devices loadDevice(String deviceId){
+    public static Devices loadDevice(Integer buildingId, Integer apartmentId, Integer deviceId){
 
-        return xmlParser.loadDeviceXml(strBuildingsXml,deviceId);
+        return xmlParser.loadDeviceXml(strBuildingsXml,buildingId, apartmentId, deviceId);
     }
 
     /**
@@ -88,6 +136,59 @@ public class Devices {
         xmlParser.readDevicesXml(strBuildingsXml,arrDevicesList, apartmentId);
 
         return arrDevicesList;
+    }
+
+    /**
+     * Metodo que gera um novo id disponivel
+     * @return Integer Novo id gerado
+     */
+    private Integer getNewDeviceId(Integer apartmentId){
+        Integer id=1000;
+        int i;
+
+        try {
+            ArrayList devicesList = getDevicesList(apartmentId);
+
+            Integer[] deviceId = new Integer[devicesList.size()];
+
+            for (i = 0; i < devicesList.size(); i++) {
+                String strDevices = (String) devicesList.get(i);
+                String[] arrDevices = strDevices.split("#");
+                deviceId[i] = Integer.parseInt(arrDevices[0].trim());
+            }
+
+            for(i=0 ; i<deviceId.length ; i++) {
+
+                if (id == deviceId[i]) {
+                    id++;
+                }
+            }
+
+        } catch (Exception ex) {
+            // TODO : validação de erros
+            ex.printStackTrace();
+        }
+
+        return id;
+    }
+
+    /**
+     * Metodo que efetua a gravacao do novo equipamento nos respetivos ficheiros xml
+     * @param buildingId identificador do edificio
+     * @param apartmentId identificador do apartamanto
+     * @param device equipamento a ser gravado
+     */
+    public static void saveDevice(Integer buildingId, Integer apartmentId, Devices device){
+        try {
+
+            xmlParser.updateDeviceXml(strBuildingsXml, buildingId, apartmentId, device);
+            xmlParser.updateApartmentDeviceXml((strBuildingsPath+"/"+buildingId+"/"+apartmentId+".xml"), device);
+
+
+        } catch (Exception ex) {
+            //TODO : validação de erros
+            ex.printStackTrace();
+        }
     }
 
     /**

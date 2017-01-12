@@ -247,7 +247,7 @@ public class xmlParser {
 
             // root elemento
             documento = docBuilder.newDocument();
-            Element root = documento.createElement("device");
+            Element root = documento.createElement("devices");
             documento.appendChild(root);
 
             xmlWriteDocument(apartmentXmlFile);
@@ -693,43 +693,70 @@ public class xmlParser {
     /**
      * Metodo que carrega um eqipamento baseado nos seu dados do ficheiro xml
      * @param buildingXmlFile Ficheiro xml de edificios
-     * @param id Identificador de equipamento
+     * @param buildingId Identificador de edificio
+     * @param apartmentId Identificador de apartamento
+     * @param deviceId Identificador de equipamento
      * @return Equipamento
      */
-    public static Devices loadDeviceXml(String buildingXmlFile,String id){
+    public static Devices loadDeviceXml(String buildingXmlFile,Integer buildingId, Integer apartmentId, Integer deviceId){
 
         Devices device = null;
 
         try {
+            //buildings.xml
+            documento = xmlHeaderDocument(buildingXmlFile);
+            NodeList nlBuildings = documento.getElementsByTagName("building");
 
-            File fXmlFile = new File(buildingXmlFile);
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(fXmlFile);
+            //vai a procura do edificio
+            for (int i = 0; i < nlBuildings.getLength(); i++) {
+                Node nBuilding = nlBuildings.item(i);
 
-            //http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
-            doc.getDocumentElement().normalize();
+                if (nBuilding.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eBuilding = (Element) nBuilding;
 
-            NodeList nlDevicesList = doc.getElementsByTagName("devices");
+                    //confirma o edificio
+                    if (eBuilding.hasAttribute("id") && eBuilding.getAttribute("id").equals(String.valueOf(buildingId))) {
 
-            if (nlDevicesList != null && nlDevicesList.getLength() > 0) {
+                        //vai buscar todos os apartamentos do edificio
+                        NodeList nlApartments = eBuilding.getElementsByTagName("apartment");
 
-                for (int i = 0; i < nlDevicesList.getLength(); i++) {
+                        //le a informacao de todos os apartamentos
+                        for (int k = 0; k < nlApartments.getLength(); k++) {
+                            Node nApartments = nlApartments.item(k);
 
-                    Node nDevice= nlDevicesList.item(i);
-                    Element eDevice = (Element) nDevice;
+                            if (nApartments.getNodeType() == Node.ELEMENT_NODE) {
+                                Element eApartment = (Element) nApartments;
 
-                    if (eDevice.hasAttribute("id") && eDevice.getAttribute("id").equals(id)) {
-                        device = new Devices( Integer.valueOf(eDevice.getAttribute("id")),
-                                Integer.valueOf(eDevice.getElementsByTagName("euc").item(0).getTextContent()),
-                                eDevice.getAttribute("category"),
-                                eDevice.getAttribute("type"),
-                                Boolean.valueOf(eDevice.getElementsByTagName("enable").item(0).getTextContent()));
+                                if (eApartment.hasAttribute("id") && eApartment.getAttribute("id").equals(String.valueOf(apartmentId))) {
+
+                                    NodeList nlDevicesList = eApartment.getElementsByTagName("device");
+
+                                    if (nlDevicesList != null && nlDevicesList.getLength() > 0) {
+
+                                        for (int j = 0; i < nlDevicesList.getLength(); i++) {
+
+                                            Node nDevice= nlDevicesList.item(j);
+                                            Element eDevice = (Element) nDevice;
+
+                                            if (eDevice.hasAttribute("id") && eDevice.getAttribute("id").equals(String.valueOf(deviceId))) {
+                                                device = new Devices(buildingId, apartmentId,
+                                                        Integer.valueOf(eDevice.getAttribute("id")),
+                                                        Integer.valueOf(eDevice.getElementsByTagName("euc").item(0).getTextContent()),
+                                                        eDevice.getAttribute("category"),
+                                                        eDevice.getAttribute("type"),
+                                                        Boolean.valueOf(eDevice.getElementsByTagName("enable").item(0).getTextContent()));
+                                            }
+
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
                     }
-
                 }
-
             }
+
 
         } catch (Exception e) {
             // TODO: 30-12-2016 tratar das excepcoes
@@ -1058,8 +1085,8 @@ public class xmlParser {
             root.appendChild(newDevice);
 
             //abre o node das leituras e da apend ao node do equipamento
-            Element eReading = documento.createElement("readings");
-            newDevice.appendChild(newDevice);
+            Element eReading = documento.createElement("reading");
+            newDevice.appendChild(eReading);
 
 
             xmlWriteDocument(apartmentXmlFile);

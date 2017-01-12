@@ -11,7 +11,7 @@ import java.util.Arrays;
  */
 public class Apartments extends Buildings {
 
-    final static String strBuildingPath = System.getProperty("user.dir") + "/buildings";
+    final static String strBuildingsPath = System.getProperty("user.dir") + "/buildings";
     final static String strBuildingsXml = strBuildingsPath + "/buildings.xml";
 
     private Integer intApartmentId, buildingId;
@@ -30,7 +30,7 @@ public class Apartments extends Buildings {
         this.intApartmentId=getApartmentId();
         this.buildingId=getBuildingId();
         this.strApartmentName=strApartmentName;
-        this.apartmentXmlPath=strBuildingPath + "/" + (getBuildingId())+ "/" + this.intApartmentId + ".xml";
+        this.apartmentXmlPath=strBuildingsPath + "/" + (getBuildingId())+ "/" + this.intApartmentId + ".xml";
     }
 
     /**
@@ -117,11 +117,11 @@ public class Apartments extends Buildings {
         int i;
 
         try {
-            File apartmentXML = new File(strBuildingPath + "/" + getBuildingId() + "/" + id + ".xml");
+            File apartmentXML = new File(strBuildingsPath + "/" + getBuildingId() + "/" + id + ".xml");
 
             if (apartmentXML.exists()) { //verifica se o apartamento ja tem um ficheiro xml correspondente
 
-                File apartmentList = new File(strBuildingPath + "/" + getBuildingId()); //vai buscar a lista de ficheiros xml
+                File apartmentList = new File(strBuildingsPath + "/" + getBuildingId()); //vai buscar a lista de ficheiros xml
                 File[] arrApartments = apartmentList.listFiles();
                 Arrays.sort(arrApartments);
 
@@ -180,7 +180,7 @@ public class Apartments extends Buildings {
 
 
         try {
-            File apartment = new File(strBuildingPath + "/" + buildingId + "/" + apartmentId + ".xml");
+            File apartment = new File(strBuildingsPath + "/" + buildingId + "/" + apartmentId + ".xml");
 
             if (apartment.exists()){ // valida se o edificio existe
                 apartment.delete();
