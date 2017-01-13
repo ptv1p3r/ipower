@@ -187,6 +187,42 @@ public class Devices {
     }
 
     /**
+     * Metodo que efetua a remoção do apartamento do ficheiro buildings.xml assim como o seu xml associado
+     * @param apartmentId Identificador de apartamento
+     * @param buildingId Identificador de edificio
+     */
+    public static void removeDevice(Integer buildingId, Integer apartmentId, Integer deviceId){
+
+
+        try {
+            xmlParser.removeDeviceXml(strBuildingsXml, buildingId, apartmentId, deviceId);
+            xmlParser.removeApartmentDeviceXml((strBuildingsPath + "/" + buildingId + "/" + apartmentId + ".xml"), deviceId);
+
+        } catch (Exception ex) {
+            //TODO : validação de erros
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Metodo que efetua a edição do apartamento no ficheiro buildings.xml
+     * @param buildingId Identificador de edificio
+     * @param apartmentId Identificador de apartamento
+     * @param device equipamento a ser editado
+     */
+    public static void editDevice(Integer buildingId, Integer apartmentId, Devices device) {
+
+        try {
+            xmlParser.editDeviceXml((strBuildingsPath+"/"+buildingId+"/"+apartmentId+".xml"), buildingId, apartmentId, device.getDeviceId(),
+                    device.getDeviceCategory(), device.getDeviceType());    //update ao xml
+
+        } catch (Exception ex) {
+            //TODO : validação de erros
+            ex.printStackTrace();
+        }
+    }
+
+    /**
      * Metodo que retorna uma lista de equipamentos activos existentes de todos os apartamentos
      * @return Devices List
      */

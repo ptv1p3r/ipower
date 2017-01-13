@@ -201,7 +201,8 @@ public class xmlParser {
 
         try {
             documento = xmlHeaderDocument(buildingXmlFile);
-            NodeList nlApartments = documento.getElementsByTagName("apartments"); // retorna no dos apartamentos
+
+            NodeList nlApartments = documento.getElementsByTagName("apartment"); // retorna no dos apartamentos
 
             for (int i = 0; i < nlApartments.getLength(); i++) { // percorre apartamentos
                 Node nApartment= nlApartments.item(i);
@@ -212,7 +213,7 @@ public class xmlParser {
                     for (int j = 0; j < childList.getLength(); j++) {
                         Node childNode = childList.item(j);
 
-                        if ("devices".equals(childNode.getNodeName())) {
+                        if ("device".equals(childNode.getNodeName())) {
                             Element eDevice = (Element) childNode;
                                 arrDevicesList.add(eDevice.getAttribute("id") + "#" + eDevice.getAttribute("category") + "#" +
                                         eDevice.getElementsByTagName("euc").item(0).getTextContent());
@@ -469,10 +470,8 @@ public class xmlParser {
     public static void removeApartmentXml(String buildingXmlFile,Integer buildingId, Integer apartmentId){
         try {
 
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            documento = xmlHeaderDocument(buildingXmlFile);
 
-            documento = docBuilder.parse(buildingXmlFile);
 
             NodeList nlBuildingList = documento.getElementsByTagName("building");
 
@@ -528,14 +527,8 @@ public class xmlParser {
 
             transformer.transform(source, result);
 
-        } catch (ParserConfigurationException pce) {
-            pce.printStackTrace();
         } catch (TransformerException tfe) {
             tfe.printStackTrace();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }catch (SAXException sax) {
-            sax.printStackTrace();
         }
     }
 
@@ -792,10 +785,7 @@ public class xmlParser {
     public static void updateDeviceXml(String buildingXmlFile,Integer buildingId, Integer apartmentId, Devices device){
         try {
 
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-
-            documento = docBuilder.parse(buildingXmlFile);
+            documento = xmlHeaderDocument(buildingXmlFile);
 
             NodeList nlBuildingList = documento.getElementsByTagName("building");
 
@@ -876,23 +866,10 @@ public class xmlParser {
             }
 
 
-            // escreve ficheiro xml
-            DOMSource source = new DOMSource(documento);
+            xmlWriteDocument(buildingXmlFile);
 
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            StreamResult result = new StreamResult(buildingXmlFile);
-
-            transformer.transform(source, result);
-
-        } catch (ParserConfigurationException pce) {
-            pce.printStackTrace();
-        } catch (TransformerException tfe) {
-            tfe.printStackTrace();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }catch (SAXException sax) {
-            sax.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -906,10 +883,7 @@ public class xmlParser {
     public static void removeDeviceXml(String buildingXmlFile,Integer buildingId, Integer apartmentId, Integer deviceId){
         try {
 
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-
-            documento = docBuilder.parse(buildingXmlFile);
+            documento = xmlHeaderDocument(buildingXmlFile);
 
             NodeList nlBuildingList = documento.getElementsByTagName("building");
 
@@ -931,12 +905,12 @@ public class xmlParser {
                             Element eApartments = (Element) nApartments;
 
                             //verifica se existem apartamentos no edificio
-                            if (eApartments!=null) {
+                            if (eApartments != null) {
 
                                 //guarda todos os nodes dos apartamentos
                                 NodeList nlApartment = eBuilding.getElementsByTagName("apartment");
 
-                                for (int k=0 ; k<nlApartment.getLength() ; k++) {
+                                for (int k = 0; k < nlApartment.getLength(); k++) {
 
                                     Node nApartment = nlApartment.item(k);
                                     Element eApartment = (Element) nApartment;
@@ -945,10 +919,9 @@ public class xmlParser {
                                     if (eApartment.hasAttribute("id") && eApartment.getAttribute("id").equals(String.valueOf(apartmentId))) {
 
                                         //Vai buscar o node devices ao node do apartamento
-                                        NodeList nlDevicesList = eApartment.getElementsByTagName("devices");
-
+                                        NodeList nlDevicesList = eApartment.getElementsByTagName("device");
                                         //procura pelo device selecionado
-                                        for (int l=0 ; l<nlDevicesList.getLength() ; l++) {
+                                        for (int l = 0; l < nlDevicesList.getLength(); l++) {
 
                                             Node nDevice = nlDevicesList.item(l);
                                             Element eDevice = (Element) nDevice;
@@ -968,24 +941,10 @@ public class xmlParser {
                 }
             }
 
+            xmlWriteDocument(buildingXmlFile);
 
-            // escreve ficheiro xml
-            DOMSource source = new DOMSource(documento);
-
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            StreamResult result = new StreamResult(buildingXmlFile);
-
-            transformer.transform(source, result);
-
-        } catch (ParserConfigurationException pce) {
-            pce.printStackTrace();
-        } catch (TransformerException tfe) {
-            tfe.printStackTrace();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }catch (SAXException sax) {
-            sax.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -1001,10 +960,7 @@ public class xmlParser {
     public static void editDeviceXml(String buildingXmlFile,Integer buildingId, Integer apartmentId, Integer deviceId, String strCategory, String strType){
         try {
 
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-
-            documento = docBuilder.parse(buildingXmlFile);
+            documento = xmlHeaderDocument(buildingXmlFile);
 
             NodeList nlBuildingList = documento.getElementsByTagName("building");
 
@@ -1040,7 +996,7 @@ public class xmlParser {
                                     if (eApartment.hasAttribute("id") && eApartment.getAttribute("id").equals(String.valueOf(apartmentId))) {
 
                                         //Vai buscar o node devices ao node do apartamento
-                                        NodeList nlDevicesList = eApartment.getElementsByTagName("devices");
+                                        NodeList nlDevicesList = eApartment.getElementsByTagName("device");
 
                                         //procura pelo device selecionado
                                         for (int l=0 ; l<nlDevicesList.getLength() ; l++) {
@@ -1066,22 +1022,10 @@ public class xmlParser {
 
 
             // escreve ficheiro xml
-            DOMSource source = new DOMSource(documento);
+            xmlWriteDocument(buildingXmlFile);
 
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            StreamResult result = new StreamResult(buildingXmlFile);
-
-            transformer.transform(source, result);
-
-        } catch (ParserConfigurationException pce) {
-            pce.printStackTrace();
-        } catch (TransformerException tfe) {
-            tfe.printStackTrace();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }catch (SAXException sax) {
-            sax.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -1132,9 +1076,9 @@ public class xmlParser {
     /**
      * Metodo que remove do ficheiro de xml de um determinado apartamento um equipamento selecionado
      * @param apartmentXmlFile Ficheiro xml do apartamento
-     * @param device Equipamento a ser adicionado
+     * @param deviceId Equipamento a ser removido
      */
-    public static void removeApartmentDeviceXml(String apartmentXmlFile,Devices device){
+    public static void removeApartmentDeviceXml(String apartmentXmlFile,Integer deviceId){
 
         try {
 
@@ -1155,7 +1099,7 @@ public class xmlParser {
                     Element eDevice = (Element) nDevice;
 
                     //encontra o selecionado
-                    if (eDevice.hasAttribute("id") && eDevice.getAttribute("id").equals(String.valueOf(device.getDeviceId()))) {
+                    if (eDevice.hasAttribute("id") && eDevice.getAttribute("id").equals(String.valueOf(deviceId))) {
 
                         //remove o selecionado
                         nDevice.getParentNode().removeChild(nDevice);
