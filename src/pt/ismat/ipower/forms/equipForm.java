@@ -183,12 +183,7 @@ public class equipForm {
 
                 } catch (NumberFormatException nfe) {
                     JOptionPane.showMessageDialog(mainFrame,
-                            "O campo [Consumo] tem de ser um numero inteiro..",
-                            "iPower - Criação de Equipamento",
-                            JOptionPane.WARNING_MESSAGE);
-                } catch (NullPointerException npe) {
-                    JOptionPane.showMessageDialog(mainFrame,
-                            "O campo [Consumo] tem de ser um numero inteiro.",
+                            "O campo [Consumo] tem de ser expresso em Watts.",
                             "iPower - Criação de Equipamento",
                             JOptionPane.WARNING_MESSAGE);
                 }
@@ -374,7 +369,7 @@ public class equipForm {
 
     private void lablesOff() {
 
-        //enable as lables
+        //disable as lables
         lblIdData.setEnabled(false);
         txtConsumo.setEnabled(false);
         cbTipo.setEnabled(false);
