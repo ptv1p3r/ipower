@@ -63,8 +63,10 @@ public class equipForm {
                 apt = cbBuildings.getSelectedItem().toString().split(" - ");
 
                 lstDevicesModel.clear();
-                lsDevices.setModel(lstDevicesModel);
+                //lsDevices.setModel(lstDevicesModel);
                 setApartmentsList(Integer.valueOf(apt[0]));
+
+                setDeviceList(Integer.valueOf(apt[0]), cbApartments.getSelectedIndex()+1000);
 
             }
         });
@@ -81,15 +83,7 @@ public class equipForm {
                 String[] selectedBuilding = cbBuildings.getSelectedItem().toString().split(" - ");
                 String[] selectedApartment = cbApartments.getSelectedItem().toString().split(" - ");
 
-                ArrayList arrDevicesList = Devices.getDevicesList(Integer.parseInt(selectedBuilding[0]), Integer.parseInt(selectedApartment[0]));
-
-                for (int i = 0; i < arrDevicesList.size(); i++) {
-                    String strBuilding = (String) arrDevicesList.get(i);
-                    String[] arrBuilding = strBuilding.split("#");
-                    lstDevicesModel.addElement(arrBuilding[0]);
-                }
-
-                lsDevices.setModel(lstDevicesModel);
+                setDeviceList(Integer.valueOf(selectedBuilding[0]), Integer.valueOf(selectedApartment[0]));
 
                 setGuiElementsOff();
             }
@@ -120,11 +114,19 @@ public class equipForm {
 
                     Devices Device = Devices.loadDevice(buildingId,apartmentId,Integer.valueOf(arrDevices[0].trim()));
 
+                    //mete a info nas lables
                     lblIdData.setText(Device.getDeviceId().toString());
                     txtConsumo.setText(String.valueOf(Device.getConsumo()));
                     cbTipo.setSelectedItem(Device.getDeviceCategory());
                     cbDeviceType.setSelectedItem(Device.getDeviceType());
                     ckbEnable.setSelected(Device.isEnabled());
+
+                    //tranca as lables
+                    lblIdData.setEnabled(false);
+                    txtConsumo.setEnabled(false);
+                    cbTipo.setEnabled(false);
+                    cbDeviceType.setEnabled(false);
+                    ckbEnable.setEnabled(false);
 
                 } else {
                     setGuiElementsOff();
@@ -183,6 +185,60 @@ public class equipForm {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                if (!lblIdData.isEnabled() && !txtConsumo.isEnabled() && !cbTipo.isEnabled() && !cbDeviceType.isEnabled() && !ckbEnable.isEnabled()){
+                    //enable as lables
+                    lblIdData.setEnabled(true);
+                    txtConsumo.setEnabled(true);
+                    cbTipo.setEnabled(true);
+                    cbDeviceType.setEnabled(true);
+                    ckbEnable.setEnabled(true);
+
+                } else {
+
+                    int resultado = JOptionPane.showConfirmDialog(
+                            mainFrame,
+                            "Deseja mesmo editar este equipamento?",
+                            "iPower - Edição de Equipamento",
+                            JOptionPane.YES_NO_OPTION);
+
+
+                    //efetua a edicao
+                    if (resultado == 0) {
+
+                        //building e apartment id
+                        Integer apartmentId = Integer.parseInt(cbApartments.getSelectedItem().toString().replaceAll("\\D+", ""));
+                        Integer buildingId = Integer.parseInt(cbApartments.getSelectedItem().toString().replaceAll("\\D+", ""));
+
+                        Integer consumo = Integer.parseInt(txtConsumo.getText().trim());
+
+                        //cria um novo apartamento com o nome novo, ignora os espacos da indentacao da lable.
+                        Devices device = new Devices(buildingId, apartmentId, consumo, cbTipo.getSelectedItem().toString(),
+                                cbDeviceType.getSelectedItem().toString(), ckbEnable.isSelected());
+
+                        //TODO: criar o metodo
+                        //Devices.editDevice(buildingId,apartmentId, Integer.parseInt(lblIdData.getText().trim()));
+
+                        lstDevicesModel.clear();
+
+                        //volta a preencher a lstApartmentModel com os apartamentos do edificio da combobox atualizados
+                        setDeviceList(buildingId, apartmentId);
+
+                        //preenche as casas com a nova informacao do equipamento, como nao muda o ID nao e preciso mexer no id
+
+                        txtConsumo.setText(String.valueOf(device.getConsumo()));
+                        cbTipo.setSelectedItem(device.getDeviceCategory());
+                        cbDeviceType.setSelectedItem(device.getDeviceType());
+                        ckbEnable.setSelected(device.isEnabled());
+
+                        //tranca as lables
+                        lblIdData.setEnabled(false);
+                        txtConsumo.setEnabled(false);
+                        cbTipo.setEnabled(false);
+                        cbDeviceType.setEnabled(false);
+                        ckbEnable.setEnabled(false);
+                    }
+                }
+
             }
         });
 
@@ -190,6 +246,33 @@ public class equipForm {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                if (!lsDevices.isSelectionEmpty()){
+
+                    int resultado = JOptionPane.showConfirmDialog(
+                            mainFrame,
+                            "Deseja mesmo remover este equipamento assim como todos os seus dados?",
+                            "iPower - Remoção de Apartamento",
+                            JOptionPane.YES_NO_OPTION);
+
+                    if (resultado==0){
+
+                        //building e apartment id
+                        Integer apartmentId = Integer.parseInt(cbApartments.getSelectedItem().toString().replaceAll("\\D+", ""));
+                        Integer buildingId = Integer.parseInt(cbApartments.getSelectedItem().toString().replaceAll("\\D+", ""));
+
+                        //Devices.removeDevice(buildingId,apartmentId, lblIdData); // remove o equipamento
+                        lstDevicesModel.remove(lsDevices.getSelectedIndex()); // remove do model da jlist
+                        lsDevices.setModel(lstDevicesModel); // actualiza jlist com model
+
+                        setGuiElementsOff();
+
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(mainFrame,
+                            "Nenhum equipamento seleccionado.",
+                            "iPower - Remoção de Edificio",
+                            JOptionPane.WARNING_MESSAGE);
+                }
             }
         });
     }

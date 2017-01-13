@@ -752,22 +752,19 @@ public class xmlParser {
 
                                     if (nlDevicesList != null && nlDevicesList.getLength() > 0) {
 
-                                        for (int j = 0; i < nlDevicesList.getLength(); i++) {
+                                        for (int j = 0; j < nlDevicesList.getLength(); j++) {
 
                                             Node nDevice= nlDevicesList.item(j);
                                             Element eDevice = (Element) nDevice;
 
                                             if (eDevice.hasAttribute("id") && eDevice.getAttribute("id").equals(String.valueOf(deviceId))) {
-                                                device = new Devices(buildingId, apartmentId,
-                                                        Integer.valueOf(eDevice.getAttribute("id")),
+                                                device = new Devices(buildingId, apartmentId, deviceId,
                                                         Integer.valueOf(eDevice.getElementsByTagName("euc").item(0).getTextContent()),
                                                         eDevice.getAttribute("category"),
                                                         eDevice.getAttribute("type"),
                                                         Boolean.valueOf(eDevice.getElementsByTagName("enable").item(0).getTextContent()));
                                             }
-
                                         }
-
                                     }
                                 }
                             }
@@ -854,9 +851,21 @@ public class xmlParser {
                                         attrDeviceType.setValue(device.getDeviceType());
                                         newDevice.setAttributeNode(attrDeviceType);
 
-                                        //TODO: <enable>false</enable>, <auto>0</auto>, <euc>5</euc>
-
                                         nDevice.appendChild(newDevice);
+
+                                        //estado do equipamento
+                                        Element eStatus = documento.createElement("enable");
+                                        eStatus.setTextContent(Boolean.toString(device.isEnabled()));
+                                        newDevice.appendChild(eStatus);
+
+                                        //TODO: <auto>0</auto>, what is this?
+                                        //Element ? = documento.createElement("auto");
+                                        //newDevice.appendChild(?);
+
+                                        //consumo do equipamento
+                                        Element eConsume = documento.createElement("euc");
+                                        eConsume.setTextContent(Integer.toString(device.getConsumo()));
+                                        newDevice.appendChild(eConsume);
 
                                     }
                                 }

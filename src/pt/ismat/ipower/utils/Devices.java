@@ -153,13 +153,8 @@ public class Devices {
 
             for (i = 0; i < devicesList.size(); i++) {
                 String strDevices = (String) devicesList.get(i);
-                String[] arrDevices = strDevices.split("#");
-                deviceId[i] = Integer.parseInt(arrDevices[0].trim());
-            }
 
-            for(i=0 ; i<deviceId.length ; i++) {
-
-                if (id == deviceId[i]) {
+                if (id == Integer.parseInt(strDevices)) {
                     id++;
                 }
             }
