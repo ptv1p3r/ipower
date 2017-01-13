@@ -163,28 +163,20 @@ public class xmlParser {
 
         try {
             documento = xmlHeaderDocument(buildingXmlFile);
-            NodeList nlApartments = documento.getElementsByTagName("apartments"); // retorna no dos apartamentos
 
-            for (int i = 0; i < nlApartments.getLength(); i++) { // percorre apartamentos
-                Node nApartment= nlApartments.item(i);
+            NodeList nlDevice = documento.getElementsByTagName("device"); // apanha todos os devices
 
-                if (nApartment.getNodeType() == Node.ELEMENT_NODE) { // tipo de no
+            for (int i = 0; i < nlDevice.getLength(); i++) { // percorre device
+                Node nDevice= nlDevice.item(i);
 
-                    NodeList childList = nlApartments.item(i).getChildNodes();
+                Element eDevice = (Element) nDevice;
 
-                    for (int j = 0; j < childList.getLength(); j++) {
-                        Node childNode = childList.item(j);
-
-                        if ("devices".equals(childNode.getNodeName())) {
-                            Element eDevice = (Element) childNode;
-
-                            if (Boolean.valueOf(eDevice.getElementsByTagName("enable").item(0).getTextContent())) { // equipamentos activos
-                                arrDevicesList.add(eDevice.getAttribute("id") + "#" + eDevice.getAttribute("category") + "#" + eDevice.getElementsByTagName("euc").item(0).getTextContent());
-                            }
-                        }
-                    }
+                if (Boolean.valueOf(eDevice.getElementsByTagName("enable").item(0).getTextContent())) { // devices activos
+                    arrDevicesList.add(eDevice.getAttribute("id") + "#" + eDevice.getAttribute("category") + "#" +
+                            eDevice.getElementsByTagName("euc").item(0).getTextContent());
                 }
             }
+
 
         } catch (Exception e) {
             // TODO: 30-12-2016 tratar das excepcoes
@@ -202,25 +194,15 @@ public class xmlParser {
         try {
             documento = xmlHeaderDocument(buildingXmlFile);
 
-            NodeList nlApartments = documento.getElementsByTagName("apartment"); // retorna no dos apartamentos
+            NodeList nlDevice = documento.getElementsByTagName("device"); /// apanha todos os devices
 
-            for (int i = 0; i < nlApartments.getLength(); i++) { // percorre apartamentos
-                Node nApartment= nlApartments.item(i);
+            for (int i = 0; i < nlDevice.getLength(); i++) { // percorre devices
+                Node nDevice = nlDevice.item(i);
 
-                if (nApartment.getNodeType() == Node.ELEMENT_NODE) { // tipo de no
+                Element eDevice = (Element) nDevice;
 
-                    NodeList childList = nlApartments.item(i).getChildNodes();
-                    for (int j = 0; j < childList.getLength(); j++) {
-                        Node childNode = childList.item(j);
-
-                        if ("device".equals(childNode.getNodeName())) {
-                            Element eDevice = (Element) childNode;
-                                arrDevicesList.add(eDevice.getAttribute("id") + "#" + eDevice.getAttribute("category") + "#" +
-                                        eDevice.getElementsByTagName("euc").item(0).getTextContent());
-                        }
-
-                    }
-                }
+                arrDevicesList.add(eDevice.getAttribute("id") + "#" + eDevice.getAttribute("category") + "#" +
+                        eDevice.getElementsByTagName("euc").item(0).getTextContent()); // devices activos
 
             }
 

@@ -108,7 +108,7 @@ public class equipForm {
                     String[] strBuildingId = cbBuildings.getSelectedItem().toString().split(" - ");
                     Integer buildingId = Integer.valueOf(strBuildingId[0]);
 
-                    String[] strApartmentId = cbBuildings.getSelectedItem().toString().split(" - ");
+                    String[] strApartmentId = cbApartments.getSelectedItem().toString().split(" - ");
                     Integer apartmentId = Integer.valueOf(strApartmentId[0]);
 
                     // vamos buscar o elemento pelo seu index
