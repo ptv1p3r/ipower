@@ -12,10 +12,8 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
-/**
- * Created by v1p3r on 29-12-2016.
- */
 public class xmlParser {
     private static Document documento;
 
@@ -164,20 +162,49 @@ public class xmlParser {
         try {
             documento = xmlHeaderDocument(buildingXmlFile);
 
-            NodeList nlDevice = documento.getElementsByTagName("device"); // apanha todos os devices
+            NodeList nlBuildings = documento.getElementsByTagName("building");
 
-            for (int i = 0; i < nlDevice.getLength(); i++) { // percorre device
-                Node nDevice= nlDevice.item(i);
+            for (int i = 0; i < nlBuildings.getLength(); i++) {
+                Node nBuilding = nlBuildings.item(i);
 
-                Element eDevice = (Element) nDevice;
+                if (nBuilding.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eBuilding = (Element) nBuilding;
 
-                if (Boolean.valueOf(eDevice.getElementsByTagName("enable").item(0).getTextContent())) { // devices activos
-                    arrDevicesList.add(eDevice.getAttribute("id") + "#" + eDevice.getAttribute("category") + "#" +
-                            eDevice.getElementsByTagName("euc").item(0).getTextContent());
+                    //confirma o edificio
+                    if (eBuilding.hasAttribute("id")) {
+
+                        NodeList nlApartments = eBuilding.getElementsByTagName("apartment"); // retorna no dos apartamentos
+
+                        for (int j = 0; j < nlApartments.getLength(); j++) { // percorre apartamentos
+                            Node nApartment = nlApartments.item(j);
+
+                            if (nApartment.getNodeType() == Node.ELEMENT_NODE) { // tipo de no
+                                Element eApartment = (Element) nApartment;
+
+                                // valida apartamento correcto
+                                if (eApartment.hasAttribute("id")) {
+
+                                    NodeList nlDevice = eApartment.getElementsByTagName("device");
+
+                                    for (int k = 0; k < nlDevice.getLength(); k++) {
+                                        Node nDevice = nlDevice.item(k);
+                                        Element eDevice = (Element) nDevice;
+
+                                        if (eDevice.hasAttribute("id")) {
+
+                                            if (Boolean.valueOf(eDevice.getElementsByTagName("enable").item(0).getTextContent())) { // devices activos
+                                                arrDevicesList.add(eBuilding.getAttribute("id")+eApartment.getAttribute("id")+eDevice.getAttribute("id") + "#" + eDevice.getAttribute("category") + "#" +
+                                                        eDevice.getElementsByTagName("euc").item(0).getTextContent());
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
-
-
         } catch (Exception e) {
             // TODO: 30-12-2016 tratar das excepcoes
             e.printStackTrace();
@@ -850,6 +877,55 @@ public class xmlParser {
 
             xmlWriteDocument(buildingXmlFile);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeDeviceReading(String deviceXmlFile, Integer DeviceId,String strConsumo){
+        try{
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+            documento = docBuilder.parse(deviceXmlFile);
+
+            //documento = xmlHeaderDocument(deviceXmlFile);
+
+            NodeList nlDeviceList = documento.getElementsByTagName("device");
+
+            if (nlDeviceList != null && nlDeviceList.getLength() > 0) {
+
+                for (int i=0 ; i<nlDeviceList.getLength() ; i++) {
+
+                    Node nDevice = nlDeviceList.item(i);
+                    Element eDevice = (Element) nDevice;
+
+                    if (eDevice.hasAttribute("id") && eDevice.getAttribute("id").equals(String.valueOf(DeviceId))) {
+
+                        Element newReading = documento.createElement("reading");
+                        eDevice.appendChild(newReading);
+
+                        //data inicial
+                        Element eDataInicial = documento.createElement("start_date_time");
+                        eDataInicial.setTextContent("asasas");
+                        newReading.appendChild(eDataInicial);
+
+                        //data inicial
+                        Element eDataFinal = documento.createElement("end_date_time");
+                        eDataFinal.setTextContent("gggggggg");
+                        newReading.appendChild(eDataFinal);
+
+                        //data inicial
+                        Element eTotalKw = documento.createElement("energy");
+                        eDataFinal.setTextContent(strConsumo);
+                        newReading.appendChild(eTotalKw);
+
+
+                    }
+                }
+            }
+
+            xmlWriteDocument(deviceXmlFile);
         } catch (Exception e) {
             e.printStackTrace();
         }

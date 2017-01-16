@@ -103,7 +103,7 @@ public class mainForm {
 
                 // TODO Criar algoritmo que efetua o registo da leitura dos equipamentos no respectivo apartamento no seu ficheiro xml
                 cDevicesCounter.terminate(); // termina o contador
-                cDevicesCounter.resetCounter();
+                //cDevicesCounter.resetCounter();
 
                 // TODO Metodo que faça update dos valores no gui
                 SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");

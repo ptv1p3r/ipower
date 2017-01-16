@@ -15,6 +15,7 @@ public class Devices {
     final static String strBuildingsPath = System.getProperty("user.dir") + "/buildings";
     final static String strBuildingsXml = strBuildingsPath + "/buildings.xml";
 
+
     private String strDeviceCategory, strDeviceType;
     private Integer intConsumo, intDeviceId, intApartmentId, intBuildingId;
     private Boolean bolEnabled = false ;
@@ -272,5 +273,17 @@ public class Devices {
         xmlParser.readDevicesTotalXml(strBuildingsXml,arrDevicesList);
 
         return arrDevicesList.size();
+    }
+
+    public static void setDeviceReading(String strDeviceId, String strConsumo){
+        Integer intDevice, intBuild, intApart;
+
+        String edificio = strDeviceId.substring(0,4);
+        String apartamento = strDeviceId.substring(4,8);
+        String equipamento = strDeviceId.substring(8,12);
+
+        String strDeviceXml = strBuildingsPath + "/" + edificio + "/" + apartamento +".xml";
+
+        xmlParser.writeDeviceReading(strDeviceXml,Integer.valueOf(equipamento),strConsumo);
     }
 }

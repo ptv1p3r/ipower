@@ -6,10 +6,7 @@ import pt.ismat.ipower.forms.mainForm;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * @author Pedro Roldan on 02-01-2017.
@@ -22,7 +19,7 @@ public class Counter implements Runnable {
     private Double dblTotalKwh;
     private Integer intTotalLeituras;
     private Timer timer;
-
+    public Map mapActiveDevices = new HashMap();
 
     /**
      * Metodo construtor do contador
@@ -97,12 +94,31 @@ public class Counter implements Runnable {
     public void terminate() {
         timer.cancel();
         t.interrupt();
+        saveReadings();
+    }
+
+    private void saveReadings(){
+        // Definir o dataset do mapa
+        Set sDataSet = mapActiveDevices.entrySet();
+
+        // Definir um iterador
+        Iterator i = sDataSet.iterator();
+
+        // Varrimento do iterador
+        while(i.hasNext()) {
+            Map.Entry me = (Map.Entry)i.next();
+            System.out.print(me.getKey() + ": ");
+            System.out.println(me.getValue());
+            Devices.setDeviceReading(me.getKey().toString(),me.getValue().toString());
+        }
+        System.out.println();
     }
 
     private class DeviceReading extends TimerTask {
 
         @Override
         public void run() {
+            // TODO Retirar prints de consola
             System.out.println("Reading started at:"+new Date());
             completeReading();
             dataFinal = new Date();
@@ -117,21 +133,28 @@ public class Counter implements Runnable {
                 // TODO Terminar algoritmo de recolha e gravacao das leituras
                 intTotalLeituras++;
                 Double dblTotalKw = 0.0D;
+                Double dblDeviceKw = 0.0D;
 
-                ArrayList arrActiveDevices = Devices.getActiveDevicesList();
+                Double dblTempoLeitura = Math.round((Double.valueOf(intTotalLeituras)/60)*100D)/100D; // nr leituras (1 minuto ) / 60 minutos
 
-                for (int i=0; i < arrActiveDevices.size(); i++ ){
-                    String[] arrDevice = arrActiveDevices.get(i).toString().trim().split("#");
+                // varrimento de todos os equipamentos activos
+                for (int i=0; i < Devices.getActiveDevicesList().size(); i++ ){
+                    String[] arrDevice = Devices.getActiveDevicesList().get(i).toString().trim().split("#");
 
-                    // TODO aplicar algoritmo para equipamentos automaticos ligar/desligar consoante variaveis de estacao do ano e tipo de equipamento
+                    dblDeviceKw = Double.valueOf(arrDevice[2])/1000;
+                    dblDeviceKw = Math.round((dblDeviceKw * dblTempoLeitura) * 100D)/100D;
+
+                    // adiciona equipamento ao mapa de equipamentos activos
+                    mapActiveDevices.put(arrDevice[0],dblDeviceKw);
 
 
                     dblTotalKw = dblTotalKw + Double.valueOf(arrDevice[2])/1000; // conversao w -> kW
 
                 }
+                //Set set = mapActiveDevices.entrySet();
 
                 // c = w / 1000 * h = kwh
-                Double dblTempoLeitura = Math.round((Double.valueOf(intTotalLeituras)/60)*100D)/100D; // nr leituras (1 minuto ) / 60 minutos
+                //Double dblTempoLeitura = Math.round((Double.valueOf(intTotalLeituras)/60)*100D)/100D; // nr leituras (1 minuto ) / 60 minutos
                 dblTotalKwh = Math.round((dblTotalKw * dblTempoLeitura) * 100D)/100D;
 
                 //DecimalFormat df=new DecimalFormat("0.000");
@@ -139,8 +162,6 @@ public class Counter implements Runnable {
                 mainForm.TotalKw.setText(String.valueOf(dblTotalKwh) + " kWh");
                 mainForm.LeiturasTotal.setText(String.valueOf(intTotalLeituras));
                 Dates Data = new Dates();
-
-
 
             } catch (Exception e) {
                 e.printStackTrace();
