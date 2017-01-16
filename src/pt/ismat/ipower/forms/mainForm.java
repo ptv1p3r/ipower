@@ -10,6 +10,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -47,15 +48,19 @@ public class mainForm {
     private JLabel lblCargaTotalData;
     private JLabel lblStatusBar;
     private JLabel lblStatusBarData;
+    private JPanel pDataInfo;
+    private JLabel lblTeste;
     private JButton btnUpdate;
     public Counter cDevicesCounter;
     public static JLabel LeiturasTotal;
     public static JLabel TotalKw;
     public static JLabel CargaTotal;
     public static JTree treeBuilding;
+    public static JLabel Teste;
 
     public mainForm() {
 
+        Teste = lblTeste;
         treeBuilding = this.treeBuildings;
         LeiturasTotal = this.lblLeiturasTotal;
         TotalKw = this.lblTotalKw;
@@ -351,6 +356,26 @@ public class mainForm {
         }
 
         treeBuildings.setModel(new DefaultTreeModel(root));
+
+        // adiciona mouse listener à tree para capturar o click do rato
+        treeBuildings.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent me) {
+                getTreeData(me);
+            }
+        });
+    }
+
+    /**
+     * Metodo que resolve a localizacao na tree atraves do click do rato
+     * @param me Evento click do rato
+     */
+    static void getTreeData(MouseEvent me) {
+        TreePath tp = treeBuilding.getPathForLocation(me.getX(), me.getY());
+        // TODO Terminar o algoritmo que tras a informacao da tree e coloca os dados relevantes no painel de informacao
+        if (tp != null)
+            Teste.setText(tp.toString());
+        else
+            Teste.setText("");
     }
 
     /**
