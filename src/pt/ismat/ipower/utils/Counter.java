@@ -98,6 +98,7 @@ public class Counter implements Runnable {
     }
 
     private void saveReadings(){
+        // TODO Terminar algoritmo que guarda leituras em ficheiro
         // Definir o dataset do mapa
         Set sDataSet = mapActiveDevices.entrySet();
 

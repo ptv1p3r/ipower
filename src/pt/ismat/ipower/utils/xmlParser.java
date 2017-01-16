@@ -889,8 +889,6 @@ public class xmlParser {
 
             documento = docBuilder.parse(deviceXmlFile);
 
-            //documento = xmlHeaderDocument(deviceXmlFile);
-
             NodeList nlDeviceList = documento.getElementsByTagName("device");
 
             if (nlDeviceList != null && nlDeviceList.getLength() > 0) {
@@ -907,17 +905,17 @@ public class xmlParser {
 
                         //data inicial
                         Element eDataInicial = documento.createElement("start_date_time");
-                        eDataInicial.setTextContent("asasas");
+                        eDataInicial.setTextContent(new Date().toString());
                         newReading.appendChild(eDataInicial);
 
                         //data inicial
                         Element eDataFinal = documento.createElement("end_date_time");
-                        eDataFinal.setTextContent("gggggggg");
+                        eDataFinal.setTextContent(new Date().toString());
                         newReading.appendChild(eDataFinal);
 
                         //data inicial
                         Element eTotalKw = documento.createElement("energy");
-                        eDataFinal.setTextContent(strConsumo);
+                        eTotalKw.setTextContent(strConsumo);
                         newReading.appendChild(eTotalKw);
 
 
