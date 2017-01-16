@@ -1112,9 +1112,6 @@ public class xmlParser {
 
             root.appendChild(newDevice);
 
-            //abre o node das leituras e da apend ao node do equipamento
-            Element eReading = documento.createElement("reading");
-            newDevice.appendChild(eReading);
 
 
             xmlWriteDocument(apartmentXmlFile);
