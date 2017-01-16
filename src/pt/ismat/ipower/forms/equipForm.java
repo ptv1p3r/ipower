@@ -51,7 +51,6 @@ public class equipForm {
         setDeviceList(Integer.valueOf(apt[0]), Integer.valueOf(selectedItem[0]));
         lablesOn();
 
-
         /**
          * Metodo que adiciona item listener a combo de escolha de edificios para filtro
          * Item listener porque e a unica forma de captar o click do rato atraves do value change da combo
@@ -91,7 +90,6 @@ public class equipForm {
                 lablesOn();
             }
         });
-
 
         /**
          * Metodo que cria um mouse listener - mouse click - na lista de devices disponiveis

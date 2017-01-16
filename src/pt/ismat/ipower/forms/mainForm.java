@@ -52,12 +52,16 @@ public class mainForm {
     public static JLabel LeiturasTotal;
     public static JLabel TotalKw;
     public static JLabel CargaTotal;
+    public static JTree treeBuilding;
 
     public mainForm() {
-        createTree();
+
+        treeBuilding = this.treeBuildings;
         LeiturasTotal = this.lblLeiturasTotal;
         TotalKw = this.lblTotalKw;
         CargaTotal = this.lblCargaTotalData;
+
+        createTree(treeBuilding);
 
         lblActiveDevicesTotal.setText(Devices.getActiveDevices().toString() + "/" + Devices.getDevices().toString());
         pbEquipamentos.setMaximum(Devices.getDevices());
@@ -112,16 +116,6 @@ public class mainForm {
             }
         });
 
-        //to be approved
-        /**
-         * Metodo que associa um action listener ao botao update
-         */
-        btnUpdate.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                createTree();
-            }
-        });
     }
 
     /**
@@ -167,6 +161,17 @@ public class mainForm {
                 buildFrame.setContentPane(new buildForm().mainFrame); // carrega o main panel feito no gui
                 buildFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+                // adiciona window listener ao frame
+                buildFrame.addWindowListener(new WindowAdapter(){
+                    // Evento window closed
+                    public void windowClosed(WindowEvent e){
+                        createTree(treeBuilding);
+                    }
+
+                    /*// Evento window closing
+                    public void windowClosing(WindowEvent e){}*/
+                });
+
                 buildFrame.setResizable(false);
                 buildFrame.setPreferredSize(new Dimension(400, 400));
 
@@ -196,7 +201,18 @@ public class mainForm {
 
                 JDialog apartFrame = new JDialog(frame,"iPower - Apartamentos",Dialog.ModalityType.APPLICATION_MODAL); // cria frame em MODAL
                 apartFrame.setContentPane(new apartForm().mainFrame); // carrega o main panel feito no gui
-                apartFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                apartFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+                // adiciona window listener ao frame
+                apartFrame.addWindowListener(new WindowAdapter(){
+                    // Evento window closed
+                    public void windowClosed(WindowEvent e){
+                        createTree(treeBuilding);
+                    }
+
+                    /*// Evento window closing
+                    public void windowClosing(WindowEvent e){}*/
+                });
 
                 apartFrame.setResizable(false);
                 apartFrame.setPreferredSize(new Dimension(400, 400));
@@ -217,7 +233,18 @@ public class mainForm {
 
                 JDialog equipFrame = new JDialog(frame,"iPower - Equipamentos",Dialog.ModalityType.APPLICATION_MODAL); // cria frame em MODAL
                 equipFrame.setContentPane(new equipForm().mainFrame); // carrega o main panel feito no gui
-                equipFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                equipFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+                // adiciona window listener ao frame
+                equipFrame.addWindowListener(new WindowAdapter(){
+                     // Evento window closed
+                    public void windowClosed(WindowEvent e){
+                        createTree(treeBuilding);
+                    }
+
+                    // Evento window closing
+                    /*public void windowClosing(WindowEvent e){}*/
+                });
 
                 equipFrame.setResizable(false);
                 equipFrame.setPreferredSize(new Dimension(600, 400));
@@ -228,6 +255,7 @@ public class mainForm {
                 equipFrame.setVisible(true);
             }
         });
+
         tabelas.add(equipamentosItem);
 
         // Preferencias
@@ -283,7 +311,7 @@ public class mainForm {
     /**
      * Metodo que cria a JTree treeBuildings
      */
-    public void createTree(){
+    public static void createTree(JTree treeBuildings){
 
         // Cria cada edificio
         ArrayList arrBuildingsList = Buildings.getBuildingsList();
