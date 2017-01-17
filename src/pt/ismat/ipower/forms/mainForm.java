@@ -4,6 +4,9 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.general.SeriesException;
+import org.jfree.data.time.*;
+import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RefineryUtilities;
@@ -20,6 +23,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -75,11 +79,32 @@ public class mainForm {
         pbEquipamentos.setMaximum(Devices.getDevices());
 
 
-        XYSeries series = new XYSeries("asdf");
-        for (int i = 0; i < 100; i++)
+        //XYSeries series = new XYSeries("asdf");
+        TimeSeries series = new TimeSeries("Random Data");
+        series.add(new Day(1, 1, 2017), 3.45);
+        series.add(new Day(2, 1, 2017), 5.45);
+        series.add(new Day(3, 1, 2017), 2.45);
+        series.add(new Day(4, 1, 2017), 1.45);
+       /* Second current = new Second();
+        Double value = 100.0;
+        for ( int i = 0 ; i < 4000 ; i++ ) {
+            try {
+                value = value + Math.random() - 0.5;
+                series.add(current, new Double(value));
+                current = (Second) current.next();
+            } catch (SeriesException e) {
+                System.err.println("Error adding to series");
+            }
+        }*/
+        /*for (int i = 0; i < 100; i++)
             series.add(i, Math.random());
-        XYSeriesCollection dataset = new XYSeriesCollection(series);
-        JFreeChart chart = ChartFactory.createXYLineChart(null, null, null, dataset, PlotOrientation.HORIZONTAL, true, true, true);
+        */
+        //XYSeriesCollection dataset = new XYSeriesCollection(series);
+        XYDataset dataset = ( XYDataset ) new TimeSeriesCollection(series);
+
+
+        //JFreeChart chart = ChartFactory.createXYLineChart(null, null, null, dataset, PlotOrientation.HORIZONTAL, true, true, true);
+        JFreeChart chart = ChartFactory.createTimeSeriesChart("Consumo","Seconds","Value",dataset,false,false,false);
         ChartPanel chartpanel = new ChartPanel(chart);
         chartpanel.setDomainZoomable(true);
         chartpanel.setPreferredSize(new Dimension(200, 270));
