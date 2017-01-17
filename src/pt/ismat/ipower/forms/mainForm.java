@@ -1,9 +1,13 @@
 package pt.ismat.ipower.forms;
 
-import pt.ismat.ipower.utils.Apartments;
-import pt.ismat.ipower.utils.Buildings;
-import pt.ismat.ipower.utils.Counter;
-import pt.ismat.ipower.utils.Devices;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.RefineryUtilities;
+import pt.ismat.ipower.utils.*;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -50,6 +54,7 @@ public class mainForm {
     private JLabel lblStatusBarData;
     private JPanel pDataInfo;
     private JLabel lblTeste;
+    private JPanel pGrafico;
     public Counter cDevicesCounter;
     public static JLabel LeiturasTotal,TotalKw,CargaTotal,ActiveDevicesTotal;
     public static JTree treeBuilding;
@@ -68,7 +73,23 @@ public class mainForm {
 
         lblActiveDevicesTotal.setText(Devices.getActiveDevices().toString() + "/" + Devices.getDevices().toString());
         pbEquipamentos.setMaximum(Devices.getDevices());
-        pbEquipamentos.setValue(Devices.getActiveDevices());
+
+
+        XYSeries series = new XYSeries("asdf");
+        for (int i = 0; i < 100; i++)
+            series.add(i, Math.random());
+        XYSeriesCollection dataset = new XYSeriesCollection(series);
+        JFreeChart chart = ChartFactory.createXYLineChart(null, null, null, dataset, PlotOrientation.HORIZONTAL, true, true, true);
+        ChartPanel chartpanel = new ChartPanel(chart);
+        chartpanel.setDomainZoomable(true);
+        chartpanel.setPreferredSize(new Dimension(200, 270));
+
+        pGrafico.setLayout(new BorderLayout());
+        pGrafico.add(chartpanel, BorderLayout.NORTH);
+
+
+
+
 
         /**
          * Metodo que associa um action listener ao botao ligar
