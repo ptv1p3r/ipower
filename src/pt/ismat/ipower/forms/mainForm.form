@@ -216,6 +216,7 @@
                   <grid row="2" column="0" row-span="2" col-span="1" vsize-policy="2" hsize-policy="2" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <font size="18"/>
                   <text value="00:00:00"/>
                 </properties>
               </component>

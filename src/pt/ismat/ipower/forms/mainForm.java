@@ -38,13 +38,9 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
  */
 public class mainForm {
 
-    private JPanel mainFrame;
     public JTree treeBuildings;
-    private JPanel leftFrame;
-    private JPanel rightFrame;
-    private JPanel bottomFrame;
-    private JButton btnLigar;
-    private JButton btnDesligar;
+    private JPanel mainFrame, leftFrame, rightFrame, bottomFrame;
+    private JButton btnLigar, btnDesligar;
     private JProgressBar pbEquipamentos;
     private JProgressBar pbSimulatorStatus;
     private JLabel lblActiveDevices;
@@ -62,6 +58,7 @@ public class mainForm {
     private JLabel lblTeste;
     private JPanel pGrafico;
     private JLabel lblTimer;
+
     public Counter cDevicesCounter;
     public static JLabel LeiturasTotal,TotalKw,CargaTotal,ActiveDevicesTotal;
     public static JTree treeBuilding;
@@ -69,6 +66,7 @@ public class mainForm {
     public static TimeSeries series = new TimeSeries("Total Kw Consumidos",Minute.class);
 
     public mainForm() {
+        // passa objectos por referencia
         Teste = lblTeste;
         treeBuilding = this.treeBuildings;
         LeiturasTotal = this.lblLeiturasTotal;
@@ -76,12 +74,12 @@ public class mainForm {
         CargaTotal = this.lblCargaTotalData;
         ActiveDevicesTotal = this.lblActiveDevicesTotal;
 
-        createTree(treeBuilding);
+        createTree(treeBuilding); // cria tree inicial
 
         lblActiveDevicesTotal.setText(Devices.getActiveDevices().toString() + "/" + Devices.getDevices().toString());
         pbEquipamentos.setMaximum(Devices.getDevices());
 
-        displayTimer(true);
+        displayTimer(true); // efetua o display das horas
 
         //XYSeries series = new XYSeries("asdf");
         //TimeSeries series = new TimeSeries("Total Kw Consumidos",Minute.class);
@@ -103,7 +101,6 @@ public class mainForm {
 
         pGrafico.setLayout(new BorderLayout());
         pGrafico.add(chartpanel, BorderLayout.NORTH);
-
 
         /**
          * Metodo que associa um action listener ao botao ligar
