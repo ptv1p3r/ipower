@@ -21,6 +21,7 @@ import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -60,6 +61,7 @@ public class mainForm {
     private JPanel pDataInfo;
     private JLabel lblTeste;
     private JPanel pGrafico;
+    private JLabel lblTimer;
     public Counter cDevicesCounter;
     public static JLabel LeiturasTotal,TotalKw,CargaTotal,ActiveDevicesTotal;
     public static JTree treeBuilding;
@@ -67,7 +69,6 @@ public class mainForm {
     public static TimeSeries series = new TimeSeries("Total Kw Consumidos",Minute.class);
 
     public mainForm() {
-
         Teste = lblTeste;
         treeBuilding = this.treeBuildings;
         LeiturasTotal = this.lblLeiturasTotal;
@@ -79,6 +80,8 @@ public class mainForm {
 
         lblActiveDevicesTotal.setText(Devices.getActiveDevices().toString() + "/" + Devices.getDevices().toString());
         pbEquipamentos.setMaximum(Devices.getDevices());
+
+        displayTimer(true);
 
         //XYSeries series = new XYSeries("asdf");
         //TimeSeries series = new TimeSeries("Total Kw Consumidos",Minute.class);
@@ -150,6 +153,33 @@ public class mainForm {
 
             }
         });
+
+    }
+
+    /**
+     * Metodo que liga/desliga o mostrador do relogio
+     * @param estado Boolean a definir o estado
+     */
+    private void displayTimer(Boolean estado){
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+
+        if(estado){
+            ActionListener timerListener = new ActionListener(){
+                public void actionPerformed(ActionEvent e)
+                {
+                    lblTimer.setText(timeFormat.format(new Date()));
+                }
+            };
+
+            Timer timer = new Timer(1000, timerListener);
+
+            // altera delay para nao ficar 1 seg à espera de iniciar
+            timer.setInitialDelay(0);
+            timer.start();
+
+        } else {
+            lblTimer.setText(timeFormat.format(new Date()));
+        }
 
     }
 
