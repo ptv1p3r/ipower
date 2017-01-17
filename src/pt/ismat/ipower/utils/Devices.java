@@ -3,6 +3,7 @@ package pt.ismat.ipower.utils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 import static pt.ismat.ipower.utils.Buildings.strBuildingsXml;
 
@@ -275,8 +276,12 @@ public class Devices {
         return arrDevicesList.size();
     }
 
-    public static void setDeviceReading(String strDeviceId, String strConsumo){
-        Integer intDevice, intBuild, intApart;
+    /**
+     * Metodo que recebe os dados de um equipamento e o grava em ficheiro xml
+     * @param strDeviceId Identificador de equipamento ex: 1000100010001
+     * @param strConsumo Valor de consumo em w
+     */
+    public static void setDeviceReading(String strDeviceId, String strConsumo, Date dtDataInicial, Date dtDataFinal){
 
         String edificio = strDeviceId.substring(0,4);
         String apartamento = strDeviceId.substring(4,8);
@@ -284,6 +289,6 @@ public class Devices {
 
         String strDeviceXml = strBuildingsPath + "/" + edificio + "/" + apartamento +".xml";
 
-        xmlParser.writeDeviceReading(strDeviceXml,Integer.valueOf(equipamento),strConsumo);
+        xmlParser.writeDeviceReading(strDeviceXml,Integer.valueOf(equipamento),strConsumo,dtDataInicial,dtDataFinal);
     }
 }

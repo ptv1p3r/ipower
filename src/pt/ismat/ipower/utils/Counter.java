@@ -19,7 +19,7 @@ public class Counter implements Runnable {
     private Double dblTotalKwh;
     private Integer intTotalLeituras;
     private Timer timer;
-    public Map mapActiveDevices = new HashMap();
+    private Map mapActiveDevices = new HashMap();
 
     /**
      * Metodo construtor do contador
@@ -32,8 +32,6 @@ public class Counter implements Runnable {
         this.dataFinal = this.dataInicial;
         this.dblTotalKwh = 0.0D;
         this.intTotalLeituras = 0;
-
-        //System.out.println("Creating " +  threadName );
     }
 
     /**
@@ -97,6 +95,9 @@ public class Counter implements Runnable {
         saveReadings();
     }
 
+    /**
+     * Metodo que grava as leituras obtidas dos equipamentos activos e os coloca em ficheiro
+     */
     private void saveReadings(){
         // TODO Terminar algoritmo que guarda leituras em ficheiro
         // Definir o dataset do mapa
@@ -108,11 +109,10 @@ public class Counter implements Runnable {
         // Varrimento do iterador
         while(i.hasNext()) {
             Map.Entry me = (Map.Entry)i.next();
-            System.out.print(me.getKey() + ": ");
-            System.out.println(me.getValue());
-            Devices.setDeviceReading(me.getKey().toString(),me.getValue().toString());
+           // System.out.print(me.getKey() + ": ");
+           // System.out.println(me.getValue());
+            Devices.setDeviceReading(me.getKey().toString(),me.getValue().toString(), dataInicial, dataFinal);
         }
-        System.out.println();
     }
 
     private class DeviceReading extends TimerTask {

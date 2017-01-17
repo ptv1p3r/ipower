@@ -11,6 +11,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -882,8 +883,10 @@ public class xmlParser {
         }
     }
 
-    public static void writeDeviceReading(String deviceXmlFile, Integer DeviceId,String strConsumo){
+    public static void writeDeviceReading(String deviceXmlFile, Integer DeviceId,String strConsumo, Date dtDataInicial,Date dtDataFinal){
         try{
+            SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
+
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
@@ -905,12 +908,12 @@ public class xmlParser {
 
                         //data inicial
                         Element eDataInicial = documento.createElement("start_date_time");
-                        eDataInicial.setTextContent(new Date().toString());
+                        eDataInicial.setTextContent(dt.format(dtDataInicial));
                         newReading.appendChild(eDataInicial);
 
                         //data inicial
                         Element eDataFinal = documento.createElement("end_date_time");
-                        eDataFinal.setTextContent(new Date().toString());
+                        eDataFinal.setTextContent(dt.format(dtDataFinal));
                         newReading.appendChild(eDataFinal);
 
                         //data inicial
