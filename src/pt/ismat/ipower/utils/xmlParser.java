@@ -1072,18 +1072,21 @@ public class xmlParser {
                                             //verifica se e o device selecionado
                                             if (eDevice.hasAttribute("id") && eDevice.getAttribute("id").equals(String.valueOf(device.getDeviceId()))) {
 
+                                                eDevice.getParentNode().removeChild(nDevice);
+
                                                 eDevice.setAttribute("category", device.getDeviceCategory().trim());
                                                 eDevice.setAttribute("type", device.getDeviceType().trim());
 
-                                                //estado do equipamento
-//                                                Element eStatus = documento.createElement("enable");
-//                                                eStatus.setTextContent(Boolean.toString(device.isEnabled()));
-//                                                eDevice.appendChild(eStatus);
+                                                //TODO:Meter o editar a funcionar
+//                                                NodeList nlChild = eDevice.getChildNodes();
 //
-//                                                //consumo do equipamento
-//                                                Element eConsume = documento.createElement("euc");
-//                                                eConsume.setTextContent(Integer.toString(device.getConsumo()));
-//                                                eDevice.appendChild(eConsume);
+//                                                Node nState = nlChild.item(0);
+//                                                Node nConsumo = nlChild.item(1);
+//
+//                                                nState.setNodeValue(device.isEnabled().toString());
+//
+//                                                nConsumo.setNodeValue(device.getConsumo().toString());
+
                                             }
                                         }
                                     }
