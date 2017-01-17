@@ -195,7 +195,7 @@ public class xmlParser {
 
                                             if (Boolean.valueOf(eDevice.getElementsByTagName("enable").item(0).getTextContent())) { // devices activos
                                                 arrDevicesList.add(eBuilding.getAttribute("id")+eApartment.getAttribute("id")+eDevice.getAttribute("id") + "#" + eDevice.getAttribute("category") + "#" +
-                                                        eDevice.getElementsByTagName("euc").item(0).getTextContent());
+                                                        eDevice.getElementsByTagName("euc").item(0).getTextContent() + "#" + eDevice.getAttribute("type"));
                                             }
 
                                         }
@@ -883,6 +883,14 @@ public class xmlParser {
         }
     }
 
+    /**
+     * Metodo que escreve a leitura de um equipamento no ficheiro xml do apartamento selecionado
+     * @param deviceXmlFile Ficheiro xml de apartamento
+     * @param DeviceId
+     * @param strConsumo
+     * @param dtDataInicial
+     * @param dtDataFinal
+     */
     public static void writeDeviceReading(String deviceXmlFile, Integer DeviceId,String strConsumo, Date dtDataInicial,Date dtDataFinal){
         try{
             SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");

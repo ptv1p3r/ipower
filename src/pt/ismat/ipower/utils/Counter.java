@@ -142,6 +142,14 @@ public class Counter implements Runnable {
                 for (int i=0; i < Devices.getActiveDevicesList().size(); i++ ){
                     String[] arrDevice = Devices.getActiveDevicesList().get(i).toString().trim().split("#");
 
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
+                    String dateInString = "22-05-2016";
+                    //Dates datas = new Dates(new Date());
+                    Dates datas = new Dates(sdf.parse(dateInString));
+
+                    System.out.println(datas.getSeasonName());
+
+
                     dblDeviceKw = Double.valueOf(arrDevice[2])/1000;
                     dblDeviceKw = Math.round((dblDeviceKw * dblTempoLeitura) * 100D)/100D;
 
@@ -152,7 +160,6 @@ public class Counter implements Runnable {
                     dblTotalKw = dblTotalKw + Double.valueOf(arrDevice[2])/1000; // conversao w -> kW
 
                 }
-                //Set set = mapActiveDevices.entrySet();
 
                 // c = w / 1000 * h = kwh
                 //Double dblTempoLeitura = Math.round((Double.valueOf(intTotalLeituras)/60)*100D)/100D; // nr leituras (1 minuto ) / 60 minutos
@@ -162,7 +169,7 @@ public class Counter implements Runnable {
                 mainForm.CargaTotal.setText(String.valueOf(dblTotalKw) + " kW");
                 mainForm.TotalKw.setText(String.valueOf(dblTotalKwh) + " kWh");
                 mainForm.LeiturasTotal.setText(String.valueOf(intTotalLeituras));
-                Dates Data = new Dates();
+
 
             } catch (Exception e) {
                 e.printStackTrace();

@@ -50,7 +50,6 @@ public class mainForm {
     private JLabel lblStatusBarData;
     private JPanel pDataInfo;
     private JLabel lblTeste;
-    private JButton btnUpdate;
     public Counter cDevicesCounter;
     public static JLabel LeiturasTotal;
     public static JLabel TotalKw;
