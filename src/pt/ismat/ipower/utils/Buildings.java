@@ -227,4 +227,19 @@ public class Buildings {
         }
 
     }
+
+    public static float buildingBill(Integer buildingId) {
+
+        float total = 0;
+
+        try {
+
+            total = xmlParser.buildingBill(strBuildingsXml, strBuildingsPath, buildingId);
+
+        } catch (Exception e) {
+
+        }
+
+        return total;
+    }
 }

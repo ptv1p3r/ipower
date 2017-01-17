@@ -28,6 +28,7 @@ public class apartForm {
     private JPanel leftFrame;
     private JPanel topFrame;
     private JButton btnEditar;
+    private JButton btnCarregar;
     private String[] apt;
 
     public apartForm() {
@@ -265,6 +266,56 @@ public class apartForm {
                 //bloqueia o txtName
                 txtName.setEnabled(false);
             }
+        });
+
+
+        /**
+         * Action Listener do botao carregar apartamento
+         */
+        btnCarregar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (lblIdData.getText() == "- nenhum -") {
+
+                    JOptionPane.showMessageDialog(mainFrame,
+                            "Nenhum apartamento seleccionado.",
+                            "iPower - Edição de Apartamento",
+                            JOptionPane.WARNING_MESSAGE);
+
+                } else {
+
+                    txtName.setEnabled(false);
+
+                    //janela para confirmacao da edicao
+                    int resultado = JOptionPane.showConfirmDialog(
+                            mainFrame,
+                            "Deseja mesmo carregar um relatorio deste apartamento?",
+                            "iPower - Carregar relatorio de Apartamento",
+                            JOptionPane.YES_NO_OPTION);
+
+                    //efetua a edicao
+                    if (resultado == 0) {
+
+                        float total;
+
+                        //cria um novo apartamento com o nome novo, ignora os espacos da indentacao da lable.
+                        Apartments Apartment = new Apartments(cbBuildings.getSelectedIndex() + 1000, Integer.parseInt(lblIdData.getText().trim()),
+                                txtName.getText());
+
+                        //edita o xml do apartamento
+                        total=Apartment.apartmentBill(Apartment.getBuildingId(), Apartment.getApartmentId());
+
+                        //JUST FOR TESTS - para mostrar o total gasto
+                        JOptionPane.showConfirmDialog(
+                                mainFrame,
+                                String.format("Total energy used: " + total, "##.##"),
+                                "iPower - Carregar relatorio de apartamento",
+                                JOptionPane.YES_NO_OPTION);
+                    }
+
+                }
+            }
+
         });
     }
 }

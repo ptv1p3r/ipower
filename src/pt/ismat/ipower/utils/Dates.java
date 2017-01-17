@@ -59,4 +59,29 @@ public class Dates {
 
         return strSeason;
     }
+
+    /**
+     * Metodo que retorna o nome da estacao do ano
+     * @return String Nome da estacao do ano
+     */
+    public String getTimeName(){
+        String strTime;
+
+        SimpleDateFormat dt=new SimpleDateFormat("hh:mm:ss");
+        dt.setLenient(false);
+
+        try
+        {
+            Date date= dt.parse(dt.format(dtDataCorrente));
+
+            if(date.after(dt.parse("08:00:00")) && date.before(dt.parse("22:00:00"))){
+                strTime = "Dia";
+            }
+            else strTime="Noite";
+        }catch(Exception e){
+            strTime="Horas Invalidas";
+        }
+
+        return strTime;
+    }
 }

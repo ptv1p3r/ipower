@@ -10,6 +10,7 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.io.Flushable;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -911,6 +912,11 @@ public class xmlParser {
 
                     if (eDevice.hasAttribute("id") && eDevice.getAttribute("id").equals(String.valueOf(DeviceId))) {
 
+                        //Vai buscar o node readings
+                        NodeList nlDevicesList = eDevice.getElementsByTagName("readings");
+                        Node nReading=nlDevicesList.item(0);
+
+                        //cria um novo reading
                         Element newReading = documento.createElement("reading");
                         eDevice.appendChild(newReading);
 
@@ -929,7 +935,7 @@ public class xmlParser {
                         eTotalKw.setTextContent(strConsumo);
                         newReading.appendChild(eTotalKw);
 
-
+                        nReading.appendChild(newReading);
                     }
                 }
             }
@@ -1072,7 +1078,7 @@ public class xmlParser {
                                             //verifica se e o device selecionado
                                             if (eDevice.hasAttribute("id") && eDevice.getAttribute("id").equals(String.valueOf(device.getDeviceId()))) {
 
-                                                eDevice.getParentNode().removeChild(nDevice);
+                                                //eDevice.getParentNode().removeChild(nDevice);
 
                                                 eDevice.setAttribute("category", device.getDeviceCategory().trim());
                                                 eDevice.setAttribute("type", device.getDeviceType().trim());
@@ -1133,7 +1139,8 @@ public class xmlParser {
 
             root.appendChild(newDevice);
 
-
+            Element eReading = documento.createElement("readings");
+            newDevice.appendChild(eReading);
 
             xmlWriteDocument(apartmentXmlFile);
 
@@ -1195,30 +1202,64 @@ public class xmlParser {
     }
 
     /**
-     * Método que retorna o gasto total de um edificio e a respetiva conta
-     * @param buildingFile Path para o edificio selecionado de edificio
+     * Método que retorna o gasto total de um apartamento e a respetiva conta
+     * @param buildingsFile Path para a pasta dos edificios
+     * @param buildingId Identificador de edificio
+     * @param apartmentId Identificador de apartamento
      */
-    public static void buildingBill (String buildingFile) {
+    public static float apartmentBill (String buildingsFile, Integer buildingId, Integer apartmentId) {
 
+        float total = 0;
+
+        documento=xmlHeaderDocument(buildingsFile + "/" + buildingId + "/" + apartmentId + ".xml");
+
+        NodeList nlReadings = documento.getElementsByTagName("energy");
+        NodeList nlStartDate = documento.getElementsByTagName("start_date_time");
+        NodeList nlEndDate = documento.getElementsByTagName("end_date_time");
+
+        for (int i = 0 ; i < nlReadings.getLength() ; i++) {
+            //TODO:verificar a hora e o que ha a pagar
+            //Dates dates = new Dates()
+
+
+            if (nlReadings != null && nlReadings.getLength() > 0) {
+                NodeList nlEnergy = nlReadings.item(i).getChildNodes();
+
+                if (nlEnergy != null && nlEnergy.getLength() > 0) {
+                    total += Float.parseFloat(nlEnergy.item(0).getNodeValue());
+                }
+            }
+        }
+
+        return total;
     }
+
 
     /**
      * Método que retorna o gasto total de um apartamento e a respetiva conta
-     * @param apartmentFile Path para o apartamento selecionado
+     * @param buildingsXml Path para o buildingsXML
+     * @param buildingsPath Path da pasta dos edificios
+     * @param buildingId Identificador de edificio
      */
-    public static void apartmentBill (String apartmentFile) {
+    public static float buildingBill (String buildingsXml, String buildingsPath, Integer buildingId) {
 
-        try {
+        float total = 0;
 
-            xmlHeaderDocument(apartmentFile);
+        documento=xmlHeaderDocument(buildingsXml);
 
+        ArrayList apartmentsList = Apartments.getApartmentList(buildingId);
 
+        for (int i = 0 ; i < apartmentsList.size() ; i++) {
 
-        } catch (Exception e) {
+            String strApartment = (String) apartmentsList.get(i);
+            String[] arrApartment = strApartment.split("#");
+
+            total += apartmentBill(buildingsPath, buildingId, Integer.parseInt(arrApartment[0].trim()));
 
         }
-    }
 
+        return total;
+    }
 
     /**
      * Metodo que devolve um documento xml normalizado

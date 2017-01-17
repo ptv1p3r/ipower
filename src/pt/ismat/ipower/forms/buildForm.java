@@ -27,6 +27,7 @@ public class buildForm {
     private JTextField txtLocation;
     private JLabel lblLocation;
     private JButton btnEditar;
+    private JButton btnCarregar;
 
     public buildForm() {
 
@@ -205,6 +206,53 @@ public class buildForm {
                             txtLocation.setText(Building.getLocation());
                         }
                     }
+                }
+            }
+        });
+
+        /**
+         * Action listener do botao carregar building
+         */
+        btnCarregar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (lblIdData.getText() == "- nenhum -") {
+
+                    JOptionPane.showMessageDialog(mainFrame,
+                            "Nenhum apartamento seleccionado.",
+                            "iPower - Edição de Apartamento",
+                            JOptionPane.WARNING_MESSAGE);
+
+                } else {
+
+                    txtName.setEnabled(false);
+
+                    //janela para confirmacao da edicao
+                    int resultado = JOptionPane.showConfirmDialog(
+                            mainFrame,
+                            "Deseja mesmo carregar um relatorio deste apartamento?",
+                            "iPower - Carregar relatorio de edificio",
+                            JOptionPane.YES_NO_OPTION);
+
+                    //efetua a edicao
+                    if (resultado == 0) {
+
+                        float total;
+
+                        //cria um novo apartamento com o nome novo, ignora os espacos da indentacao da lable.
+                        Buildings Building = new Buildings(Integer.parseInt(lblIdData.getText().trim()));
+
+                        //edita o xml do apartamento
+                        total=Building.buildingBill(Building.getBuildingId());
+
+                        //JUST FOR TESTS - para mostrar o total gasto
+                        JOptionPane.showConfirmDialog(
+                                mainFrame,
+                                String.format("Total energy used: " + total, "##.##"),
+                                "iPower - Carregar relatorio de edificio",
+                                JOptionPane.YES_NO_OPTION);
+                    }
+
                 }
             }
         });

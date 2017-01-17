@@ -209,4 +209,19 @@ public class Apartments extends Buildings {
             ex.printStackTrace();
         }
     }
+
+    public static float apartmentBill(Integer buildingId, Integer apartmentId) {
+
+        float total = 0;
+
+        try {
+
+            total = xmlParser.apartmentBill(strBuildingsPath, buildingId, apartmentId);
+
+        } catch (Exception e) {
+
+        }
+
+        return total;
+    }
 }
