@@ -1195,6 +1195,32 @@ public class xmlParser {
     }
 
     /**
+     * Método que retorna o gasto total de um edificio e a respetiva conta
+     * @param buildingFile Path para o edificio selecionado de edificio
+     */
+    public static void buildingBill (String buildingFile) {
+
+    }
+
+    /**
+     * Método que retorna o gasto total de um apartamento e a respetiva conta
+     * @param apartmentFile Path para o apartamento selecionado
+     */
+    public static void apartmentBill (String apartmentFile) {
+
+        try {
+
+            xmlHeaderDocument(apartmentFile);
+
+
+
+        } catch (Exception e) {
+
+        }
+    }
+
+
+    /**
      * Metodo que devolve um documento xml normalizado
      * @param xmlFile Caminho de ficheiro xml
      * @return Document Documento normalizado
