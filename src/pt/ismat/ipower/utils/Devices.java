@@ -215,8 +215,7 @@ public class Devices {
     public static void editDevice(Integer buildingId, Integer apartmentId, Devices device) {
 
         try {
-            xmlParser.editDeviceXml((strBuildingsPath+"/"+buildingId+"/"+apartmentId+".xml"), buildingId, apartmentId, device.getDeviceId(),
-                    device.getDeviceCategory(), device.getDeviceType());    //update ao xml
+            xmlParser.editDeviceXml(strBuildingsXml, buildingId, apartmentId, device);    //update ao xml
 
         } catch (Exception ex) {
             //TODO : validação de erros

@@ -1020,11 +1020,9 @@ public class xmlParser {
      * @param buildingXmlFile Ficheiro xml de edificios
      * @param buildingId Identificador de edificio
      * @param apartmentId Identificador de apartamento
-     * @param deviceId Identificador de equipamento
-     * @param strCategory Categoria do equipamento
-     * @param strType Tipo do equipamento
+     * @param device Device a ser editado
      */
-    public static void editDeviceXml(String buildingXmlFile,Integer buildingId, Integer apartmentId, Integer deviceId, String strCategory, String strType){
+    public static void editDeviceXml(String buildingXmlFile,Integer buildingId, Integer apartmentId, Devices device){
         try {
 
             documento = xmlHeaderDocument(buildingXmlFile);
@@ -1072,11 +1070,20 @@ public class xmlParser {
                                             Element eDevice = (Element) nDevice;
 
                                             //verifica se e o device selecionado
-                                            if (eDevice.hasAttribute("id") && eDevice.getAttribute("id").equals(String.valueOf(deviceId))) {
+                                            if (eDevice.hasAttribute("id") && eDevice.getAttribute("id").equals(String.valueOf(device.getDeviceId()))) {
 
-                                                eDevice.setAttribute("category", strCategory.trim());
-                                                eDevice.setAttribute("type", strType.trim());
+                                                eDevice.setAttribute("category", device.getDeviceCategory().trim());
+                                                eDevice.setAttribute("type", device.getDeviceType().trim());
 
+                                                //estado do equipamento
+//                                                Element eStatus = documento.createElement("enable");
+//                                                eStatus.setTextContent(Boolean.toString(device.isEnabled()));
+//                                                eDevice.appendChild(eStatus);
+//
+//                                                //consumo do equipamento
+//                                                Element eConsume = documento.createElement("euc");
+//                                                eConsume.setTextContent(Integer.toString(device.getConsumo()));
+//                                                eDevice.appendChild(eConsume);
                                             }
                                         }
                                     }
