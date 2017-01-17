@@ -120,10 +120,10 @@ public class Counter implements Runnable {
         @Override
         public void run() {
             // TODO Retirar prints de consola
-            System.out.println("Reading started at:"+new Date());
+            //System.out.println("Reading started at:"+new Date());
             completeReading();
             dataFinal = new Date();
-            System.out.println("Reading finished at:"+new Date());
+            //System.out.println("Reading finished at:"+new Date());
         }
 
         /**
@@ -142,10 +142,10 @@ public class Counter implements Runnable {
                 for (int i=0; i < Devices.getActiveDevicesList().size(); i++ ){
                     String[] arrDevice = Devices.getActiveDevicesList().get(i).toString().trim().split("#");
 
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
-                    String dateInString = "22-05-2016";
-                    //Dates datas = new Dates(new Date());
-                    Dates datas = new Dates(sdf.parse(dateInString));
+                    //SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                    //String dateInString = "22-09-2016";
+                    Dates datas = new Dates(new Date());
+                    //Dates datas = new Dates(sdf.parse(dateInString));
 
                     System.out.println(datas.getSeasonName());
 

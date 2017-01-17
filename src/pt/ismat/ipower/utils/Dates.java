@@ -15,12 +15,21 @@ public class Dates {
      * @param dataValue Data corrente
      */
     public Dates(Date dataValue) {
-        this.dtDataCorrente = dataValue;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        try{
+
+            Date date= sdf.parse(sdf.format(dataValue));
+            this.dtDataCorrente = date;
+
+        }catch(Exception e){
+
+        }
+
     }
 
     /**
      * Metodo que retorna o nome da estacao do ano
-     * @return
+     * @return String Nome da estacao do ano
      */
     public String getSeasonName(){
         String strSeason;
