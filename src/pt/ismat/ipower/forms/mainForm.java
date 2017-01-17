@@ -51,9 +51,7 @@ public class mainForm {
     private JPanel pDataInfo;
     private JLabel lblTeste;
     public Counter cDevicesCounter;
-    public static JLabel LeiturasTotal;
-    public static JLabel TotalKw;
-    public static JLabel CargaTotal;
+    public static JLabel LeiturasTotal,TotalKw,CargaTotal,ActiveDevicesTotal;
     public static JTree treeBuilding;
     public static JLabel Teste;
 
@@ -64,6 +62,7 @@ public class mainForm {
         LeiturasTotal = this.lblLeiturasTotal;
         TotalKw = this.lblTotalKw;
         CargaTotal = this.lblCargaTotalData;
+        ActiveDevicesTotal = this.lblActiveDevicesTotal;
 
         createTree(treeBuilding);
 

@@ -17,7 +17,7 @@ public class Counter implements Runnable {
     private String threadName;
     private Date dataInicial, dataFinal;
     private Double dblTotalKwh;
-    private Integer intTotalLeituras;
+    private Integer intTotalLeituras, intActiveDevices;
     private Timer timer;
     private Map mapActiveDevices = new HashMap();
 
@@ -32,6 +32,7 @@ public class Counter implements Runnable {
         this.dataFinal = this.dataInicial;
         this.dblTotalKwh = 0.0D;
         this.intTotalLeituras = 0;
+        this.intActiveDevices = 0;
     }
 
     /**
@@ -132,6 +133,7 @@ public class Counter implements Runnable {
         private void completeReading() {
             try {
                 // TODO Terminar algoritmo de recolha e gravacao das leituras
+                intActiveDevices = 0;
                 intTotalLeituras++;
                 Double dblTotalKw = 0.0D;
                 Double dblDeviceKw = 0.0D;
@@ -140,12 +142,12 @@ public class Counter implements Runnable {
 
                 Double dblTempoLeitura = Math.round((Double.valueOf(intTotalLeituras)/60)*100D)/100D; // nr leituras (1 minuto ) / 60 minutos
 
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                String dateInString = "22-09-2016";
-                //Dates datas = new Dates(new Date());
-                Dates datas = new Dates(sdf.parse(dateInString));
+                //SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                //String dateInString = "22-09-2016";
+                Dates datas = new Dates(new Date());
+                //Dates datas = new Dates(sdf.parse(dateInString));
 
-                System.out.println(datas.getSeasonName());
+                //System.out.println(datas.getSeasonName());
 
                 // varrimento de todos os equipamentos activos
                 for (int i=0; i < Devices.getActiveDevicesList().size(); i++ ){
@@ -162,25 +164,33 @@ public class Counter implements Runnable {
                         case "Frigorifico":
                             dblProbabilidade = 1.0;
                             break;
-                        default:
-                            dblProbabilidade = 0.0;
-                            DeviceWork = false ;
+                        case "Fogão":
+                            dblProbabilidade = 0.60;
+                            break;
+                        case "Lampada Led":
+                            if (datas.getSeasonName().equals("Verão")){
+                                dblProbabilidade = 0.15;
+                            } else {
+                                dblProbabilidade = 0.85;
+                            }
                             break;
                     }
-                    Double p = Math.random();
-                    if((dblProbabilidade > p) && !DeviceWork){
+
+                    // calcula probabilidade de funcionamento do equipamento
+                    if(dblProbabilidade > Math.random()){
                         DeviceWork = true ;
                     } else {
                         DeviceWork = false ;
                     }
 
+                    // equipamento funciona
                     if (DeviceWork){
+                        intActiveDevices++;
                         dblDeviceKw = Double.valueOf(arrDevice[2])/1000;
                         dblDeviceKw = Math.round((dblDeviceKw * dblTempoLeitura) * 100D)/100D;
 
                         // adiciona equipamento ao mapa de equipamentos activos
                         mapActiveDevices.put(arrDevice[0],dblDeviceKw);
-
 
                         dblTotalKw = dblTotalKw + Double.valueOf(arrDevice[2])/1000; // conversao w -> kW
                     }
@@ -191,6 +201,7 @@ public class Counter implements Runnable {
                 dblTotalKwh = Math.round((dblTotalKw * dblTempoLeitura) * 100D)/100D;
 
                 //DecimalFormat df=new DecimalFormat("0.000");
+                mainForm.ActiveDevicesTotal.setText(String.valueOf(intActiveDevices) + "/" + Devices.getDevices().toString());
                 mainForm.CargaTotal.setText(String.valueOf(dblTotalKw) + " kW");
                 mainForm.TotalKw.setText(String.valueOf(dblTotalKwh) + " kWh");
                 mainForm.LeiturasTotal.setText(String.valueOf(intTotalLeituras));
