@@ -1,6 +1,7 @@
 package pt.ismat.ipower.utils;
 
 
+import org.jfree.data.time.Minute;
 import pt.ismat.ipower.forms.mainForm;
 
 import java.text.DecimalFormat;
@@ -205,6 +206,9 @@ public class Counter implements Runnable {
                 mainForm.CargaTotal.setText(String.valueOf(dblTotalKw) + " kW");
                 mainForm.TotalKw.setText(String.valueOf(dblTotalKwh) + " kWh");
                 mainForm.LeiturasTotal.setText(String.valueOf(intTotalLeituras));
+                mainForm.series.add(new Minute(new Date()), dblTotalKwh);
+                //mainForm.series.add(new Minute(0, 1, 7, 12, 2003), 1.0);
+
 
 
             } catch (Exception e) {

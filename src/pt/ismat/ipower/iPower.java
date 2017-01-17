@@ -19,7 +19,6 @@ public class iPower {
                 } else {
                     UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
                 }
-
             }
 
             javax.swing.SwingUtilities.invokeLater(new Runnable() {

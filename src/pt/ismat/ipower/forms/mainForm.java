@@ -64,6 +64,7 @@ public class mainForm {
     public static JLabel LeiturasTotal,TotalKw,CargaTotal,ActiveDevicesTotal;
     public static JTree treeBuilding;
     public static JLabel Teste;
+    public static TimeSeries series = new TimeSeries("Total Kw Consumidos",Minute.class);
 
     public mainForm() {
 
@@ -80,12 +81,12 @@ public class mainForm {
         pbEquipamentos.setMaximum(Devices.getDevices());
 
         //XYSeries series = new XYSeries("asdf");
-        TimeSeries series = new TimeSeries("Total Kw Consumidos",Minute.class);
+        //TimeSeries series = new TimeSeries("Total Kw Consumidos",Minute.class);
 
         // minuto(min,hora,dia,mes,ano)
-        series.add(new Minute(0, 1, 7, 12, 2003), 1.0);
-        series.add(new Minute(2, 1, 7, 12, 2003), 4.30);
-        series.add(new Minute(15, 1, 7, 12, 2003), 80.0);
+     //   series.add(new Minute(0, 1, 7, 12, 2003), 1.0);
+     //   series.add(new Minute(2, 1, 7, 12, 2003), 4.30);
+     //   series.add(new Minute(15, 1, 7, 12, 2003), 80.0);
 
         //XYSeriesCollection dataset = new XYSeriesCollection(series);
         //XYDataset dataset = ( XYDataset ) new TimeSeriesCollection(series);
