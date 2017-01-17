@@ -135,30 +135,55 @@ public class Counter implements Runnable {
                 intTotalLeituras++;
                 Double dblTotalKw = 0.0D;
                 Double dblDeviceKw = 0.0D;
+                Boolean DeviceWork = false ;
+                Double dblProbabilidade = 0.0D;
 
                 Double dblTempoLeitura = Math.round((Double.valueOf(intTotalLeituras)/60)*100D)/100D; // nr leituras (1 minuto ) / 60 minutos
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                String dateInString = "22-09-2016";
+                //Dates datas = new Dates(new Date());
+                Dates datas = new Dates(sdf.parse(dateInString));
+
+                System.out.println(datas.getSeasonName());
 
                 // varrimento de todos os equipamentos activos
                 for (int i=0; i < Devices.getActiveDevicesList().size(); i++ ){
                     String[] arrDevice = Devices.getActiveDevicesList().get(i).toString().trim().split("#");
 
-                    //SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                    //String dateInString = "22-09-2016";
-                    Dates datas = new Dates(new Date());
-                    //Dates datas = new Dates(sdf.parse(dateInString));
+                    switch (arrDevice[3]){
+                        case "Aquecedor":
+                            if (datas.getSeasonName().equals("Inverno")){
+                                dblProbabilidade = 0.95;
+                            } else {
+                                dblProbabilidade = 0.5;
+                            }
+                            break;
+                        case "Frigorifico":
+                            dblProbabilidade = 1.0;
+                            break;
+                        default:
+                            dblProbabilidade = 0.0;
+                            DeviceWork = false ;
+                            break;
+                    }
+                    Double p = Math.random();
+                    if((dblProbabilidade > p) && !DeviceWork){
+                        DeviceWork = true ;
+                    } else {
+                        DeviceWork = false ;
+                    }
 
-                    System.out.println(datas.getSeasonName());
+                    if (DeviceWork){
+                        dblDeviceKw = Double.valueOf(arrDevice[2])/1000;
+                        dblDeviceKw = Math.round((dblDeviceKw * dblTempoLeitura) * 100D)/100D;
+
+                        // adiciona equipamento ao mapa de equipamentos activos
+                        mapActiveDevices.put(arrDevice[0],dblDeviceKw);
 
 
-                    dblDeviceKw = Double.valueOf(arrDevice[2])/1000;
-                    dblDeviceKw = Math.round((dblDeviceKw * dblTempoLeitura) * 100D)/100D;
-
-                    // adiciona equipamento ao mapa de equipamentos activos
-                    mapActiveDevices.put(arrDevice[0],dblDeviceKw);
-
-
-                    dblTotalKw = dblTotalKw + Double.valueOf(arrDevice[2])/1000; // conversao w -> kW
-
+                        dblTotalKw = dblTotalKw + Double.valueOf(arrDevice[2])/1000; // conversao w -> kW
+                    }
                 }
 
                 // c = w / 1000 * h = kwh
