@@ -23,6 +23,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -78,42 +79,26 @@ public class mainForm {
         lblActiveDevicesTotal.setText(Devices.getActiveDevices().toString() + "/" + Devices.getDevices().toString());
         pbEquipamentos.setMaximum(Devices.getDevices());
 
-
         //XYSeries series = new XYSeries("asdf");
-        TimeSeries series = new TimeSeries("Random Data");
-        series.add(new Day(1, 1, 2017), 3.45);
-        series.add(new Day(2, 1, 2017), 5.45);
-        series.add(new Day(3, 1, 2017), 2.45);
-        series.add(new Day(4, 1, 2017), 1.45);
-       /* Second current = new Second();
-        Double value = 100.0;
-        for ( int i = 0 ; i < 4000 ; i++ ) {
-            try {
-                value = value + Math.random() - 0.5;
-                series.add(current, new Double(value));
-                current = (Second) current.next();
-            } catch (SeriesException e) {
-                System.err.println("Error adding to series");
-            }
-        }*/
-        /*for (int i = 0; i < 100; i++)
-            series.add(i, Math.random());
-        */
-        //XYSeriesCollection dataset = new XYSeriesCollection(series);
-        XYDataset dataset = ( XYDataset ) new TimeSeriesCollection(series);
+        TimeSeries series = new TimeSeries("Total Kw Consumidos",Minute.class);
 
+        // minuto(min,hora,dia,mes,ano)
+        series.add(new Minute(0, 1, 7, 12, 2003), 1.0);
+        series.add(new Minute(2, 1, 7, 12, 2003), 4.30);
+        series.add(new Minute(15, 1, 7, 12, 2003), 80.0);
+
+        //XYSeriesCollection dataset = new XYSeriesCollection(series);
+        //XYDataset dataset = ( XYDataset ) new TimeSeriesCollection(series);
+        TimeSeriesCollection dataset = new TimeSeriesCollection(series);
 
         //JFreeChart chart = ChartFactory.createXYLineChart(null, null, null, dataset, PlotOrientation.HORIZONTAL, true, true, true);
-        JFreeChart chart = ChartFactory.createTimeSeriesChart("Consumo","Seconds","Value",dataset,false,false,false);
+        JFreeChart chart = ChartFactory.createTimeSeriesChart("Consumo","Minutos","Kw",dataset,true,true,false);
         ChartPanel chartpanel = new ChartPanel(chart);
         chartpanel.setDomainZoomable(true);
         chartpanel.setPreferredSize(new Dimension(200, 270));
 
         pGrafico.setLayout(new BorderLayout());
         pGrafico.add(chartpanel, BorderLayout.NORTH);
-
-
-
 
 
         /**
