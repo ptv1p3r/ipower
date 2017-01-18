@@ -309,16 +309,17 @@ public class apartForm {
                         //edita o xml do apartamento
                         total=Apartment.apartmentBill(Apartment.getBuildingId(), Apartment.getApartmentId());
 
+                        //JUST FOR TESTS - para mostrar o total gasto
                         DecimalFormat df = new DecimalFormat();
                         df.setMaximumFractionDigits(2);
 
-                        //JUST FOR TESTS - para mostrar o total gasto
-                        JOptionPane.showConfirmDialog(
+                        JOptionPane.showMessageDialog(
                                 mainFrame,
                                 String.format("Total de KWh usado: " + df.format(total) +
                                         "\nA pagar: " + df.format(total*0.15) + " €"),
                                 "iPower - Carregar relatorio de apartamento",
-                                JOptionPane.YES_NO_OPTION);
+                                JOptionPane.DEFAULT_OPTION);
+
 
                         btnCarregar.setEnabled(false);
                     }

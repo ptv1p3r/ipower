@@ -134,7 +134,9 @@ public class equipForm {
             }
         });
 
-        //Testing, not ready
+        /**
+         * Action Listener do botao de adicionar equipamento
+         */
         btnAdicionar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -215,6 +217,9 @@ public class equipForm {
             }
         });
 
+        /**
+         * Action Listener do botao de editar equipamento
+         */
         btnEditar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -298,6 +303,9 @@ public class equipForm {
             }
         });
 
+        /**
+         * Action Listener do botao de remover equipamento
+         */
         btnRemover.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -341,6 +349,9 @@ public class equipForm {
     }
 
     // TODO alterar e talvez combinar as funcoes com codigo identico
+    /**
+     * Metodo para definir a lista de edificios
+     */
     private void setBuildingsList(){
         final DefaultComboBoxModel cbBuildingsModel = new DefaultComboBoxModel();
 
@@ -355,6 +366,10 @@ public class equipForm {
     }
 
     // TODO alterar e talvez combinar as funcoes com codigo identico
+    /**
+     * Metodo para definir a lista de apartamentos
+     * @param buildingId Identificador de edificio
+     */
     private void setApartmentsList(Integer buildingId){
         final DefaultComboBoxModel cbApartmentModel = new DefaultComboBoxModel();
 
@@ -368,6 +383,11 @@ public class equipForm {
 
     }
 
+    /**
+     * Metodo para definir a lista de equipamentos
+     * @param buildingId Identificador de Edificio
+     * @param apartmentId Identificador de Apartamento
+     */
     private void setDeviceList(Integer buildingId, Integer apartmentId){
 
         ArrayList arrDevicesList = Devices.getDevicesList(buildingId, apartmentId);
@@ -392,6 +412,9 @@ public class equipForm {
 
     }
 
+    /**
+     * Metodo para limpar as lables
+     */
     private void setGuiElementsOff(){
         lblIdData.setText("- nenhum -");
         txtConsumo.setText("0");
@@ -400,6 +423,9 @@ public class equipForm {
         ckbEnable.setSelected(false);
     }
 
+    /**
+     * Metodo para destrancar as lables
+     */
     private void lablesOn() {
 
         //enable as lables
@@ -411,6 +437,9 @@ public class equipForm {
 
     }
 
+    /**
+     * Metodo para destrancar as lables
+     */
     private void lablesOff() {
 
         //disable as lables
