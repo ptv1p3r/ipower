@@ -111,8 +111,6 @@ public class Counter implements Runnable {
         // Varrimento do iterador
         while(i.hasNext()) {
             Map.Entry me = (Map.Entry)i.next();
-           // System.out.print(me.getKey() + ": ");
-           // System.out.println(me.getValue());
             Devices.setDeviceReading(me.getKey().toString(),me.getValue().toString(), dataInicial, dataFinal);
         }
     }
@@ -121,11 +119,8 @@ public class Counter implements Runnable {
 
         @Override
         public void run() {
-            // TODO Retirar prints de consola
-            //System.out.println("Reading started at:"+new Date());
             completeReading();
             dataFinal = new Date();
-            //System.out.println("Reading finished at:"+new Date());
         }
 
         /**
@@ -203,6 +198,8 @@ public class Counter implements Runnable {
 
                 //DecimalFormat df=new DecimalFormat("0.000");
                 mainForm.ActiveDevicesTotal.setText(String.valueOf(intActiveDevices) + "/" + Devices.getDevices().toString());
+                mainForm.Equipamentos.setValue(intActiveDevices);
+
                 mainForm.CargaTotal.setText(String.valueOf(dblTotalKw) + " kW");
                 mainForm.TotalKw.setText(String.valueOf(dblTotalKwh) + " kWh");
                 mainForm.LeiturasTotal.setText(String.valueOf(intTotalLeituras));

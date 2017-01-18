@@ -44,8 +44,7 @@ public class mainForm {
     private JProgressBar pbEquipamentos;
     private JProgressBar pbSimulatorStatus;
     private JLabel lblActiveDevices;
-    private JLabel lblActiveDevicesTotal;
-    private JLabel lblSimStatus;
+    private JLabel lblActiveDevicesTotal,lblSimStatus;
     private JLabel lblEquipamentosTotalKw;
     private JLabel lblTotalKw;
     private JLabel lblLeituras;
@@ -58,8 +57,9 @@ public class mainForm {
     private JLabel lblTeste;
     private JPanel pGrafico;
     private JLabel lblTimer;
-
     public Counter cDevicesCounter;
+
+    public static JProgressBar Equipamentos;
     public static JLabel LeiturasTotal,TotalKw,CargaTotal,ActiveDevicesTotal;
     public static JTree treeBuilding;
     public static JLabel Teste;
@@ -67,6 +67,7 @@ public class mainForm {
 
     public mainForm() {
         // passa objectos por referencia
+        Equipamentos = pbEquipamentos;
         Teste = lblTeste;
         treeBuilding = this.treeBuildings;
         LeiturasTotal = this.lblLeiturasTotal;
@@ -135,7 +136,6 @@ public class mainForm {
                 lblSimStatus.setText("inactivo");
                 btnLigar.setEnabled(true);
                 btnDesligar.setEnabled(false);
-                //pbSimulatorStatus.setVisible(false);
                 pbSimulatorStatus.setIndeterminate(false);
 
             }
@@ -361,7 +361,8 @@ public class mainForm {
     }
 
     /**
-     * Metodo que cria a JTree treeBuildings
+     * Metodo que cria a tree com edificios, apartamentos e equipamentos
+     * @param treeBuildings Objecto Jtree a ser criado
      */
     public static void createTree(JTree treeBuildings){
 
