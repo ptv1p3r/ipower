@@ -157,17 +157,44 @@ public class Counter implements Runnable {
                                 dblProbabilidade = 0.5;
                             }
                             break;
+                        case "Ventoinha":
+                            if (datas.getSeasonName().equals("Inverno")){
+                                dblProbabilidade = 0.5;
+                            } else if(datas.getSeasonName().equals("Verão")){
+                                dblProbabilidade = 0.95;
+                            } else {
+                                dblProbabilidade = 0.15;
+                            }
+                            break;
                         case "Frigorifico":
                             dblProbabilidade = 1.0;
                             break;
-                        case "Fogão":
+                        case "Ar-Condicionado":
+                            if (datas.getSeasonName().equals("Inverno")){
+                                dblProbabilidade = 0.75;
+                            } else if(datas.getSeasonName().equals("Verão")){
+                                dblProbabilidade = 0.95;
+                            } else {
+                                dblProbabilidade = 0.15;
+                            }
+                            break;
+                        case "Televisor":
                             dblProbabilidade = 0.60;
+                            break;
+                        case "Dvd":
+                            dblProbabilidade = 0.10;
+                            break;
+                        case "Computador":
+                            dblProbabilidade = 0.70;
+                            break;
+                        case "Fogão":
+                            dblProbabilidade = 0.30;
                             break;
                         case "Lampada Led":
                             if (datas.getSeasonName().equals("Verão")){
-                                dblProbabilidade = 0.15;
+                                dblProbabilidade = 0.35;
                             } else {
-                                dblProbabilidade = 0.85;
+                                dblProbabilidade = 0.55;
                             }
                             break;
                     }
