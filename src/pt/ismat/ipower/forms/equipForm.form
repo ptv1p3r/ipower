@@ -212,6 +212,11 @@
                     <item value="Aquecedor"/>
                     <item value="Lampada Led"/>
                     <item value="Fogão"/>
+                    <item value="Televisor"/>
+                    <item value="Ar-Condicionado"/>
+                    <item value="Ventoinha"/>
+                    <item value="Computador"/>
+                    <item value="Dvd"/>
                   </model>
                 </properties>
               </component>

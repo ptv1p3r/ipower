@@ -57,6 +57,7 @@ public class mainForm {
     private JLabel lblTeste;
     private JPanel pGrafico;
     private JLabel lblTimer;
+    private JLabel lblLedIndicator;
     public Counter cDevicesCounter;
 
     public static JProgressBar Equipamentos;
@@ -76,6 +77,8 @@ public class mainForm {
         ActiveDevicesTotal = this.lblActiveDevicesTotal;
 
         createTree(treeBuilding); // cria tree inicial
+
+        lblLedIndicator.setForeground(Color.red);
 
         lblActiveDevicesTotal.setText(Devices.getActiveDevices().toString() + "/" + Devices.getDevices().toString());
         pbEquipamentos.setMaximum(Devices.getDevices());
@@ -106,12 +109,13 @@ public class mainForm {
                 SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
 
                 lblStatusBarData.setText("Em funcionamento...Iniciado em: " + dt.format(cDevicesCounter.getDataInicial()));
+
+                lblLedIndicator.setForeground(Color.green);
                 lblSimStatus.setText("activo");
                 btnLigar.setEnabled(false);
                 btnDesligar.setEnabled(true);
 
                 pbSimulatorStatus.setIndeterminate(true);
-                //pbSimulatorStatus.setVisible(true);
             }
         });
 
@@ -130,6 +134,7 @@ public class mainForm {
                 SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
                 lblStatusBarData.setText("Desligado...Iniciado em: " + dt.format(cDevicesCounter.getDataInicial()) + " Terminado em: " + dt.format(cDevicesCounter.getDataFinal()));
 
+                lblLedIndicator.setForeground(Color.red);
                 lblLeiturasTotal.setText("0");
                 lblTotalKw.setText("0 Kw");
                 lblCargaTotalData.setText("0 Kw");
@@ -436,7 +441,7 @@ public class mainForm {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         mainFrame.setResizable(false);
-        mainFrame.setPreferredSize(new Dimension(800, 600));
+        mainFrame.setPreferredSize(new Dimension(1000, 600));
         createMenuBar(mainFrame);
 
         mainFrame.pack();
