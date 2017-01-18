@@ -233,6 +233,8 @@ public class Counter implements Runnable {
                 mainForm.CargaTotal.setText(String.valueOf(dblTotalKw) + " kW");
                 mainForm.TotalKw.setText(String.valueOf(dblTotalKwh) + " kWh");
                 mainForm.LeiturasTotal.setText(String.valueOf(intTotalLeituras));
+
+                // adiciona serie ao grafico
                 mainForm.series.add(new Minute(new Date()), dblTotalKwh);
 
 

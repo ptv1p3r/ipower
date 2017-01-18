@@ -127,6 +127,7 @@ public class mainForm {
                 lblStatusBarData.setText("Desligado...Iniciado em: " + dt.format(cDevicesCounter.getDataInicial()) + " Terminado em: " + dt.format(cDevicesCounter.getDataFinal()));
 
                 lblSemaforo.setIcon(imgRed.resize(20,20));
+                series.clear(); // limpa as series do grafico
 
                 lblLeiturasTotal.setText("0");
                 lblTotalKw.setText("0 Kw");
