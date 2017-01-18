@@ -140,12 +140,19 @@ public class mainForm {
             }
         });
 
+        /**
+         * Metodo que associa um Mouse Listener ao botao expand
+         */
         btnExpandTree.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 expandAllNodes(treeBuildings, 0, treeBuildings.getRowCount());
             }
         });
+
+        /**
+         * Metodo que associa um Mouse Listener ao botao coloapse
+         */
         btnColapseTree.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
