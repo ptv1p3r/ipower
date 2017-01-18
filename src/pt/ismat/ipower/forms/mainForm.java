@@ -156,7 +156,7 @@ public class mainForm {
         btnColapseTree.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                colapseAllNodes(treeBuildings, 0, treeBuildings.getRowCount());
+                colapseAllNodes(treeBuildings, 1, treeBuildings.getRowCount());
             }
         });
     }
