@@ -169,11 +169,27 @@ public class equipForm {
                         for (int i = 0; i < arrDevicesList.size(); i++) {
                             String strDevices = (String) arrDevicesList.get(i);
                             String[] arrDevices = strDevices.split("#");
-                            lstDevicesModel.addElement(arrDevices[0]);
+
+                            String estado;
+                            if(arrDevices[3] == "false") {
+                                estado = "OFF";
+                            } else {
+                                estado = "ON";
+                            }
+
+                            lstDevicesModel.addElement(arrDevices[0] + " - " + arrDevices[1] + " (" + arrDevices[2] + " w)" + " [" + estado + "]");
                         }
 
                         //adiciona o novo elemento a lista, e cria o respetivo xml e atualiza a lista
-                        lstDevicesModel.addElement(device.getDeviceId());
+                        String estadoNovoDevice;
+                        if(device.isEnabled() == false) {
+                            estadoNovoDevice = "OFF";
+                        } else {
+                            estadoNovoDevice = "ON";
+                        }
+
+                        lstDevicesModel.addElement(device.getDeviceId() + " - " + device.getDeviceType() +
+                                " (" + device.getConsumo() + " w)" + " [" + estadoNovoDevice + "]");
                         Devices.saveDevice(buildingId, apartmentId, device);
                         lsDevices.setModel(lstDevicesModel);
 
@@ -225,13 +241,20 @@ public class equipForm {
                             //efetua a edicao
                             if (resultado == 0) {
 
-                                //building e apartment id
-                                Integer apartmentId = Integer.parseInt(cbApartments.getSelectedItem().toString().replaceAll("\\D+", ""));
-                                Integer buildingId = Integer.parseInt(cbBuildings.getSelectedItem().toString().replaceAll("\\D+", ""));
+                                //ID do apartamento
+                                String strApartment = cbApartments.getSelectedItem().toString();
+                                String[] arrApartment = strApartment.split(" - ");
+                                Integer apartmentId = Integer.parseInt(arrApartment[0]);
+
+                                //ID do edificio
+                                String strBuilding = cbBuildings.getSelectedItem().toString();
+                                String[] arrBuilding = strBuilding.split(" - ");
+                                Integer buildingId = Integer.parseInt(arrBuilding[0]);
 
                                 //cria um novo apartamento com o nome novo, ignora os espacos da indentacao da lable.
-                                Devices device = new Devices(buildingId, apartmentId, Integer.parseInt(lblIdData.getText()), Integer.parseInt(txtConsumo.getText().trim())
-                                        , cbTipo.getSelectedItem().toString(), cbDeviceType.getSelectedItem().toString(), ckbEnable.isSelected());
+                                Devices device = new Devices(buildingId, apartmentId, Integer.parseInt(lblIdData.getText()),
+                                        Integer.parseInt(txtConsumo.getText().trim()), cbTipo.getSelectedItem().toString(),
+                                        cbDeviceType.getSelectedItem().toString(), ckbEnable.isSelected());
 
                                 Devices.editDevice(buildingId, apartmentId, device);
 
@@ -288,9 +311,15 @@ public class equipForm {
 
                     if (resultado==0){
 
-                        //building e apartment id
-                        Integer apartmentId = Integer.parseInt(cbApartments.getSelectedItem().toString().replaceAll("\\D+", ""));
-                        Integer buildingId = Integer.parseInt(cbBuildings.getSelectedItem().toString().replaceAll("\\D+", ""));
+                        //ID do apartamento
+                        String strApartment = cbApartments.getSelectedItem().toString();
+                        String[] arrApartment = strApartment.split(" - ");
+                        Integer apartmentId = Integer.parseInt(arrApartment[0]);
+
+                        //ID do edificio
+                        String strBuilding = cbBuildings.getSelectedItem().toString();
+                        String[] arrBuilding = strBuilding.split(" - ");
+                        Integer buildingId = Integer.parseInt(arrBuilding[0]);
 
                         Devices.removeDevice(buildingId,apartmentId, Integer.parseInt(lblIdData.getText())); // remove o equipamento
                         lstDevicesModel.remove(lsDevices.getSelectedIndex()); // remove do model da jlist
@@ -345,9 +374,17 @@ public class equipForm {
         lstDevicesModel.clear();
 
         for (int i = 0; i < arrDevicesList.size(); i++) {
-            String strDevice = (String) arrDevicesList.get(i);
-            String[] arrDevice = strDevice.split("#");
-            lstDevicesModel.addElement(arrDevice[0]);
+            String strDevices = (String) arrDevicesList.get(i);
+            String[] arrDevices = strDevices.split("#");
+
+            String estado;
+            if(arrDevices[3].equals("false")) {
+                estado = "OFF";
+            } else {
+                estado = "ON";
+            }
+
+            lstDevicesModel.addElement(arrDevices[0] + " - " + arrDevices[1] + " (" + arrDevices[2] + " w)" + " [" + estado + "]");
         }
 
         lsDevices.setModel(lstDevicesModel);

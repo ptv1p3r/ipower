@@ -141,7 +141,10 @@ public class xmlParser {
 
                                         if (eDevice.hasAttribute("id")) {
 
-                                            arrDevicesList.add(eDevice.getAttribute("id") + "#" + eDevice.getElementsByTagName("enable").item(0).getTextContent());
+                                            arrDevicesList.add(eDevice.getAttribute("id") + "#" +
+                                                    eDevice.getAttribute("type") + "#" +
+                                                    eDevice.getElementsByTagName("euc").item(0).getTextContent() + "#" +
+                                                    eDevice.getElementsByTagName("enable").item(0).getTextContent());
 
                                         }
                                     }

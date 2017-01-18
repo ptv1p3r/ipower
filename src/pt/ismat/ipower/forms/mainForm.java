@@ -403,7 +403,7 @@ public class mainForm {
                     String strDevice = (String) arrDevicesList.get(d);
                     String[] arrDevice = strDevice.split("#");
 
-                    if(!Boolean.valueOf(arrDevice[1])){
+                    if(!Boolean.valueOf(arrDevice[3])){
                         apartmentNode.add(new DefaultMutableTreeNode(arrDevice[0] + " - [Off]"));
                     } else {
                         apartmentNode.add(new DefaultMutableTreeNode(arrDevice[0]));
