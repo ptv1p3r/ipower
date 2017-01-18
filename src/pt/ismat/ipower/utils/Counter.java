@@ -6,6 +6,7 @@ import pt.ismat.ipower.forms.mainForm;
 
 import javax.swing.text.Position;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -220,6 +221,8 @@ public class Counter implements Runnable {
 
                         dblTotalKw = dblTotalKw + Double.valueOf(arrDevice[2])/1000; // conversao w -> kW
                     }
+
+                    mainForm.setEquipmentTreeStatus(arrDevice[0],DeviceWork);
                 }
 
                 // c = w / 1000 * h = kwh
@@ -237,12 +240,6 @@ public class Counter implements Runnable {
                 // adiciona serie ao grafico
                 mainForm.series.add(new Minute(new Date()), dblTotalKwh);
 
-
-                //int startRow = 0;
-                //String prefix = "100010001000";
-                //TreePath path = mainForm.treeBuilding.getNextMatch(prefix, startRow, Position.Bias.Forward);
-                //mainForm.treeBuilding.
-                //System.out.println(path);
 
             } catch (Exception e) {
                 e.printStackTrace();

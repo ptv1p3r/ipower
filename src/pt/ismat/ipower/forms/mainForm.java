@@ -7,10 +7,7 @@ import org.jfree.data.time.*;
 import pt.ismat.ipower.utils.*;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreePath;
+import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.text.DateFormat;
@@ -128,6 +125,7 @@ public class mainForm {
 
                 lblSemaforo.setIcon(imgRed.resize(20,20));
                 series.clear(); // limpa as series do grafico
+                createTree(treeBuilding);
 
                 lblLeiturasTotal.setText("0");
                 lblTotalKw.setText("0 Kw");
@@ -151,7 +149,7 @@ public class mainForm {
         });
 
         /**
-         * Metodo que associa Mouse Listener ao botao coloapse
+         * Metodo que associa Mouse Listener ao botao colapse
          */
         btnColapseTree.addMouseListener(new MouseAdapter() {
             @Override
@@ -378,6 +376,49 @@ public class mainForm {
         frame.setJMenuBar(menubar);
     }
 
+    public static void setEquipmentTreeStatus(String deviceId, Boolean status){
+        //String deviceId = "100010001000";
+        String BuildingId = deviceId.substring(0,4);
+        String ApartmentId = deviceId.substring(4,8);
+        String EquipId = deviceId.substring(8,12);
+
+        DefaultTreeModel model = (DefaultTreeModel) treeBuilding.getModel();
+        TreeNode rootNode  = (TreeNode) treeBuilding.getModel().getRoot();
+        TreePath path = new TreePath(rootNode);
+
+        for(int i=0; i<rootNode.getChildCount(); i++) { // todos os nos
+            TreeNode nodeEdificios = rootNode.getChildAt(i);
+
+            if (nodeEdificios.toString().substring(0,4).equals(BuildingId)){ // valida edificio
+
+                for(int a=0; a<nodeEdificios.getChildCount(); a++) {
+                    TreeNode nodeApartamentos = nodeEdificios.getChildAt(a);
+
+                    if (nodeApartamentos.toString().substring(0,4).equals(ApartmentId)){ // valida apartamento
+
+                        if(nodeApartamentos.getChildCount()>0){
+
+                            for(int d=0; d<nodeApartamentos.getChildCount(); d++) {
+                                DefaultMutableTreeNode nodeDevices = (DefaultMutableTreeNode) nodeApartamentos.getChildAt(d);
+
+                                if (nodeDevices.toString().substring(0,4).equals(EquipId)) {
+                                    if (status){
+                                        nodeDevices.setUserObject(EquipId + " - " + "[On]");
+                                    } else {
+                                        nodeDevices.setUserObject(EquipId + " - " + "[Off]");
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        treeBuilding.setModel(new DefaultTreeModel(rootNode));
+        expandAllNodes(treeBuilding,0,treeBuilding.getRowCount());
+    }
+
     /**
      * Metodo que cria a tree com edificios, apartamentos e equipamentos
      * @param treeBuildings Objecto Jtree a ser criado
@@ -468,7 +509,7 @@ public class mainForm {
      * @param startIndex Numero inicial da tree
      * @param rowCount Numero total de linhas
      */
-    private void expandAllNodes(JTree tree, int startIndex, int rowCount){
+    private static void expandAllNodes(JTree tree, int startIndex, int rowCount){
         for(int i=startIndex;i<rowCount;++i){
             tree.expandRow(i);
         }
