@@ -81,24 +81,14 @@ public class mainForm {
 
         displayTimer(true); // efetua o display das horas
 
-        //XYSeries series = new XYSeries("asdf");
-        //TimeSeries series = new TimeSeries("Total Kw Consumidos",Minute.class);
+        TimeSeriesCollection dataset = new TimeSeriesCollection(series); //inicia um dataset para receber series
 
-        // minuto(min,hora,dia,mes,ano)
-     //   series.add(new Minute(0, 1, 7, 12, 2003), 1.0);
-     //   series.add(new Minute(2, 1, 7, 12, 2003), 4.30);
-     //   series.add(new Minute(15, 1, 7, 12, 2003), 80.0);
-
-        //XYSeriesCollection dataset = new XYSeriesCollection(series);
-        //XYDataset dataset = ( XYDataset ) new TimeSeriesCollection(series);
-        TimeSeriesCollection dataset = new TimeSeriesCollection(series);
-
-        //JFreeChart chart = ChartFactory.createXYLineChart(null, null, null, dataset, PlotOrientation.HORIZONTAL, true, true, true);
         JFreeChart chart = ChartFactory.createTimeSeriesChart("Consumo","Minutos","Kw",dataset,true,true,false);
         ChartPanel chartpanel = new ChartPanel(chart);
         chartpanel.setDomainZoomable(true);
         chartpanel.setPreferredSize(new Dimension(200, 270));
 
+        // carrega chartpanel para o painel final
         pGrafico.setLayout(new BorderLayout());
         pGrafico.add(chartpanel, BorderLayout.NORTH);
 
