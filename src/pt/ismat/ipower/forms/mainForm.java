@@ -3,37 +3,20 @@ package pt.ismat.ipower.forms;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.general.SeriesException;
 import org.jfree.data.time.*;
-import org.jfree.data.xy.XYDataset;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.ui.RefineryUtilities;
 import pt.ismat.ipower.utils.*;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
-import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
 /**
  * Created by v1p3r on 29-12-2016.
@@ -61,6 +44,8 @@ public class mainForm {
     private JLabel lblTimer;
     private JLabel lblLedIndicator;
     private JLabel lblSemaforo;
+    private JButton btnExpandTree;
+    private JButton btnColapseTree;
     public Counter cDevicesCounter;
 
     public static JProgressBar Equipamentos;
@@ -122,6 +107,8 @@ public class mainForm {
                 btnDesligar.setEnabled(true);
 
                 pbSimulatorStatus.setIndeterminate(true);
+
+                expandAllNodes(treeBuildings, 0, treeBuildings.getRowCount());
             }
         });
 
@@ -152,6 +139,18 @@ public class mainForm {
             }
         });
 
+        btnExpandTree.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                expandAllNodes(treeBuildings, 0, treeBuildings.getRowCount());
+            }
+        });
+        btnColapseTree.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                colapseAllNodes(treeBuildings, 0, treeBuildings.getRowCount());
+            }
+        });
     }
 
     /**
@@ -418,6 +417,7 @@ public class mainForm {
                 }
             }
 
+            // altera imagens default da tree
             Images imgBuild = new Images("images/build.png");
             Icon icon = imgBuild.resize(20,20);
             renderer.setClosedIcon(icon);
@@ -432,12 +432,6 @@ public class mainForm {
         }
 
         treeBuildings.setModel(new DefaultTreeModel(root));
-
-    /*    Icon icon = new ImageIcon("images/equip.png");
-
-        UIManager.put("Tree.closedIcon", icon);
-        UIManager.put("Tree.openIcon", icon);
-        UIManager.put("Tree.leafIcon", icon);*/
 
         // adiciona mouse listener à tree para capturar o click do rato
         treeBuildings.addMouseListener(new MouseAdapter() {
@@ -458,6 +452,38 @@ public class mainForm {
             Teste.setText(tp.toString());
         else
             Teste.setText("");
+    }
+
+    /**
+     * Metodo que faz o expand de todos os nos de uma arvore
+     * @param tree Arvore a expandir
+     * @param startIndex Numero inicial da tree
+     * @param rowCount Numero total de linhas
+     */
+    private void expandAllNodes(JTree tree, int startIndex, int rowCount){
+        for(int i=startIndex;i<rowCount;++i){
+            tree.expandRow(i);
+        }
+
+        if(tree.getRowCount()!=rowCount){
+            expandAllNodes(tree, rowCount, tree.getRowCount());
+        }
+    }
+
+    /**
+     * Metodo que faz o colapse de todos os nos de uma arvore
+     * @param tree Arvore a fechar
+     * @param startIndex Numero inicial da tree
+     * @param rowCount Numero total de linhas
+     */
+    private void colapseAllNodes(JTree tree, int startIndex, int rowCount){
+        for(int i=startIndex;i<rowCount;++i){
+            tree.collapseRow(i);
+        }
+
+        if(tree.getRowCount()!=rowCount){
+            colapseAllNodes(tree, rowCount, tree.getRowCount());
+        }
     }
 
     /**
