@@ -5,6 +5,7 @@ import pt.ismat.ipower.utils.Buildings;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
@@ -32,6 +33,8 @@ public class apartForm {
     private String[] apt;
 
     public apartForm() {
+
+        btnCarregar.setEnabled(false);
 
         //inicia a cbBuildings com os ids dos edificios
         DefaultListModel lstBuildigModel = new DefaultListModel();
@@ -257,6 +260,7 @@ public class apartForm {
 
                     lblIdData.setText(arrBuilding[0]);
                     txtName.setText(arrBuilding[1]);
+                    btnCarregar.setEnabled(true);
                 } else {
                     lblIdData.setText("- nenhum -");
                     txtName.setText(" ");
@@ -305,13 +309,18 @@ public class apartForm {
                         //edita o xml do apartamento
                         total=Apartment.apartmentBill(Apartment.getBuildingId(), Apartment.getApartmentId());
 
+                        DecimalFormat df = new DecimalFormat();
+                        df.setMaximumFractionDigits(2);
+
                         //JUST FOR TESTS - para mostrar o total gasto
                         JOptionPane.showConfirmDialog(
                                 mainFrame,
-                                String.format("Total de KWh usado: %.2f\n" + total +
-                                        "a pagar: %.2f €" + total*.2),
+                                String.format("Total de KWh usado: " + df.format(total) +
+                                        "\nA pagar: " + df.format(total*0.15) + " €"),
                                 "iPower - Carregar relatorio de apartamento",
                                 JOptionPane.YES_NO_OPTION);
+
+                        btnCarregar.setEnabled(false);
                     }
 
                 }

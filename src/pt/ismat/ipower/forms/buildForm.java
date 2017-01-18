@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -30,6 +31,8 @@ public class buildForm {
     private JButton btnCarregar;
 
     public buildForm() {
+
+        btnCarregar.setEnabled(false);
 
         //inicia a cbBuildings com os ids dos edificios
         DefaultListModel lstBuildingsModel = new DefaultListModel();
@@ -131,6 +134,7 @@ public class buildForm {
                     lblIdData.setText(Edificio.getBuildingId().toString());
                     txtName.setText(Edificio.getName());
                     txtLocation.setText(Edificio.getLocation());
+                    btnCarregar.setEnabled(true);
                 } else {
                     lblIdData.setText("- nenhum -");
                     txtName.setText("");
@@ -245,13 +249,18 @@ public class buildForm {
                         //edita o xml do apartamento
                         total=Building.buildingBill(Building.getBuildingId());
 
+                        DecimalFormat df = new DecimalFormat();
+                        df.setMaximumFractionDigits(2);
+
                         //JUST FOR TESTS - para mostrar o total gasto
                         JOptionPane.showConfirmDialog(
                                 mainFrame,
-                                String.format("Total de KWh usado: %.2f\n" + total +
-                                        "a pagar: %.2f €" + total*.2),
-                                "iPower - Carregar relatorio de edificio",
+                                String.format("Total de KWh usado: " + df.format(total) +
+                                        "\nA pagar: " + df.format(total*0.15) + " €"),
+                                "iPower - Carregar relatorio de Edificio",
                                 JOptionPane.YES_NO_OPTION);
+
+                        btnCarregar.setEnabled(false);
                     }
 
                 }

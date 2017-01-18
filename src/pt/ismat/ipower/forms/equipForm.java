@@ -7,6 +7,7 @@ import pt.ismat.ipower.utils.Devices;
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 /**
@@ -171,7 +172,7 @@ public class equipForm {
                             String[] arrDevices = strDevices.split("#");
 
                             String estado;
-                            if(arrDevices[3] == "false") {
+                            if(arrDevices[3].equals("false")) {
                                 estado = "OFF";
                             } else {
                                 estado = "ON";
@@ -396,6 +397,7 @@ public class equipForm {
         txtConsumo.setText("0");
         cbTipo.setSelectedItem("- nenhum -");
         cbDeviceType.setSelectedItem("- nenhum -");
+        ckbEnable.setSelected(false);
     }
 
     private void lablesOn() {
