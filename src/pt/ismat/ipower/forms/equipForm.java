@@ -144,11 +144,12 @@ public class equipForm {
                     if (cbTipo.getSelectedItem().toString() != "- nenhum -" && cbDeviceType.getSelectedItem().toString() != "- nenhum -" &&
                             (txtConsumo.getText() != "- nenhum -" || txtConsumo.getText().length()!=0)) {
 
-
+                        //ID do apartamento
                         String strApartment = cbApartments.getSelectedItem().toString();
                         String[] arrApartment = strApartment.split(" - ");
                         Integer apartmentId = Integer.parseInt(arrApartment[0]);
 
+                        //ID do edificio
                         String strBuilding = cbBuildings.getSelectedItem().toString();
                         String[] arrBuilding = strBuilding.split(" - ");
                         Integer buildingId = Integer.parseInt(arrBuilding[0]);

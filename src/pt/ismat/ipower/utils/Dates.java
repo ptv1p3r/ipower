@@ -64,10 +64,10 @@ public class Dates {
      * Metodo que retorna o nome da estacao do ano
      * @return String Nome da estacao do ano
      */
-    public String getTimeName(){
+    public String getTimeName(String data){
         String strTime;
 
-        SimpleDateFormat dt=new SimpleDateFormat("hh:mm:ss");
+        SimpleDateFormat dt=new SimpleDateFormat("HH:mm:ss");
         dt.setLenient(false);
 
         try

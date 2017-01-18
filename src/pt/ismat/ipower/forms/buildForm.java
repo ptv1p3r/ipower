@@ -248,7 +248,8 @@ public class buildForm {
                         //JUST FOR TESTS - para mostrar o total gasto
                         JOptionPane.showConfirmDialog(
                                 mainFrame,
-                                String.format("Total energy used: " + total, "##.##"),
+                                String.format("Total de KWh usado: %.2f\n" + total +
+                                        "a pagar: %.2f €" + total*.2),
                                 "iPower - Carregar relatorio de edificio",
                                 JOptionPane.YES_NO_OPTION);
                     }

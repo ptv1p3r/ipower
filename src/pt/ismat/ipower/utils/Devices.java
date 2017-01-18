@@ -151,12 +151,11 @@ public class Devices {
         try {
             ArrayList devicesList = getDevicesList(buildingId, apartmentId);
 
-            Integer[] deviceId = new Integer[devicesList.size()];
-
             for (i = 0; i < devicesList.size(); i++) {
                 String strDevices = (String) devicesList.get(i);
+                String[] arrApartment = strDevices.split("#");
 
-                if (id == Integer.parseInt(strDevices)) {
+                if (id == Integer.parseInt(arrApartment[0].trim())) {
                     id++;
                 }
             }

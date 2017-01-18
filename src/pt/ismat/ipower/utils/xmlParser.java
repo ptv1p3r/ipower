@@ -12,9 +12,13 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.Flushable;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class xmlParser {
     private static Document documento;
@@ -1214,13 +1218,11 @@ public class xmlParser {
         documento=xmlHeaderDocument(buildingsFile + "/" + buildingId + "/" + apartmentId + ".xml");
 
         NodeList nlReadings = documento.getElementsByTagName("energy");
-        NodeList nlStartDate = documento.getElementsByTagName("start_date_time");
-        NodeList nlEndDate = documento.getElementsByTagName("end_date_time");
+        //NodeList nlStartDate = documento.getElementsByTagName("start_date_time");
+        //NodeList nlEndDate = documento.getElementsByTagName("end_date_time");
 
         for (int i = 0 ; i < nlReadings.getLength() ; i++) {
             //TODO:verificar a hora e o que ha a pagar
-            //Dates dates = new Dates()
-
 
             if (nlReadings != null && nlReadings.getLength() > 0) {
                 NodeList nlEnergy = nlReadings.item(i).getChildNodes();
