@@ -58,6 +58,7 @@ public class mainForm {
     private JPanel pGrafico;
     private JLabel lblTimer;
     private JLabel lblLedIndicator;
+    private JLabel lblSemaforo;
     public Counter cDevicesCounter;
 
     public static JProgressBar Equipamentos;
@@ -78,7 +79,8 @@ public class mainForm {
 
         createTree(treeBuilding); // cria tree inicial
 
-        lblLedIndicator.setForeground(Color.red);
+        Images imgRed = new Images("images/red.png");
+        lblSemaforo.setIcon(imgRed.resize(20,20));
 
         lblActiveDevicesTotal.setText(Devices.getActiveDevices().toString() + "/" + Devices.getDevices().toString());
         pbEquipamentos.setMaximum(Devices.getDevices());
@@ -110,7 +112,9 @@ public class mainForm {
 
                 lblStatusBarData.setText("Em funcionamento...Iniciado em: " + dt.format(cDevicesCounter.getDataInicial()));
 
-                lblLedIndicator.setForeground(Color.green);
+                Images imgGreen = new Images("images/green.png");
+                lblSemaforo.setIcon(imgGreen.resize(20,20));
+
                 lblSimStatus.setText("activo");
                 btnLigar.setEnabled(false);
                 btnDesligar.setEnabled(true);
@@ -134,7 +138,8 @@ public class mainForm {
                 SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
                 lblStatusBarData.setText("Desligado...Iniciado em: " + dt.format(cDevicesCounter.getDataInicial()) + " Terminado em: " + dt.format(cDevicesCounter.getDataFinal()));
 
-                lblLedIndicator.setForeground(Color.red);
+                lblSemaforo.setIcon(imgRed.resize(20,20));
+
                 lblLeiturasTotal.setText("0");
                 lblTotalKw.setText("0 Kw");
                 lblCargaTotalData.setText("0 Kw");
