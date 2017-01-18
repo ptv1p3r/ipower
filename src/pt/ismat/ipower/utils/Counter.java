@@ -4,6 +4,9 @@ package pt.ismat.ipower.utils;
 import org.jfree.data.time.Minute;
 import pt.ismat.ipower.forms.mainForm;
 
+import javax.swing.text.Position;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -232,6 +235,12 @@ public class Counter implements Runnable {
                 mainForm.LeiturasTotal.setText(String.valueOf(intTotalLeituras));
                 mainForm.series.add(new Minute(new Date()), dblTotalKwh);
 
+
+                int startRow = 0;
+                String prefix = "100010001000";
+                TreePath path = mainForm.treeBuilding.getNextMatch(prefix, startRow, Position.Bias.Forward);
+                //mainForm.treeBuilding.
+                //System.out.println(path);
 
             } catch (Exception e) {
                 e.printStackTrace();

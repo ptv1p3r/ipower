@@ -16,11 +16,13 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -105,7 +107,7 @@ public class mainForm {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                cDevicesCounter = new Counter("Contador Equipamentos Activos");
+                cDevicesCounter = new Counter("");
                 cDevicesCounter.start();
 
                 SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
@@ -132,7 +134,6 @@ public class mainForm {
 
                 // TODO Criar algoritmo que efetua o registo da leitura dos equipamentos no respectivo apartamento no seu ficheiro xml
                 cDevicesCounter.terminate(); // termina o contador
-                //cDevicesCounter.resetCounter();
 
                 // TODO Metodo que faça update dos valores no gui
                 SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
@@ -379,12 +380,14 @@ public class mainForm {
         // Cria cada edificio
         ArrayList arrBuildingsList = Buildings.getBuildingsList();
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Edificios");
+        DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) treeBuildings.getCellRenderer();
 
         for (int i = 0; i < arrBuildingsList.size(); i++) {
             String strBuilding = (String) arrBuildingsList.get(i);
             String[] arrBuilding = strBuilding.split("#");
 
             DefaultMutableTreeNode buildingNode = new DefaultMutableTreeNode(arrBuilding[0] + " - " + arrBuilding[1]);
+
 
             // Cria cada apartamento
             ArrayList arrApartmentsList = Apartments.getApartmentList(Integer.valueOf(arrBuilding[0]));
@@ -398,6 +401,8 @@ public class mainForm {
 
                 // Cria os equipamentos de cada apartamento
                 ArrayList arrDevicesList = Devices.getDevicesList(Integer.valueOf(arrBuilding[0]), Integer.valueOf(arrApartment[0]));
+
+
 
                 for (int d = 0; d < arrDevicesList.size(); d++) {
                     String strDevice = (String) arrDevicesList.get(d);
@@ -413,12 +418,26 @@ public class mainForm {
                 }
             }
 
+            Images imgBuild = new Images("images/build.png");
+            Icon icon = imgBuild.resize(20,20);
+            renderer.setClosedIcon(icon);
+            renderer.setOpenIcon(icon);
+
+            Images imgEquip = new Images("images/equip.png");
+            Icon icone = imgEquip.resize(20,20);
+            renderer.setLeafIcon(icone);
 
             root.add(buildingNode);
 
         }
 
         treeBuildings.setModel(new DefaultTreeModel(root));
+
+    /*    Icon icon = new ImageIcon("images/equip.png");
+
+        UIManager.put("Tree.closedIcon", icon);
+        UIManager.put("Tree.openIcon", icon);
+        UIManager.put("Tree.leafIcon", icon);*/
 
         // adiciona mouse listener à tree para capturar o click do rato
         treeBuildings.addMouseListener(new MouseAdapter() {
