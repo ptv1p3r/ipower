@@ -141,7 +141,7 @@ public class mainForm {
         });
 
         /**
-         * Metodo que associa um Mouse Listener ao botao expand
+         * Metodo que associa Mouse Listener ao botao expand
          */
         btnExpandTree.addMouseListener(new MouseAdapter() {
             @Override
@@ -151,7 +151,7 @@ public class mainForm {
         });
 
         /**
-         * Metodo que associa um Mouse Listener ao botao coloapse
+         * Metodo que associa Mouse Listener ao botao coloapse
          */
         btnColapseTree.addMouseListener(new MouseAdapter() {
             @Override

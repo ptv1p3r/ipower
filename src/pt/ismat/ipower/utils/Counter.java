@@ -238,9 +238,9 @@ public class Counter implements Runnable {
                 mainForm.series.add(new Minute(new Date()), dblTotalKwh);
 
 
-                int startRow = 0;
-                String prefix = "100010001000";
-                TreePath path = mainForm.treeBuilding.getNextMatch(prefix, startRow, Position.Bias.Forward);
+                //int startRow = 0;
+                //String prefix = "100010001000";
+                //TreePath path = mainForm.treeBuilding.getNextMatch(prefix, startRow, Position.Bias.Forward);
                 //mainForm.treeBuilding.
                 //System.out.println(path);
 
