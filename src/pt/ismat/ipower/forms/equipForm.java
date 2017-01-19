@@ -27,7 +27,6 @@ public class equipForm {
     private JLabel lblId;
     private JLabel lblIdData;
     private JLabel lblTipo;
-    private JButton btnCarregarLeituras;
     private JPanel topFrame;
     private JPanel leftFrame;
     private JLabel lblApartment;
@@ -43,6 +42,7 @@ public class equipForm {
     private JComboBox cbDeviceType;
     private String[] apt;
     private DefaultListModel lstDevicesModel = new DefaultListModel();
+    private DefaultListModel lstDevicesReadingModel = new DefaultListModel();
 
     public equipForm() {
         setBuildingsList();
@@ -122,6 +122,11 @@ public class equipForm {
                     cbTipo.setSelectedItem(Device.getDeviceCategory());
                     cbDeviceType.setSelectedItem(Device.getDeviceType());
                     ckbEnable.setSelected(Device.isEnabled());
+
+
+                    lstDevicesReadingModel.clear();
+
+                    setReadingsList(buildingId,apartmentId,Device.getDeviceId());
 
                     //tranca as lables
                     lablesOff();
@@ -409,6 +414,13 @@ public class equipForm {
         }
 
         lsDevices.setModel(lstDevicesModel);
+
+    }
+
+    private void setReadingsList(Integer buildingId, Integer apartmentId, Integer deviceId) {
+
+        ArrayList arrLeiturasList = Devices.getDeviceReading(buildingId, apartmentId, deviceId);
+
 
     }
 

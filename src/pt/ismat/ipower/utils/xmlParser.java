@@ -13,10 +13,12 @@ import java.io.File;
 import java.io.Flushable;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -1266,6 +1268,73 @@ public class xmlParser {
 
         return total;
     }
+
+    //still working on it. dont touch xD
+    public static void readDeviceReadings (String strApartmentXml, Integer deviceId, ArrayList arrDatesList) {
+
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-DD");
+
+        documento = xmlHeaderDocument(strApartmentXml);
+
+        NodeList nlDeviceList = documento.getElementsByTagName("device");
+
+        if (nlDeviceList != null && nlDeviceList.getLength() > 0) {
+
+            for (int i = 0; i < nlDeviceList.getLength(); i++) {
+
+                Node nDevice = nlDeviceList.item(i);
+                Element eDevice = (Element) nDevice;
+
+                if (eDevice.hasAttribute("id") && eDevice.getAttribute("id").equals(String.valueOf(deviceId))) {
+
+                    NodeList nlStartDate = eDevice.getElementsByTagName("start_date_time");
+
+                    for (int j = 0; j < nlStartDate.getLength(); j++) {
+
+                        String strStart = nlStartDate.item(j).getFirstChild().getNodeValue();
+
+                        try {
+                            Date tempDate = f.parse(strStart);
+
+                            String startDate = f.format(tempDate);
+
+                            if (!arrDatesList.contains(startDate)) {
+
+                                arrDatesList.add(startDate);
+
+                            }
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    NodeList nlEndDate =eDevice.getElementsByTagName("end_date_time");
+
+                    for (int j = 0; j < nlEndDate.getLength(); j++) {
+
+                        String strEnd = nlEndDate.item(j).getFirstChild().getNodeValue();
+
+                        try {
+                            Date tempDate = f.parse(strEnd);
+
+                            String endDate = f.format(tempDate);
+
+                            if (!arrDatesList.contains(endDate)) {
+
+                                arrDatesList.add(endDate);
+
+                            }
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     /**
      * Metodo que devolve um documento xml normalizado
