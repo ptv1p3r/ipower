@@ -326,32 +326,6 @@ public class mainForm {
 
         tabelas.add(equipamentosItem);
 
-        // Preferencias
-        JMenu preferencias = new JMenu("Preferencias");
-        preferencias.setMnemonic(KeyEvent.VK_P);
-
-        // Preferencias->Configuracao
-        JMenuItem configuracaoItem = new JMenuItem("Configuração...", icon);
-        // adiciona o listener para captar evento
-        configuracaoItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-
-                JDialog configFrame = new JDialog(frame,"iPower - Configuração",Dialog.ModalityType.APPLICATION_MODAL); // cria frame em MODAL
-                configFrame.setContentPane(new confForm().mainFrame); // carrega o main panel feito no gui
-                configFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-
-                configFrame.setResizable(false);
-                configFrame.setPreferredSize(new Dimension(400, 400));
-
-                configFrame.pack();
-                configFrame.setLocationRelativeTo(null);
-
-                configFrame.setVisible(true);
-
-            }
-        });
-        preferencias.add(configuracaoItem);
-
         // Ajuda
         JMenu ajuda = new JMenu("Ajuda");
         ajuda.setMnemonic(KeyEvent.VK_A);
@@ -369,13 +343,17 @@ public class mainForm {
         // adiciona os menus a menubar
         menubar.add(file);
         menubar.add(tabelas);
-        menubar.add(preferencias);
         //menubar.add(Box.createHorizontalGlue()); // horizontal glue
         menubar.add(ajuda);
 
         frame.setJMenuBar(menubar);
     }
 
+    /**
+     * Metodo que actualiza o estado de cada equipamento na tree
+     * @param deviceId String com id do equipamento
+     * @param status Boolean Estado a actualizar
+     */
     public static void setEquipmentTreeStatus(String deviceId, Boolean status){
         //String deviceId = "100010001000";
         String BuildingId = deviceId.substring(0,4);

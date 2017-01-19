@@ -62,6 +62,7 @@ public class Dates {
 
     /**
      * Metodo que retorna o nome da estacao do ano
+     * @param data Data corrente
      * @return String Nome da estacao do ano
      */
     public String getTimeName(String data){
