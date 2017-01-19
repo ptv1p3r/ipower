@@ -1090,15 +1090,16 @@ public class xmlParser {
                                                 eDevice.setAttribute("category", device.getDeviceCategory().trim());
                                                 eDevice.setAttribute("type", device.getDeviceType().trim());
 
-                                                //TODO:Meter o editar a funcionar
-//                                                NodeList nlChild = eDevice.getChildNodes();
-//
-//                                                Node nState = nlChild.item(0);
-//                                                Node nConsumo = nlChild.item(1);
-//
-//                                                nState.setNodeValue(device.isEnabled().toString());
-//
-//                                                nConsumo.setNodeValue(device.getConsumo().toString());
+
+                                                //Editar equipamento
+                                                NodeList nlState = eDevice.getElementsByTagName("enable");
+                                                NodeList nlConsumo = eDevice.getElementsByTagName("euc");
+
+                                                Node nState = nlState.item(0);
+                                                Node nConsumo = nlConsumo.item(0);
+
+                                                nState.setTextContent(device.isEnabled().toString());
+                                                nConsumo.setTextContent(device.getConsumo().toString());
 
                                             }
                                         }
