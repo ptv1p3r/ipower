@@ -39,14 +39,17 @@ public class mainForm {
     private JLabel lblTeste;
     private JPanel pGrafico;
     private JLabel lblTimer;
-    private JLabel lblLedIndicator;
     private JLabel lblSemaforo;
     private JButton btnExpandTree;
     private JButton btnColapseTree;
+    private JLabel lblDevTipo;
+    private JLabel lblDevConsumo;
+    private JLabel lblDevPic;
+    private JLabel lblBuildPic;
     public Counter cDevicesCounter;
 
     public static JProgressBar Equipamentos;
-    public static JLabel LeiturasTotal,TotalKw,CargaTotal,ActiveDevicesTotal;
+    public static JLabel LeiturasTotal,TotalKw,CargaTotal,ActiveDevicesTotal,DevTipo,DevConsumo;
     public static JTree treeBuilding;
     public static JLabel Teste;
     public static TimeSeries series = new TimeSeries("Total Kw Consumidos",Minute.class);
@@ -60,11 +63,20 @@ public class mainForm {
         TotalKw = this.lblTotalKw;
         CargaTotal = this.lblCargaTotalData;
         ActiveDevicesTotal = this.lblActiveDevicesTotal;
+        DevTipo = lblDevTipo;
+        DevConsumo = lblDevConsumo;
 
         createTree(treeBuilding); // cria tree inicial
 
         Images imgRed = new Images("images/red.png");
         lblSemaforo.setIcon(imgRed.resize(20,20));
+
+        Images imgDev = new Images("images/equip.png");
+        lblDevPic.setIcon(imgDev.resize(80,80));
+
+        Images imgBuild = new Images("images/build.png");
+        lblBuildPic.setIcon(imgBuild.resize(80,80));
+
 
         lblActiveDevicesTotal.setText(Devices.getActiveDevices().toString() + "/" + Devices.getDevices().toString());
         pbEquipamentos.setMaximum(Devices.getDevices());
@@ -475,10 +487,20 @@ public class mainForm {
     static void getTreeData(MouseEvent me) {
         TreePath tp = treeBuilding.getPathForLocation(me.getX(), me.getY());
         // TODO Terminar o algoritmo que tras a informacao da tree e coloca os dados relevantes no painel de informacao
-        if (tp != null)
-            Teste.setText(tp.toString());
-        else
+        if (tp != null) {
+
+            String[] dados = tp.toString().split(",");
+            Integer buildid = Integer.valueOf(dados[1].trim().substring(0,4));
+            Integer aptid = Integer.valueOf(dados[2].trim().substring(0,4));
+            Integer devid = Integer.valueOf(dados[3].trim().substring(0,4));
+
+            Teste.setText(dados[1]);
+            Devices equipamento = Devices.loadDevice(buildid, aptid, devid);
+            DevTipo.setText(equipamento.getDeviceType());
+            DevConsumo.setText(String.valueOf(equipamento.getConsumo()) + " W");
+        } else {
             Teste.setText("");
+        }
     }
 
     /**
