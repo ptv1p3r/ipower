@@ -266,6 +266,7 @@ public class Devices {
      * @return Integer Devices Count
      */
     public static ArrayList getDeviceReading(Integer buildingId, Integer apartmentID, Integer deviceId){
+
         ArrayList arrReadingsList = new ArrayList();
 
         xmlParser.readDeviceReadings(strBuildingsPath + "/" + buildingId + "/" + apartmentID + ".xml", deviceId, arrReadingsList);

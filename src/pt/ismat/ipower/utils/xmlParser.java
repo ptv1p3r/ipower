@@ -1269,17 +1269,25 @@ public class xmlParser {
         return total;
     }
 
-    //still working on it. dont touch xD
+    /**
+     * Metodo que vai buscar ao xml as datas diferentes onde houve leitura
+     * @param strApartmentXml Path para o xml do apartamento
+     * @param deviceId Identificador de equipamento
+     * @param arrDatesList Lista de datas distintas
+     */
     public static void readDeviceReadings (String strApartmentXml, Integer deviceId, ArrayList arrDatesList) {
 
+        //formato da data
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-DD");
 
         documento = xmlHeaderDocument(strApartmentXml);
 
+        //Vai buscar todos os devices
         NodeList nlDeviceList = documento.getElementsByTagName("device");
 
         if (nlDeviceList != null && nlDeviceList.getLength() > 0) {
 
+            //procura pelo device selecionado
             for (int i = 0; i < nlDeviceList.getLength(); i++) {
 
                 Node nDevice = nlDeviceList.item(i);
@@ -1287,27 +1295,33 @@ public class xmlParser {
 
                 if (eDevice.hasAttribute("id") && eDevice.getAttribute("id").equals(String.valueOf(deviceId))) {
 
+                    //vai buscar todas as datas de inicio e as datas finais
                     NodeList nlStartDate = eDevice.getElementsByTagName("start_date_time");
                     NodeList nlEndDate =eDevice.getElementsByTagName("end_date_time");
 
                     for (int j = 0; j < nlStartDate.getLength(); j++) {
 
+                        //data de inicio e de fim de uma leitura
                         String strStart = nlStartDate.item(j).getFirstChild().getNodeValue();
                         String strEnd = nlEndDate.item(j).getFirstChild().getNodeValue();
 
                         try {
+                            //cria uma data com o formato definido no inicio
                             Date tempDateS = f.parse(strStart);
                             Date tempDateF = f.parse(strEnd);
 
+                            //passa a data para string para comparar
                             String startDate = f.format(tempDateS);
                             String endDate = f.format(tempDateF);
 
+                            //verifica se a data de inicio ja existe na lista
                             if (!arrDatesList.contains(startDate)) {
 
                                 arrDatesList.add(startDate);
 
                             }
 
+                            //verifica se a data de fim existe na lista
                             if (!arrDatesList.contains(endDate)) {
 
                                 arrDatesList.add(endDate);

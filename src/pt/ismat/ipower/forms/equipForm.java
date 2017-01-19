@@ -123,9 +123,10 @@ public class equipForm {
                     cbDeviceType.setSelectedItem(Device.getDeviceType());
                     ckbEnable.setSelected(Device.isEnabled());
 
-
+                    //limpa a lista das leituras
                     lstDevicesReadingModel.clear();
 
+                    //preenche a lista das leituras
                     setReadingsList(buildingId,apartmentId,Device.getDeviceId());
 
                     //tranca as lables
@@ -417,19 +418,26 @@ public class equipForm {
 
     }
 
+    /**
+     * Metodo que preenche a lista de leituras de um equipamento
+     * @param buildingId Identificador de edificio
+     * @param apartmentId Identificador de apartamento
+     * @param deviceId Identificador de equipamento
+     */
     private void setReadingsList(Integer buildingId, Integer apartmentId, Integer deviceId) {
 
         ArrayList arrLeiturasList = Devices.getDeviceReading(buildingId, apartmentId, deviceId);
 
         lstDevicesReadingModel.clear();
 
+        //preenche o modelo da lista com as datas em que existe pelo menos uma leitura
         for (int i = 0; i < arrLeiturasList.size(); i++) {
             String strDate = (String) arrLeiturasList.get(i);
-
 
             lstDevicesReadingModel.addElement(strDate);
         }
 
+        //defina a lista com o modelo das datas com pelo menos uma leitura
         lstLeituras.setModel(lstDevicesReadingModel);
 
     }
