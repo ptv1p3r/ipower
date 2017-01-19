@@ -1288,37 +1288,25 @@ public class xmlParser {
                 if (eDevice.hasAttribute("id") && eDevice.getAttribute("id").equals(String.valueOf(deviceId))) {
 
                     NodeList nlStartDate = eDevice.getElementsByTagName("start_date_time");
+                    NodeList nlEndDate =eDevice.getElementsByTagName("end_date_time");
 
                     for (int j = 0; j < nlStartDate.getLength(); j++) {
 
                         String strStart = nlStartDate.item(j).getFirstChild().getNodeValue();
+                        String strEnd = nlEndDate.item(j).getFirstChild().getNodeValue();
 
                         try {
-                            Date tempDate = f.parse(strStart);
+                            Date tempDateS = f.parse(strStart);
+                            Date tempDateF = f.parse(strEnd);
 
-                            String startDate = f.format(tempDate);
+                            String startDate = f.format(tempDateS);
+                            String endDate = f.format(tempDateF);
 
                             if (!arrDatesList.contains(startDate)) {
 
                                 arrDatesList.add(startDate);
 
                             }
-
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    NodeList nlEndDate =eDevice.getElementsByTagName("end_date_time");
-
-                    for (int j = 0; j < nlEndDate.getLength(); j++) {
-
-                        String strEnd = nlEndDate.item(j).getFirstChild().getNodeValue();
-
-                        try {
-                            Date tempDate = f.parse(strEnd);
-
-                            String endDate = f.format(tempDate);
 
                             if (!arrDatesList.contains(endDate)) {
 

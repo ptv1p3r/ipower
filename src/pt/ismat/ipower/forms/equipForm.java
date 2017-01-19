@@ -421,6 +421,16 @@ public class equipForm {
 
         ArrayList arrLeiturasList = Devices.getDeviceReading(buildingId, apartmentId, deviceId);
 
+        lstDevicesReadingModel.clear();
+
+        for (int i = 0; i < arrLeiturasList.size(); i++) {
+            String strDate = (String) arrLeiturasList.get(i);
+
+
+            lstDevicesReadingModel.addElement(strDate);
+        }
+
+        lstLeituras.setModel(lstDevicesReadingModel);
 
     }
 
