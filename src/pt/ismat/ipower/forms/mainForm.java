@@ -52,15 +52,14 @@ public class mainForm {
     public Counter cDevicesCounter;
 
     public static JProgressBar Equipamentos;
-    public static JLabel LeiturasTotal,TotalKw,CargaTotal,ActiveDevicesTotal,DevTipo,DevConsumo,DeviceState,Apartment,Categoria;
+    public static JLabel LeiturasTotal,TotalKw,CargaTotal,ActiveDevicesTotal,DevTipo,DevConsumo,DeviceState,Apartment,Categoria, Edificio;
     public static JTree treeBuilding;
-    public static JLabel Teste;
     public static TimeSeries series = new TimeSeries("Total Kw Consumidos",Minute.class);
 
     public mainForm() {
         // passa objectos por referencia
         Equipamentos = pbEquipamentos;
-        Teste = lblBuilding;
+        Edificio = lblBuilding;
         Apartment = lblApartment;
         Categoria = lblCategoria;
         treeBuilding = this.treeBuildings;
@@ -496,26 +495,33 @@ public class mainForm {
         if (tp != null) {
 
             String[] dados = tp.toString().split(",");
-            Integer buildid = Integer.valueOf(dados[1].trim().substring(0,4));
-            Integer aptid = Integer.valueOf(dados[2].trim().substring(0,4));
-            Integer devid = Integer.valueOf(dados[3].trim().substring(0,4));
 
-            if (tp.toString().contains("[Off]")){
-                DeviceState.setText("Inactivo");
+            if (dados.length >= 4) {
+                Integer buildid = Integer.valueOf(dados[1].trim().substring(0,4));
+                Integer aptid = Integer.valueOf(dados[2].trim().substring(0,4));
+                Integer devid = Integer.valueOf(dados[3].trim().substring(0,4));
+
+                if (tp.toString().contains("[Off]")){
+                    DeviceState.setText("Inactivo");
+                } else {
+                    DeviceState.setText("Activo");
+                }
+
+                Devices equipamento = Devices.loadDevice(buildid, aptid, devid);
+                Edificio.setText(dados[1].trim());
+                Apartment.setText(dados[2].trim());
+                Categoria.setText(equipamento.getDeviceCategory());
+                DevTipo.setText(equipamento.getDeviceType());
+                DevConsumo.setText(String.valueOf(equipamento.getConsumo()) + " W");
             } else {
-                DeviceState.setText("Activo");
+                Edificio.setText("- nenhum -");
+                Apartment.setText("- nenhum -");
+                Categoria.setText("- nenhum -");
+                DevTipo.setText("- nenhum -");
+                DevConsumo.setText("- nenhum -");
+                DeviceState.setText("- nenhum -");
             }
 
-            Teste.setText(dados[1]);
-            Apartment.setText(dados[2].trim());
-
-            Devices equipamento = Devices.loadDevice(buildid, aptid, devid);
-            Categoria.setText(equipamento.getDeviceCategory());
-            DevTipo.setText(equipamento.getDeviceType());
-            DevConsumo.setText(String.valueOf(equipamento.getConsumo()) + " W");
-
-        } else {
-            Teste.setText("");
         }
     }
 
