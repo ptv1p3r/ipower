@@ -4,6 +4,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.time.*;
+import pt.ismat.ipower.iPower;
 import pt.ismat.ipower.utils.*;
 
 import javax.swing.*;
@@ -18,7 +19,7 @@ import java.util.Date;
 /**
  * Created by v1p3r on 29-12-2016.
  */
-public class mainForm {
+public class mainForm extends iPower {
 
     public JTree treeBuildings;
     private JPanel mainFrame, leftFrame, rightFrame, bottomFrame;
