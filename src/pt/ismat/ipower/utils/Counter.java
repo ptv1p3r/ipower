@@ -4,13 +4,6 @@ package pt.ismat.ipower.utils;
 import org.jfree.data.time.Minute;
 import pt.ismat.ipower.forms.mainForm;
 
-import javax.swing.text.Position;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**

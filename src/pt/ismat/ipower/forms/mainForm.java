@@ -21,7 +21,7 @@ import java.util.Date;
 /**
  * Created by v1p3r on 29-12-2016.
  */
-public class mainForm extends iPower {
+public class mainForm {
 
     public JTree treeBuildings;
     private JPanel mainFrame, leftFrame, rightFrame, bottomFrame;
