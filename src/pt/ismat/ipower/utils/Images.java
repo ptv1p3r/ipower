@@ -8,7 +8,7 @@ import java.awt.*;
  * @version 0.0
  */
 public class Images {
-    private Integer intHeight, intWidth;
+    private Integer intHeight=20, intWidth=20;
     private String strPath;
 
     public Images(String path) {
@@ -23,7 +23,7 @@ public class Images {
      */
     public ImageIcon resize(Integer height, Integer width){
 
-        ImageIcon imageIcon = new ImageIcon(strPath); // carrega imagem como image icon
+        ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(strPath)); // carrega imagem como image icon
         Image imgImage = imageIcon.getImage(); // Transforma
 
         Image imgTemp = imgImage.getScaledInstance(height, width,  java.awt.Image.SCALE_SMOOTH); // Faz a escala com smooth

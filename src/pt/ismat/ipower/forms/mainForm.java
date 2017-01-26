@@ -7,10 +7,12 @@ import org.jfree.data.time.*;
 import pt.ismat.ipower.iPower;
 import pt.ismat.ipower.utils.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -74,13 +76,13 @@ public class mainForm extends iPower {
 
         createTree(treeBuilding); // cria tree inicial
 
-        Images imgRed = new Images("images/red.png");
+        Images imgRed = new Images("/red.png");
         lblSemaforo.setIcon(imgRed.resize(20,20));
 
-        Images imgDev = new Images("images/equip.png");
+        Images imgDev = new Images("/equip.png");
         lblDevPic.setIcon(imgDev.resize(80,80));
 
-        Images imgBuild = new Images("images/build.png");
+        Images imgBuild = new Images("/build.png");
         lblBuildPic.setIcon(imgBuild.resize(80,80));
 
 
@@ -114,7 +116,7 @@ public class mainForm extends iPower {
 
                 lblStatusBarData.setText("Em funcionamento...Iniciado em: " + dt.format(cDevicesCounter.getDataInicial()));
 
-                Images imgGreen = new Images("images/green.png");
+                Images imgGreen = new Images("/green.png");
                 lblSemaforo.setIcon(imgGreen.resize(20,20));
 
                 lblSimStatus.setText("activo");
@@ -463,12 +465,12 @@ public class mainForm extends iPower {
             }
 
             // altera imagens default da tree
-            Images imgBuild = new Images("images/build.png");
+            Images imgBuild = new Images("/build.png");
             Icon icon = imgBuild.resize(20,20);
             renderer.setClosedIcon(icon);
             renderer.setOpenIcon(icon);
 
-            Images imgEquip = new Images("images/equip.png");
+            Images imgEquip = new Images("/equip.png");
             Icon icone = imgEquip.resize(20,20);
             renderer.setLeafIcon(icone);
 
